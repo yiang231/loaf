@@ -1,0 +1,5 @@
+[3/16/23 13:45:30:119 CST] 000000c6 SystemErr R java.lang.NullPointerException
+[3/16/23 13:45:30:119 CST] 000000c6 SystemErr R at com.genersoft.pension.netbank.comp.serviceImp.PersonServiceImp.getPersonYWXX(PersonServiceImp.java:198)
+[3/16/23 13:45:30:119 CST] 000000c6 SystemErr R at com.genersoft.pension.netbank.comp.control.PersonControl.getGrYwxx(PersonControl.java:419)
+[3/16/23 13:45:30:119 CST] 000000c6 SystemErr R at sun.reflect.GeneratedMethodAccessor180.invoke(Unknown Source)
+写入结束

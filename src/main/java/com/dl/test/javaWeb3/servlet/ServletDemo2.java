@@ -12,13 +12,14 @@ import java.io.PrintWriter;
  * 使用web.xml配置Servlet
  */
 public class ServletDemo2 extends GenericServlet {
-	@Override
-	public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
-		System.out.println("ServletDemo2 服务执行");
-		// 从request属性域中获取数据
-		String attribute = (String) servletRequest.getAttribute("attrName");
-		PrintWriter writer = servletResponse.getWriter();
-		writer.write("attribute = " + attribute);
-		writer.close();
-	}
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        System.out.println("ServletDemo2 服务执行");
+        // 从request属性域中获取数据
+        String attribute = (String) servletRequest.getAttribute("attrName");
+        PrintWriter writer = servletResponse.getWriter();
+        // fixme 读取文件响应写回找不到文件
+        writer.write("attribute = " + attribute);
+        writer.close();
+    }
 }

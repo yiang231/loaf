@@ -1,4 +1,4 @@
-package com.dl.test.schedule.timer;
+package com.dl.test.scheduleTask.timer;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +7,13 @@ import java.util.TimerTask;
 
 /**
  * 所有的Timer都是单线程的，打印日志看似按时执行，实则先打印，后执行
+ * <p>
+ * 缺陷
+ * 调度基于绝对时间
+ * Timer线程出了异常，所有的任务都会被取消
+ * <p>
+ * schedule()侧重于时间间隔的稳定
+ * scheduleAtFixedRate()侧重于执行频率的稳定
  */
 public class TimerTaskDemo {
     public static void main(String[] args) {
@@ -106,16 +113,14 @@ public class TimerTaskDemo {
         calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5);
         System.out.println(calendar.getTime());
 
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
+        new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 System.out.println(new Date(scheduledExecutionTime())); // 这个方法打印的是任务应该执行的时间
             }
-        };
-        timer.schedule(timerTask, calendar.getTime());
+        }, calendar.getTime());
 
-//        timerTask.cancel(); // 取消任务
+//        timerTask.cancel(); // 从任务队列中取消任务
 //        timer.purge(); // 从定时器的队列任务中，移除所有已取消的任务
 //        timer.cancel(); // 取消所有的任务，终止定时器
     }

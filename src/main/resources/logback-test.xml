@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<!--
+scan：当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒当scan为true时，此属性生效。默认的时间间隔为1分钟。
+debug：当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。【没啥用】
+packagingData: 如果开启了，logback 会在输出的堆栈行中显示它是属于哪个 jar 或者哪个类的。此信息由 jar 文件的名称和版本组成，表明堆栈信息来源于此。此机制对于识别软件版本问题非常有用。但是，计算成本相当昂贵，尤其是在经常引发异常的应用程序中。
+-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false" packagingData="false">
+    <import class="ch.qos.logback.core.ConsoleAppender"/>
+    <import class="ch.qos.logback.core.rolling.RollingFileAppender"/>
+    <import class="ch.qos.logback.classic.AsyncAppender"/>
+
+    <import class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"/>
+    <import class="ch.qos.logback.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy"/>
+    <import class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"/>
+
+    <import class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"/>
+    <import class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"/>
+    <import class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"/>
+
+    <import class="ch.qos.logback.core.status.NopStatusListener"/>
+    <import class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+    <import class="ch.qos.logback.classic.filter.ThresholdFilter"/>
+    <import class="ch.qos.logback.classic.filter.LevelFilter"/>
+
+    <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+    <import class="ch.qos.logback.classic.PatternLayout"/>
+
+    <!--输出logback的状态信息-->
+    <!--<statusListener class="OnConsoleStatusListener" />-->
+    <!--去除slf4j启动日志-->
+    <statusListener class="NopStatusListener"/>
+    <!--定义可引用的日志配置 允许嵌套使用-->
+    <!--引入变量时，可能变量未定义或者值为null，我们可以使用“：-”符号指定默认值。例如${LOG_HOME:-./logs}。-->
+    <!--定义的变量是有作用域的，如本地作用域，上下文作用域，系统级作用域。默认是本地作用域。从操作系统环境中读取变量很容易，但是无法写入到操作系统环境中。-->
+    <!--Local Scope（本地作用域）：从配置文件中定义的本地变量即在本地配置文件使用。每次解析和执行配置文件时，都会重新定义本地作用域中的变量。-->
+    <!--Context Scope（上下文作用域）：一个拥有上下文作用域的变量存在于上下文中，于上下文共存，直到被清除。在所有记录事件中都可用到，包括那些通过序列化发送到远程主机的事件。-->
+    <!--System Scope（系统级作用域）：系统级作用域的变量被插入到JVM的系统属性中，生命周期和JVM一致，直到被清除。-->
+    <!--在进行属性替换时，查找变量的顺序为：local scope，context scope，system properties，OS environment。-->
+    <property name="log_level_error" value="error"/>
+    <property name="log_level_debug" value="debug"/>
+    <property name="log_level_info" value="info"/>
+
+    <property name="LOG_HOME" value="./logs"/>
+    <property name="log_package" value="com.dl.test"/>
+    <property name="log_charset" value="UTF-8"/>
+
+    <property name="log_maxHistory" value="5"/>
+    <property name="log_totalSizeCap" value="10MB"/>
+    <property name="log_cleanhistoryonstart" value="false"/>
+
+    <!--默认为10MB-->
+    <property name="log_maxFileSize" value="1MB"/>
+    <property name="log_minIndex" value="1"/>
+    <property name="log_maxIndex" value="7"/>
+    <!--
+    yyyy/MM 月
+    yyyy-ww 周
+    yyyy-MM-dd_HH   小时
+    yyyy-MM-dd_HH-mm    分钟
+    yyyy-MM-dd_HH-mm, UTC   带时区分钟
+    yyyy-MM,aux 主从
+    -->
+    <property name="fileNamePattern" value="_%d{yyyy-MM-dd}_%i.log"/>
+    <!--消息替换 %replace(%msg){'old','new'}-->
+    <property name="consolePattern"
+              value="%yellow(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta([%thread]) %boldCyan([%logger{0}.%method:%line]) : %green(%msg%n)"/>
+    <property name="filePattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%logger{0}.%method:%line] : %msg%n"/>
+    <!--设置日志上下文名称，可以通过%contextName来打印日志上下文名称-->
+    <contextName>logback</contextName>
+
+    <!--file ，用于指定配置文件的路径，他的作用在于，如果你有多个配置信息的话，可以直接写在配置文件中，然后通过file引入-->
+    <!--
+    log.path=F:\\demo
+    log.name=mylog.log
+    直接通过${log.path}就可以访问其值
+    -->
+    <!--    <variable  file="src/main/java/chapters/configuration/variables.properties" />-->
+
+    <!--    resource作用和file一样，但是，它是可以直接从classpath路径下引入配置文件-->
+    <!--    <variable  resource="resource.properties" />-->
+
+    <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
+    <appender name="consoleAppender" class="ConsoleAppender">
+        <!--
+            日志输出格式：
+                %d %date{ISO8601} 表示日期时间
+                %thread表示线程名，
+                %-5level：级别从左显示5个字符宽度
+                %c %logger{50} 表示logger名字最长50个字符，否则按照句点分割，设置为0表示只输入logger最右边
+                %msg：日志消息，
+                %line：行号
+                %thread：线程号
+                %X{clientIp}：客户端IP
+                %X{userId}：客户编号
+                %X{sessionId}: 会话ID
+                %n是换行符
+                ${HOSTNAME}
+                ${CONTEXT_NAME}
+                %20 —— 右对齐，不足20个字符则在信息前面用空格补足，超过20个字符则保留原信息
+                %-20 —— 左对齐，不足20个字符则在信息后面用空格补足，超过20个字符则保留原信息
+                %.30 —— 如果信息超过30个字符，则只保留最后30个字符
+                %20.30 —— 右对齐，不足20个字符则在信息前面用空格补足，超过30个字符则只保留最后30个字符
+                %-20.30 —— 左对齐，不足20个字符则在信息后面用空格补足，超过30个字符则只保留最后30个字符
+        -->
+        <!--从版本 1.0.5 开始，将“%black”、“%red”、“%green”、“%yellow”、“%blue”、“%magenta”、“%cyan”、“%white”、“%gray”、“%boldRed”、“%boldGreen”、“%boldYellow”、“%boldBlue”、“%boldMagenta”“%boldCyan”、“%boldWhite”和“%highlight”识别为转换词。-->
+        <encoder class="PatternLayoutEncoder">
+            <pattern>${consolePattern}</pattern>
+            <charset>${log_charset}</charset>
+        </encoder>
+    </appender>
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+    <appender name="errorLogAppender" class="RollingFileAppender">
+        <!--ThresholdFilter 过滤低于指定阈值的事件。 对于等于或高于阈值的事件，ThresholdFilter将在调用其decision（）方法时响应NEUTRAL。 但是，将拒绝级别低于阈值的事件，例如下面的配置将拒绝所有低于Error级别的日志，只输出Error以及以上级别的日志：-->
+        <filter class="ThresholdFilter">
+            <level>${log_level_error}</level>
+        </filter>
+        <!--是否允许并发写-->
+        <!--FixedWindowRollingPolicy is not supported in prudent mode-->
+        <!--        <prudent>true</prudent>-->
+        <!-- 指定日志文件的名称 -->
+        <file>${LOG_HOME}/${log_level_error}/${log_level_error}.log</file>
+        <!--
+        当发生滚动时，决定 RollingFileAppender 的行为，涉及文件移动和重命名
+        -->
+        <rollingPolicy class="FixedWindowRollingPolicy">
+            <!--
+            滚动时产生的文件的存放位置及文件名称 %d{yyyy-MM-dd_HH-mm}：按天进行日志滚动
+            %i：当文件大小超过maxFileSize时，按照i进行文件滚动
+            -->
+            <fileNamePattern>${LOG_HOME}/${log_level_error}/${log_level_error}_%i.log
+            </fileNamePattern>
+            <minIndex>${log_minIndex}</minIndex>
+            <maxIndex>${log_maxIndex}</maxIndex>
+        </rollingPolicy>
+        <!-- 指定文件最大尺寸，达到该尺寸，就触发rollingPolicy对应的策略，maxFileSize属性指定文件大小 -->
+        <triggeringPolicy class="SizeBasedTriggeringPolicy">
+            <maxFileSize>${log_maxFileSize}</maxFileSize>
+        </triggeringPolicy>
+        <!-- 日志输出格式-->
+        <!--可以使用encoder标签替换-->
+        <layout class="PatternLayout">
+            <pattern>${filePattern}</pattern>
+            <charset>${log_charset}</charset>
+        </layout>
+        <!-- 应用启动时, 归档文件将会被删除, 默认的值为 false -->
+        <cleanhistoryonstart>${log_cleanhistoryonstart}</cleanhistoryonstart>
+    </appender>
+    <appender name="infoLogAppender" class="RollingFileAppender">
+        <!--LevelFilter 根据精确的级别匹配过滤事件。 如果事件的级别等于配置的级别，则筛选器接受或拒绝该事件，具体取决于onMatch和onMismatch属性的配置。-->
+        <filter class="LevelFilter">
+            <level>${log_level_info}</level>
+            <!--匹配到，就打印-->
+            <onMatch>ACCEPT</onMatch>
+            <!--没有匹配到，就禁止-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--指定日志文件的名称-->
+        <file>${LOG_HOME}/${log_level_info}/${log_level_info}.log</file>
+        <!--当发生滚动时，决定 RollingFileAppender 的行为，涉及文件移动和重命名。TimeBasedRollingPolicy:最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动。-->
+        <rollingPolicy class="SizeAndTimeBasedRollingPolicy">
+            <!--滚动时产生的文件的存放位置及文件名称 %d{yyyy-MM-dd_HH-mm}：按天进行日志滚动，%i：当文件大小超过maxFileSize时，按照i进行文件滚动-->
+            <fileNamePattern>${LOG_HOME}/${log_level_info}/%d{yyyy-MM-dd,aux}/${log_level_info}${fileNamePattern}
+            </fileNamePattern>
+            <!--可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。假设设置每天滚动，且maxHistory是365，则只保存最近365天的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除。-->
+            <MaxHistory>${log_maxHistory}</MaxHistory>
+            <maxFileSize>${log_maxFileSize}</maxFileSize>
+            <!--用来指定日志文件的上限大小-->
+            <totalSizeCap>${log_totalSizeCap}</totalSizeCap>
+            <!--应用启动时, 归档文件将会被删除, 默认的值为 false-->
+            <cleanhistoryonstart>${log_cleanhistoryonstart}</cleanhistoryonstart>
+        </rollingPolicy>
+        <!--日志输出格式-->
+        <encoder class="PatternLayoutEncoder">
+            <pattern>${filePattern}</pattern>
+            <charset>${log_charset}</charset>
+        </encoder>
+    </appender>
+    <appender name="debugLogAppender" class="RollingFileAppender">
+        <!--LevelFilter 根据精确的级别匹配过滤事件。 如果事件的级别等于配置的级别，则筛选器接受或拒绝该事件，具体取决于onMatch和onMismatch属性的配置。-->
+        <filter class="LevelFilter">
+            <level>${log_level_debug}</level>
+            <!--匹配到，就打印-->
+            <onMatch>ACCEPT</onMatch>
+            <!--没有匹配到，就禁止-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--指定日志文件的名称-->
+        <file>${LOG_HOME}/${log_level_debug}/${log_level_debug}.log</file>
+        <!--当发生滚动时，决定 RollingFileAppender 的行为，涉及文件移动和重命名。TimeBasedRollingPolicy:最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动。-->
+        <rollingPolicy class="TimeBasedRollingPolicy">
+            <!--滚动时产生的文件的存放位置及文件名称 %d{yyyy-MM-dd_HH-mm}：按天进行日志滚动，%i：当文件大小超过maxFileSize时，按照i进行文件滚动-->
+            <fileNamePattern>${LOG_HOME}/${log_level_debug}/%d{yyyy-MM-dd,aux}/${log_level_debug}_%d.log
+            </fileNamePattern>
+            <!--可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。假设设置每天滚动，且maxHistory是365，则只保存最近365天的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除。-->
+            <MaxHistory>${log_maxHistory}</MaxHistory>
+            <!--用来指定日志文件的上限大小-->
+            <totalSizeCap>${log_totalSizeCap}</totalSizeCap>
+            <!--应用启动时, 归档文件将会被删除, 默认的值为 false-->
+            <cleanhistoryonstart>${log_cleanhistoryonstart}</cleanhistoryonstart>
+        </rollingPolicy>
+        <!--日志输出格式-->
+        <encoder class="PatternLayoutEncoder">
+            <pattern>${filePattern}</pattern>
+            <charset>${log_charset}</charset>
+        </encoder>
+    </appender>
+    <!--异步Appender-->
+    <!--includeCallerData表示是否提取调用者数据，默认false：方法行号、方法名等信息不显示-->
+    <!--默认值为“ true”。立即刷新输出流可确保立即写出日志记录事件，并且在您的应用程序未正确关闭附加程序而退出的情况下也不会丢失。另一方面，将此属性设置为“ false”可能会使日志记录吞吐量增加四倍(您的里程可能会有所不同)。-->
+    <!--queueSize 默认值256，不过该值首次建议设置大一些，后续根据自己业务的特点去调优，降低日志丢失的概率。-->
+    <!--discardingThreshold：默认情况下，当blockingQueue的容量高于阈值时（80%），会丢弃ERROR以下级别的日志，如果不希望丢弃日志（既每次都是全量保存），那可以设置为0，但是如果队列满的时候，会丢弃所有插入队列的日志信息，所以建议设置为-1（默认值）。 如正常日志可以丢弃，那可以极大的提升性能，并保存关键的ERROR日志。-->
+    <!--neverBlock: 控制队列满时，加入的数据是否直接丢弃，不会阻塞等待，默认是false，阻塞应用程序，不丢失日志-->
+    <!--AsyncAppender中只能配置一个appender-ref，配置多个就会无效-->
+    <appender name="errorLogAsyncAppender" class="AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <ImmediateFlush>true</ImmediateFlush>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>8192</queueSize>
+        <neverBlock>false</neverBlock>
+        <appender-ref ref="errorLogAppender"/>
+    </appender>
+    <appender name="infoLogAsyncAppender" class="AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <ImmediateFlush>true</ImmediateFlush>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>8192</queueSize>
+        <neverBlock>false</neverBlock>
+        <appender-ref ref="infoLogAppender"/>
+    </appender>
+    <appender name="debugLogAsyncAppender" class="AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <ImmediateFlush>true</ImmediateFlush>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>8192</queueSize>
+        <neverBlock>false</neverBlock>
+        <appender-ref ref="debugLogAppender"/>
+    </appender>
+    <!--logger节点，可选节点，用来具体指明包的日志输出级别，它将会覆盖root的输出级别-->
+    <!--
+      logger主要用于存放日志对象，也可以定义日志类型、级别
+      name：表示匹配的logger类型前缀，也就是包的前半部分
+      level：要记录的日志级别，包括 TRACE < DEBUG < INFO < WARN < ERROR
+      additivity：作用在于children-logger是否使用 rootLogger配置的appender进行输出，
+      false：表示只用当前logger的appender-ref，
+      true：表示当前logger的appender-ref和rootLogger的appender-ref都有效
+    -->
+    <logger name="${log_package}" additivity="true" level="${log_level_debug}">
+        <appender-ref ref="errorLogAsyncAppender"/>
+        <appender-ref ref="infoLogAsyncAppender"/>
+        <appender-ref ref="debugLogAsyncAppender"/>
+    </logger>
+    <!--
+    root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
+    要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。
+    -->
+    <root level="${log_level_info}">
+        <appender-ref ref="consoleAppender"/>
+    </root>
+    <!--待测试-->
+    <!--    &lt;!&ndash;开发环境 日志输出格式&ndash;&gt;-->
+    <!--    <springProfile name="dev">-->
+    <!--        <pattern>${filePattern}</pattern>-->
+    <!--        <charset>${log_charset}</charset>-->
+    <!--    </springProfile>-->
+    <!--    &lt;!&ndash;生产环境:输出到文档&ndash;&gt;-->
+    <!--    <springProfile name="pro">-->
+    <!--        <root level="info">-->
+    <!--            <appender-ref ref="CONSOLE"/>-->
+    <!--            <appender-ref ref="DEBUG_FILE"/>-->
+    <!--            <appender-ref ref="INFO_FILE"/>-->
+    <!--            <appender-ref ref="ERROR_FILE"/>-->
+    <!--            <appender-ref ref="WARN_FILE"/>-->
+    <!--        </root>-->
+    <!--    </springProfile>-->
+</configuration>

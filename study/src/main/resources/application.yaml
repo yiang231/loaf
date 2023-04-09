@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:db.sqlite
+server:
+  port: 8080
+#  servlet:
+#    context-path: /servletDemo
+
+
+logging:
+  level:
+    sql: debug

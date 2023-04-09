@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Context>
-    <!--最大空闲时间-->
-    <Manager className="org.apache.catalina.session.PersistentManager" maxIdleSwap="1">
-        <!--fixme 这里只能是绝对路径吗？-->
-        <Store className="org.apache.catalina.session.FileStore" directory=""/>
-    </Manager>
-</Context>

@@ -1,0 +1,27 @@
+- [x] Logback + Exception
+    - 全局异常处理
+    - 切面化
+- [x] T...a
+- [ ] Springboot整合Quartz
+- [ ] 连接mysql
+- [ ] 多数据源
+- [x] admin
+- [x] druid监控
+- [ ] promithes
+- [ ] 注解
+- [ ] 切面
+- [ ] 泛型
+- [ ] 代理
+- [ ] 反射
+- [ ] socket
+- [ ] stream
+- [ ] tx
+- [ ] jpa
+- [ ] webflux
+- [ ] netty
+- [ ] hibernate
+- [ ] mybatisplus
+- [x] sqlite
+- [ ] ELK
+- [ ] properties
+- [ ] lambda

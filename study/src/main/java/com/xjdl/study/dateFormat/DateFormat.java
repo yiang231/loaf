@@ -73,7 +73,8 @@ public class DateFormat {
 		SimpleDateFormat dataDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
-		calendar.add(Calendar.DATE, 2); // 正数代表之后的时间
+		calendar.add(Calendar.DATE, 2); // 正数代表之后的时间,负数代表之后的时间，或者使用roll()
+//		calendar.roll(Calendar.DATE,-1); 
 		log.info(dataDateFormat.format(calendar.getTime()));
 	}
 

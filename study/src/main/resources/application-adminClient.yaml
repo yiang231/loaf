@@ -1,0 +1,15 @@
+spring:
+  boot:
+    admin:
+      client:
+        instance:
+          service-base-url: http://127.0.0.1:9999
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'  # 对外暴露的访问入口 , 默认是/health和/info
+  endpoint:
+    health:
+      show-details: always    # 显示所有健康状态

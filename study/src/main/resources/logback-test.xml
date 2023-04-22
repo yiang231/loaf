@@ -27,10 +27,10 @@ packagingData: 如果开启了，logback 会在输出的堆栈行中显示它是
     <property name="log_charset" value="UTF-8"/>
 
     <property name="log_maxHistory" value="5"/>
-    <property name="log_totalSizeCap" value="10MB"/>
+    <property name="log_totalSizeCap" value="100MB"/>
 
     <!--默认为10MB-->
-    <property name="log_maxFileSize" value="1MB"/>
+    <property name="log_maxFileSize" value="10MB"/>
     <property name="log_minIndex" value="1"/>
     <property name="log_maxIndex" value="7"/>
     <!--
@@ -46,7 +46,7 @@ packagingData: 如果开启了，logback 会在输出的堆栈行中显示它是
     <property name="consolePattern"
               value="%yellow(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta([%thread]) %cyan([%logger{0}.%method:%line]) : %green(%msg%n)"/>
     <property name="filePattern"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%logger{0}.%method:%line] : %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%logger{0}] : %msg%n"/>
     <!--设置日志上下文名称，可以通过%contextName来打印日志上下文名称-->
     <contextName>logback</contextName>
 
@@ -187,6 +187,13 @@ packagingData: 如果开启了，logback 会在输出的堆栈行中显示它是
     <!--discardingThreshold：默认情况下，当blockingQueue的容量高于阈值时（80%），会丢弃ERROR以下级别的日志，如果不希望丢弃日志（既每次都是全量保存），那可以设置为0，但是如果队列满的时候，会丢弃所有插入队列的日志信息，所以建议设置为-1（默认值）。 如正常日志可以丢弃，那可以极大的提升性能，并保存关键的ERROR日志。-->
     <!--neverBlock: 控制队列满时，加入的数据是否直接丢弃，不会阻塞等待，默认是false，阻塞应用程序，不丢失日志-->
     <!--AsyncAppender中只能配置一个appender-ref，配置多个就会无效-->
+    <appender name="consoleLogAsyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>8192</queueSize>
+        <neverBlock>false</neverBlock>
+        <appender-ref ref="consoleAppender"/>
+    </appender>
     <appender name="errorLogAsyncAppender" class="ch.qos.logback.classic.AsyncAppender">
         <includeCallerData>true</includeCallerData>
         <discardingThreshold>0</discardingThreshold>
@@ -208,6 +215,23 @@ packagingData: 如果开启了，logback 会在输出的堆栈行中显示它是
         <neverBlock>false</neverBlock>
         <appender-ref ref="debugLogAppender"/>
     </appender>
+<!--html日志输出-->
+<!--    <appender name="htmlAppender" class="ch.qos.logback.core.FileAppender">-->
+<!--&lt;!&ndash;        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">&ndash;&gt;-->
+<!--&lt;!&ndash;            <level>all</level>&ndash;&gt;-->
+<!--&lt;!&ndash;        </filter>&ndash;&gt;-->
+<!--        &lt;!&ndash;指定日志文件的名称&ndash;&gt;-->
+<!--        <file>${LOG_HOME}/log.html</file>-->
+<!--        &lt;!&ndash;日志输出格式&ndash;&gt;-->
+<!--        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
+<!--            <layout class="ch.qos.logback.classic.html.HTMLLayout">-->
+<!--                <pattern>${filePattern}</pattern>-->
+<!--            </layout>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+<!--    <root level="all">-->
+<!--        <appender-ref ref="htmlAppender"/>-->
+<!--    </root>-->
     <!--logger节点，可选节点，用来具体指明包的日志输出级别，它将会覆盖root的输出级别-->
     <!--
       logger主要用于存放日志对象，也可以定义日志类型、级别

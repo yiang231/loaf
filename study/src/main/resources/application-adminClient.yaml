@@ -12,3 +12,9 @@ management:
   endpoint:
     health:
       show-details: always    # 显示所有健康状态
+  info:
+    env:
+      enabled: true
+
+
+# http://docs.spring-boot-admin.com/2.7.10/

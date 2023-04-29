@@ -7,7 +7,7 @@
 - [ ] 多数据源
 - [x] admin
 - [x] druid监控
-- [ ] promithes
+- [ ] prometheus
 - [ ] 注解
 - [ ] 切面
 - [ ] 泛型
@@ -25,4 +25,20 @@
 - [ ] ELK
 - [ ] properties
 - [ ] lambda
-- [ ] swagger
+- [ ] swagger2
+- [ ] fastjson
+- [ ] starter
+- [ ] APM
+- [ ] shell
+- [x] maven 
+```shell
+# 4线程构建
+mvn -T 4 clean install
+# 每个cpu核心1个线程，比如我是4核cpu那么就4个线程
+mvn -T 1C clean install
+# 每个cpu核心1.5个线程
+mvn -T 1.5C clean install 
+```
+
+
+

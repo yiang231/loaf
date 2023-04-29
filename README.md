@@ -3,7 +3,7 @@
     - 切面化
 - [x] T...a
 - [ ] Springboot整合Quartz
-- [ ] 连接mysql
+- [x] 连接mysql
 - [ ] 多数据源
 - [x] admin
 - [x] druid监控
@@ -14,7 +14,7 @@
 - [ ] 代理
 - [ ] 反射
 - [ ] socket
-- [ ] stream
+- [x] stream
 - [ ] tx
 - [ ] jpa
 - [ ] webflux
@@ -25,3 +25,4 @@
 - [ ] ELK
 - [ ] properties
 - [ ] lambda
+- [ ] swagger

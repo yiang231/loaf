@@ -3,6 +3,8 @@ package com.xjdl.study;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 /**
  * 四大资源文件夹访问顺序
  * org.springframework.boot.autoconfigure.web.WebProperties.Resources 2.7.10版本
@@ -14,6 +16,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @ServletComponentScan(basePackages = "com.xjdl.study.javaWeb")
 @SpringBootApplication
 //默认访问当前包及其子包下的注解
+@EnableTransactionManagement
 public class Study {
     public static void main(String[] args) {
         SpringApplication.run(Study.class, args);

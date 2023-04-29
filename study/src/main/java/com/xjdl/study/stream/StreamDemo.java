@@ -21,6 +21,12 @@ class User {
 
 /**
  * stream流操作
+ *
+ * Lambda表达式的使用条件
+ * 首先，都是接口
+ * 其次，接口中有且只有一个接口，才可以使用lambda表达式
+ * 1.接口中只有一个抽象方法的接口，叫做函数式接口
+ * 2.如果是函数式接口，那么就可以用@FunctionalInterface注解标识
  */
 @Slf4j
 public class StreamDemo {

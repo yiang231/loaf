@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -74,7 +76,7 @@ public class DateFormat {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		calendar.add(Calendar.DATE, 2); // 正数代表之后的时间,负数代表之后的时间，或者使用roll()
-//		calendar.roll(Calendar.DATE,-1); 
+//		calendar.roll(Calendar.DATE,-1);
 		log.info(dataDateFormat.format(calendar.getTime()));
 	}
 
@@ -196,6 +198,17 @@ public class DateFormat {
 		LocalDate jdk14 = LocalDate.of(2020, 3, 17);
 		LocalDate nowDate = LocalDate.now();
 		log.info("距离JDK 14 已经：{}", nowDate.until(jdk14, ChronoUnit.DAYS) + "天");
+
+		LocalDateTime start = LocalDateTime.parse("2007-12-03T10:15:30");
+		LocalDateTime end = LocalDateTime.parse("2023-04-27T10:25:33");
+		log.info("时间相差 {} 天", Duration.between(start, end).toDays());
+		log.info("时间相差 {} 小时", Duration.between(start, end).toHours());
+
+		LocalDate startDate = LocalDate.of(2020, 2, 28);
+		LocalDate endDate = LocalDate.of(2021, 12, 3);
+		log.info("日期间隔 {} 年", Period.between(startDate, endDate).getYears());
+		log.info("日期间隔 {} 月", Period.between(startDate, endDate).getMonths());
+		log.info("日期间隔 {} 日", Period.between(startDate, endDate).getDays());
 	}
 
 	/**

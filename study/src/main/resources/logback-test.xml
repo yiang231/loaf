@@ -44,7 +44,7 @@ packagingData: 如果开启了，logback 会在输出的堆栈行中显示它是
     <property name="fileNamePattern" value="_%d{yyyy-MM-dd}_%i.log"/>
     <!--消息替换 %replace(%msg){'old','new'}-->
     <property name="consolePattern"
-              value="%yellow(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta([%thread]) %cyan([%logger{0}.%method:%line]) : %green(%msg%n)"/>
+              value="%yellow(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta([%thread]) %cyan([%logger{0}#%method:%line]) : %green(%msg%n)"/>
     <property name="filePattern"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%logger{0}] : %msg%n"/>
     <!--设置日志上下文名称，可以通过%contextName来打印日志上下文名称-->

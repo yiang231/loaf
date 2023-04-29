@@ -1,6 +1,6 @@
 package com.xjdl.study.sqlite3;
 
-import com.xjdl.study.sqlite3.withJpa.User;
+import com.xjdl.study.sqlite3.entity.User;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;

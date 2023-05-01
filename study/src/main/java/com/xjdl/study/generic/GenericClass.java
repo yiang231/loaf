@@ -13,5 +13,5 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @AllArgsConstructor
 public class GenericClass<T> {
-    private T value;
+	private T value;
 }

@@ -15,14 +15,14 @@ import java.io.PrintWriter;
  */
 @Slf4j
 public class ServletDemo2 extends GenericServlet {
-    @Override
-    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
-        log.info("ServletDemo2 服务执行");
-        // 从request属性域中获取数据
-        String attribute = (String) servletRequest.getAttribute("attrName");
-        PrintWriter writer = servletResponse.getWriter();
-        // fixme 读取文件响应写回找不到文件
-        writer.write("attribute = " + attribute);
-        writer.close();
-    }
+	@Override
+	public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+		log.info("ServletDemo2 服务执行");
+		// 从request属性域中获取数据
+		String attribute = (String) servletRequest.getAttribute("attrName");
+		PrintWriter writer = servletResponse.getWriter();
+		// fixme 读取文件响应写回找不到文件
+		writer.write("attribute = " + attribute);
+		writer.close();
+	}
 }

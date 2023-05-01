@@ -88,6 +88,7 @@ class Boss extends Monster {
 		log.info("Boss构造完成");
 	}
 }
+
 @Slf4j
 class Joker extends Monster {
 	public Joker() {

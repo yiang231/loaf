@@ -20,25 +20,25 @@ import java.util.Set;
 @Slf4j
 @HandlesTypes(value = {}) // 里面的参数传到了set中，是ServletContainerInitializer可以处理的类型
 public class ServletContainerInitializerDemo1 implements ServletContainerInitializer {
-    @Override
-    public void onStartup(Set<Class<?>> set, ServletContext servletContext) throws ServletException {
-        log.info("Servlet容器启动时操作");
-        log.info("set = " + set + ", servletContext = " + servletContext);
-        // 注册组件
-        ServletRegistration.Dynamic servletDemo1 = servletContext.addServlet("servletDemo1", new ServletDemo1());
-        // 配置映射信息
-        servletDemo1.addMapping("/servletDemo1");
-        // 创建时机，不配置创建时机则会懒加载
+	@Override
+	public void onStartup(Set<Class<?>> set, ServletContext servletContext) throws ServletException {
+		log.info("Servlet容器启动时操作");
+		log.info("set = " + set + ", servletContext = " + servletContext);
+		// 注册组件
+		ServletRegistration.Dynamic servletDemo1 = servletContext.addServlet("servletDemo1", new ServletDemo1());
+		// 配置映射信息
+		servletDemo1.addMapping("/servletDemo1");
+		// 创建时机，不配置创建时机则会懒加载
 //        servletDemo1.setLoadOnStartup(10);
-        servletDemo1.setInitParameters(new HashMap<String, String>() {{
-            put("name1", "value1");
-            put("name2", "value2");
-        }});
+		servletDemo1.setInitParameters(new HashMap<String, String>() {{
+			put("name1", "value1");
+			put("name2", "value2");
+		}});
 
 //        ServletRegistration.Dynamic servletDemo2 = servletContext.addServlet("servletDemo2", new ServletDemo2());
 //        servletDemo2.addMapping("/servletDemo2");
 
 //        ServletRegistration.Dynamic servletDemo3 = servletContext.addServlet("servletDemo3", new ServletDemo3());
 //        servletDemo3.addMapping("/servletDemo3");
-    }
+	}
 }

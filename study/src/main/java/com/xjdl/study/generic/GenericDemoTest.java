@@ -13,30 +13,30 @@ import org.junit.jupiter.api.Test;
  */
 @Slf4j
 public class GenericDemoTest {
-    @Test
-    public void test1() {
-        GenericMethod<Integer, String> genericMethod = new GenericMethod<>();
+	@Test
+	public void test1() {
+		GenericMethod<Integer, String> genericMethod = new GenericMethod<>();
 
-        log.info("{}", genericMethod.print(21, "32"));
-        log.info("{}", genericMethod.printE(22));
-        log.info("{}", genericMethod.printV("23"));
-    }
+		log.info("{}", genericMethod.print(21, "32"));
+		log.info("{}", genericMethod.printE(22));
+		log.info("{}", genericMethod.printV("23"));
+	}
 
-    @Test
-    public void test2() {
-        GenericClass<String> string = new GenericClass<>("GenericClass");
-        GenericClass<Integer> integer = new GenericClass<>(123);
+	@Test
+	public void test2() {
+		GenericClass<String> string = new GenericClass<>("GenericClass");
+		GenericClass<Integer> integer = new GenericClass<>(123);
 
-        log.info("{}", string);
-        log.info("{}", integer);
-    }
+		log.info("{}", string);
+		log.info("{}", integer);
+	}
 
-    @Test
-    public void test3() {
-        GenericInterfaceImpl genericInterface = new GenericInterfaceImpl();
+	@Test
+	public void test3() {
+		GenericInterfaceImpl genericInterface = new GenericInterfaceImpl();
 
-        genericInterface.show("GenericInterface");
-        genericInterface.show(21);
-        genericInterface.show(21.36);
-    }
+		genericInterface.show("GenericInterface");
+		genericInterface.show(21);
+		genericInterface.show(21.36);
+	}
 }

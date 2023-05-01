@@ -17,32 +17,32 @@ import javax.servlet.http.HttpSessionBindingListener;
 @Slf4j
 @WebListener
 public class HttpSessionBindingListenerDemo implements HttpSessionBindingListener {
-    private String name;
-    private String age;
+	private String name;
+	private String age;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getAge() {
-        return age;
-    }
+	public String getAge() {
+		return age;
+	}
 
-    public void setAge(String age) {
-        this.age = age;
-    }
+	public void setAge(String age) {
+		this.age = age;
+	}
 
-    @Override
-    public void valueBound(HttpSessionBindingEvent httpSessionBindingEvent) {
-        log.info("HttpSessionBindingListenerDemo 被绑定");
-    }
+	@Override
+	public void valueBound(HttpSessionBindingEvent httpSessionBindingEvent) {
+		log.info("HttpSessionBindingListenerDemo 被绑定");
+	}
 
-    @Override
-    public void valueUnbound(HttpSessionBindingEvent httpSessionBindingEvent) {
-        log.info("HttpSessionBindingListenerDemo 被解绑");
-    }
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent httpSessionBindingEvent) {
+		log.info("HttpSessionBindingListenerDemo 被解绑");
+	}
 }

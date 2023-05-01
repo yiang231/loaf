@@ -3,6 +3,7 @@ package com.xjdl.study.dateFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -96,7 +97,8 @@ public class DateFormat {
 		log.info("格式化后：{}", now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 		log.info("格式化后：{}", now.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		log.info("格式化后：{}", now.format(DateTimeFormatter.ISO_LOCAL_TIME));
-		log.info("格式化后：{}", now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+		log.info("格式化后[24小时制]：{}", now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		log.info("格式化后[12小时制]：{}", now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
 
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年 MM月 dd日 hh:mm a");
 		log.info(now.format(dateTimeFormatter));
@@ -114,6 +116,7 @@ public class DateFormat {
 		log.info("当前精确时间：{}-{}-{} {}:{}:{}", now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute(), now.getSecond());
 
 		// 获取当前日期
+//		LocalDate localDate = now.toLocalDate();
 		LocalDate localDate = LocalDate.now();
 		log.info("当前日期：{}", localDate);
 		log.info("当前日期：{}-{}-{}", localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
@@ -121,6 +124,7 @@ public class DateFormat {
 		log.info("获取之后时间 = {}", localDate.minusDays(-2));
 
 		// 获取当天时间
+//		LocalTime localTime = now.toLocalTime();
 		LocalTime localTime = LocalTime.now();
 		log.info("当天时间：{}", localTime);
 		log.info("当天时间：{}:{}:{}", localTime.getHour(), localTime.getMinute(), localTime.getSecond());
@@ -242,5 +246,19 @@ public class DateFormat {
 		log.info("本月最后一天:{}", lastDay);
 		// 是否闰年
 		log.info("今年是否闰年：{}", Year.isLeap(now.getYear()));
+	}
+
+	/**
+	 * 获取时间戳
+	 */
+	@Test
+	public void timeStamp() {
+		log.info("UTC时间 {}", Instant.now());
+		log.info("当时时区时间 {}", Instant.now().atZone(ZoneId.systemDefault()));
+		log.info("当前时间秒数 {}", Instant.now().getEpochSecond());
+		log.info("当前时间毫秒数 {}", Instant.now().toEpochMilli());
+
+		log.info("时间戳方式一 {}", Timestamp.valueOf(LocalDateTime.now()).getTime());
+		log.info("时间戳方式二 {}", Instant.now().toEpochMilli());
 	}
 }

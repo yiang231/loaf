@@ -1,8 +1,11 @@
 package com.xjdl.study.pattern.factoryPattern.simpleFactory;
 
-public class Apple implements Fruit{
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class Apple implements Fruit {
 	@Override
 	public void myName() {
-		System.out.println("Apple");
+		log.info("Apple");
 	}
 }

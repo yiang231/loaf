@@ -16,6 +16,6 @@ public class RealSubject implements Subject {
 
 	@Override
 	public String resp() {
-		return  "无参有返回值方法被调用了";
+		return "无参有返回值方法被调用了";
 	}
 }

@@ -9,21 +9,21 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ClassConst {
-    public static void main(String[] args) {
-        log.info("{}", ClassConstDemo.getTrue());
-        log.info("{}", ClassConstDemo.getFalse());
-    }
+	public static void main(String[] args) {
+		log.info("{}", ClassConstDemo.getTrue());
+		log.info("{}", ClassConstDemo.getFalse());
+	}
 }
 
 final class ClassConstDemo {
-    private static final int TRUE = 1;
-    private static final int FALSE = 0;
+	private static final int TRUE = 1;
+	private static final int FALSE = 0;
 
-    public static int getTrue() {
-        return TRUE;
-    }
+	public static int getTrue() {
+		return TRUE;
+	}
 
-    public static int getFalse() {
-        return FALSE;
-    }
+	public static int getFalse() {
+		return FALSE;
+	}
 }

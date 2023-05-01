@@ -17,8 +17,8 @@ public class ProxyTest {
 	@Test
 	void jdk() {
 		RealSubject realSubject = new RealSubject();
-        realSubject.req("原始对象测试数据");
-        log.info("{}", realSubject.resp());
+		realSubject.req("原始对象测试数据");
+		log.info("{}", realSubject.resp());
 
 		InvocationHandlerImpl handler = new InvocationHandlerImpl(realSubject);
 
@@ -43,7 +43,7 @@ public class ProxyTest {
 		enhancer.setSuperclass(RealSubject.class);
 		// 可以使用lambda表达式
 		enhancer.setCallback(new MethodInterceptorImpl(new RealSubject()));
-        RealSubject realSubject = (RealSubject) enhancer.create();
+		RealSubject realSubject = (RealSubject) enhancer.create();
 		realSubject.req("cglibProxy测试参数");
 		log.info("{}", realSubject.resp());
 	}

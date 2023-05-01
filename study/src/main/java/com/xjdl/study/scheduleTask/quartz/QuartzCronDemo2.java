@@ -30,43 +30,43 @@ import org.quartz.impl.matchers.EverythingMatcher;
  */
 @Slf4j
 public class QuartzCronDemo2 {
-    public static void main(String[] args) {
-        try {
-            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+	public static void main(String[] args) {
+		try {
+			Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 
-            JobDetail jobDetail = JobBuilder.newJob(QuartzCronJobDemo2.class)
-                    .withIdentity("job2", "jobGroup2")
-                    .build();
+			JobDetail jobDetail = JobBuilder.newJob(QuartzCronJobDemo2.class)
+					.withIdentity("job2", "jobGroup2")
+					.build();
 
-            Trigger cronTrigger = TriggerBuilder.newTrigger()
-                    .withIdentity("trigger2", "triggerGroup2")
-                    .withSchedule(
-                            CronScheduleBuilder
-                                    .cronSchedule("0/5 * * * * ?")
-                    )
-                    .startNow()
-                    .build();
+			Trigger cronTrigger = TriggerBuilder.newTrigger()
+					.withIdentity("trigger2", "triggerGroup2")
+					.withSchedule(
+							CronScheduleBuilder
+									.cronSchedule("0/5 * * * * ?")
+					)
+					.startNow()
+					.build();
 
-            scheduler.scheduleJob(jobDetail, cronTrigger);
+			scheduler.scheduleJob(jobDetail, cronTrigger);
 
-            QuartzCronJobListener quartzCronJobListener = new QuartzCronJobListener();
-            log.info(quartzCronJobListener.getName());
+			QuartzCronJobListener quartzCronJobListener = new QuartzCronJobListener();
+			log.info(quartzCronJobListener.getName());
 
-            QuartzCronTriggerListener quartzCronTriggerListener = new QuartzCronTriggerListener();
-            log.info(quartzCronTriggerListener.getName());
+			QuartzCronTriggerListener quartzCronTriggerListener = new QuartzCronTriggerListener();
+			log.info(quartzCronTriggerListener.getName());
 
-            // 全局监听器，调度器内所有job被调度时会被监听
-            scheduler.getListenerManager().addJobListener(quartzCronJobListener, EverythingMatcher.allJobs());
-            scheduler.getListenerManager().addTriggerListener(quartzCronTriggerListener, EverythingMatcher.allTriggers());
-            scheduler.getListenerManager().addSchedulerListener(new QuartzCronScheduleListener());
-            // 局部监听器_1
+			// 全局监听器，调度器内所有job被调度时会被监听
+			scheduler.getListenerManager().addJobListener(quartzCronJobListener, EverythingMatcher.allJobs());
+			scheduler.getListenerManager().addTriggerListener(quartzCronTriggerListener, EverythingMatcher.allTriggers());
+			scheduler.getListenerManager().addSchedulerListener(new QuartzCronScheduleListener());
+			// 局部监听器_1
 //            scheduler.getListenerManager().addJobListener(quartzCronJobListener);
-            // 局部监听器_2
+			// 局部监听器_2
 //            scheduler.getListenerManager().addJobListener(quartzCronJobListener, KeyMatcher.keyEquals(JobKey.jobKey("job2","jobGroup2")));
 
-            scheduler.start();
-        } catch (SchedulerException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
+			scheduler.start();
+		} catch (SchedulerException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
 }

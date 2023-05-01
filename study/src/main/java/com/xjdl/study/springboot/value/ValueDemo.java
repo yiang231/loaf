@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "spring.datasource")
 @Data
 public class ValueDemo {
-    public String driverClassName;
-    public String url;
+	public String driverClassName;
+	public String url;
 }

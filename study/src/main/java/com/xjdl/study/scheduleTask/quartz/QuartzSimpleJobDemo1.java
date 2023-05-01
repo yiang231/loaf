@@ -25,45 +25,45 @@ import java.util.Date;
 @Data
 @PersistJobDataAfterExecution
 public class QuartzSimpleJobDemo1 implements Job {
-    private String message;
-    private String msg;
-    private String k1;
-    private String k2;
-    private int count;
+	private String message;
+	private String msg;
+	private String k1;
+	private String k2;
+	private int count;
 
-    @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        // 通过JobExecutionContext获取JobDetail
-        JobDetail jobDetail = context.getJobDetail();
-        JobKey jobKey = jobDetail.getKey();
-        log.info("任务实例的标识 {}", jobKey.getName());
-        log.info("任务实例的组名 {}", jobKey.getGroup());
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		// 通过JobExecutionContext获取JobDetail
+		JobDetail jobDetail = context.getJobDetail();
+		JobKey jobKey = jobDetail.getKey();
+		log.info("任务实例的标识 {}", jobKey.getName());
+		log.info("任务实例的组名 {}", jobKey.getGroup());
 
-        // 通过JobExecutionContext获取Trigger
-        Trigger trigger = context.getTrigger();
-        TriggerKey triggerKey = trigger.getKey();
-        log.info("触发器名称 {}", triggerKey.getName());
-        log.info("触发器组名 {}", triggerKey.getGroup());
+		// 通过JobExecutionContext获取Trigger
+		Trigger trigger = context.getTrigger();
+		TriggerKey triggerKey = trigger.getKey();
+		log.info("触发器名称 {}", triggerKey.getName());
+		log.info("触发器组名 {}", triggerKey.getGroup());
 
-        // JobDataMap便于job实例执行的时候使用数据
-        jobDetail.getJobDataMap().forEach((key, value) -> log.info(key + " = " + value));
-        trigger.getJobDataMap().forEach((key, value) -> log.info(key + " = " + value));
+		// JobDataMap便于job实例执行的时候使用数据
+		jobDetail.getJobDataMap().forEach((key, value) -> log.info(key + " = " + value));
+		trigger.getJobDataMap().forEach((key, value) -> log.info(key + " = " + value));
 
-        log.info("job类的相关信息 {}", context.getClass().getName());
+		log.info("job类的相关信息 {}", context.getClass().getName());
 
-        log.info("QuartzDemo1 任务被执行 {}", new Date());
+		log.info("QuartzDemo1 任务被执行 {}", new Date());
 
-        log.info("本次任务的执行时间 {}", context.getFireTime());
-        log.info("下次任务的执行时间 {}", context.getNextFireTime());
+		log.info("本次任务的执行时间 {}", context.getFireTime());
+		log.info("下次任务的执行时间 {}", context.getNextFireTime());
 
-        // 从属性中获取数据
-        log.info(message);
-        log.info(msg);
-        log.info(k1);
-        log.info(k2);
+		// 从属性中获取数据
+		log.info(message);
+		log.info(msg);
+		log.info(k1);
+		log.info(k2);
 
-        count++;
-        jobDetail.getJobDataMap().put("count", count);
-        log.info(String.valueOf(count));
-    }
+		count++;
+		jobDetail.getJobDataMap().put("count", count);
+		log.info(String.valueOf(count));
+	}
 }

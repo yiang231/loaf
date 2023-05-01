@@ -15,32 +15,32 @@ import java.io.Serializable;
 @Slf4j
 @WebListener
 public class HttpSessionActivationListenerDemo implements HttpSessionActivationListener, Serializable {
-    private String name;
-    private String id;
+	private String name;
+	private String id;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    @Override
-    public void sessionWillPassivate(HttpSessionEvent httpSessionEvent) {
-        log.info("HttpSessionActivationListenerDemo 被钝化");
-    }
+	@Override
+	public void sessionWillPassivate(HttpSessionEvent httpSessionEvent) {
+		log.info("HttpSessionActivationListenerDemo 被钝化");
+	}
 
-    @Override
-    public void sessionDidActivate(HttpSessionEvent httpSessionEvent) {
-        log.info("HttpSessionActivationListenerDemo 被活化");
-    }
+	@Override
+	public void sessionDidActivate(HttpSessionEvent httpSessionEvent) {
+		log.info("HttpSessionActivationListenerDemo 被活化");
+	}
 }

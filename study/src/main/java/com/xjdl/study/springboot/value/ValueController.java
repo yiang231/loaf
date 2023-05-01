@@ -12,18 +12,18 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/value")
 public class ValueController {
-    @Resource
-    ValueDemo valueDemo;
-    /**
-     * 属性的全路径匹配
-     */
-    @Value("${server.port}")
-    private String port;
+	@Resource
+	ValueDemo valueDemo;
+	/**
+	 * 属性的全路径匹配
+	 */
+	@Value("${server.port}")
+	private String port;
 
-    @GetMapping
-    public String value() {
-        log.info("{}", valueDemo);
-        log.info(port);
-        return port;
-    }
+	@GetMapping
+	public String value() {
+		log.info("{}", valueDemo);
+		log.info(port);
+		return port;
+	}
 }

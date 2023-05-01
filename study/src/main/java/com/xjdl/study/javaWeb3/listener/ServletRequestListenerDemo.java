@@ -18,13 +18,13 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 @Slf4j
 public class ServletRequestListenerDemo implements ServletRequestListener {
-    @Override
-    public void requestDestroyed(ServletRequestEvent servletRequestEvent) {
-        log.info("ServletRequestListenerDemo 被创建 {}" , servletRequestEvent);
-    }
+	@Override
+	public void requestDestroyed(ServletRequestEvent servletRequestEvent) {
+		log.info("ServletRequestListenerDemo 被创建 {}", servletRequestEvent);
+	}
 
-    @Override
-    public void requestInitialized(ServletRequestEvent servletRequestEvent) {
-        log.info("ServletRequestListenerDemo 被销毁 {}" ,servletRequestEvent);
-    }
+	@Override
+	public void requestInitialized(ServletRequestEvent servletRequestEvent) {
+		log.info("ServletRequestListenerDemo 被销毁 {}", servletRequestEvent);
+	}
 }

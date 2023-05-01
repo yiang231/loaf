@@ -2,7 +2,7 @@
     - 全局异常处理
     - 切面化
 - [x] T...a
-- [ ] Springboot整合Quartz
+- [x] Springboot整合Quartz
 - [x] 连接mysql
 - [ ] 多数据源
 - [x] admin
@@ -25,11 +25,15 @@
 - [ ] ELK
 - [ ] properties
 - [ ] lambda
-- [ ] swagger2
-- [ ] fastjson
-- [ ] starter
+- [ ] swagger -> springdoc
 - [ ] APM
 - [ ] shell
+- [x] resource
+- [ ] devtools
+- [ ] jmh
+- [x] undertow
+- [x] init
+- [x] fileNotFound
 - [x] maven 
 ```shell
 # 4线程构建

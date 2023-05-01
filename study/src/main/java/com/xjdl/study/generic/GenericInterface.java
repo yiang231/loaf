@@ -6,5 +6,5 @@ package com.xjdl.study.generic;
  * @param <T>
  */
 public interface GenericInterface<T> {
-    void show(T value);
+	void show(T value);
 }

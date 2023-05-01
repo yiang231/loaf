@@ -1,0 +1,10 @@
+springdoc:
+  # 开启之后地址变为 managementPort/swagger-ui managementPort/openapi ,show-actuator才会生效
+  use-management-port: true
+  show-actuator: true
+  swagger-ui:
+    path: /swagger-ui.html # 默认值
+    enabled: true
+  api-docs:
+    path: /v3/api-docs # 默认值
+    enabled: true

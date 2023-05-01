@@ -1,0 +1,37 @@
+server:
+  undertow:
+    accesslog:
+      dir: ./logs/undertow                # Undertow 日志存放目录
+      enabled: true           # 是否启动日志
+      pattern: combined          # 日志格式
+      prefix: access_log.      # 日志文件名前缀
+      suffix: log            # 日志文件名后缀
+    max-http-post-size: 0     # HTTP POST请求最大的大小
+    threads:
+      io: 4 # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程，不可设置过大，否则启动项目会报错：打开文件数过多。
+      worker: 32 # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载，默认值是 io-threads*8
+    buffer-size: 1024 # 每块buffer的空间大小,越小的空间被利用越充，不要设置太大，以免影响其他应用，合适即可
+    direct-buffers: true # 是否分配的直接内存(NIO直接分配的堆外内存)
+
+# https://undertow.io/javadoc/1.4.x/io/undertow/server/handlers/accesslog/AccessLogHandler.html
+# common - %h %l %u %t "%r" %s %b
+# combined - %h %l %u %t "%r" %s %b "%{i,Referer}" "%{i,User-Agent}"
+# %a - Remote IP address
+# %A - Local IP address
+# %b - Bytes sent, excluding HTTP headers, or '-' if no bytes were sent
+# %B - Bytes sent, excluding HTTP headers
+# %h - Remote host name
+# %H - Request protocol
+# %l - Remote logical username from identd (always returns '-')
+# %m - Request method
+# %p - Local port
+# %q - Query string (excluding the '?' character)
+# %r - First line of the request
+# %s - HTTP status code of the response
+# %t - Date and time, in Common Log Format format
+# %u - Remote user that was authenticated
+# %U - Requested URL path
+# %v - Local server name
+# %D - Time taken to process the request, in millis
+# %T - Time taken to process the request, in seconds
+# %I - current Request thread name (can compare later with stacktraces)

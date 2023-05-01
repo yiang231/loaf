@@ -15,23 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/exception")
 public class ExceptionTest {
-    @PostMapping("/post")
-    public ResultResponse post() {
-        throw new TrueException("-1", "抛一个业务异常");
-    }
+	@PostMapping("/post")
+	public ResultResponse post() {
+		throw new TrueException("-1", "抛一个业务异常");
+	}
 
-    @PutMapping("/put")
-    public ResultResponse put() {
-        throw new NullPointerException();
-    }
+	@PutMapping("/put")
+	public ResultResponse put() {
+		throw new NullPointerException();
+	}
 
-    @DeleteMapping("/delete")
-    public ResultResponse delete() {
-        throw new ArithmeticException();
-    }
+	@DeleteMapping("/delete")
+	public ResultResponse delete() {
+		throw new ArithmeticException();
+	}
 
-    @GetMapping("/get")
-    public ResultResponse get() {
-        return ResultResponse.success();
-    }
+	@GetMapping("/get")
+	public ResultResponse get() {
+		return ResultResponse.success();
+	}
 }

@@ -20,13 +20,13 @@ import javax.servlet.http.HttpSessionListener;
 @Slf4j
 @WebListener
 public class HttpSessionListenerDemo implements HttpSessionListener {
-    @Override
-    public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        log.info("HttpSessionListenerDemo 被创建 {}" , httpSessionEvent.getSession().getId());
-    }
+	@Override
+	public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+		log.info("HttpSessionListenerDemo 被创建 {}", httpSessionEvent.getSession().getId());
+	}
 
-    @Override
-    public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        log.info("HttpSessionListenerDemo 被销毁 {}" , httpSessionEvent.getSession().getId());
-    }
+	@Override
+	public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+		log.info("HttpSessionListenerDemo 被销毁 {}", httpSessionEvent.getSession().getId());
+	}
 }

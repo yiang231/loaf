@@ -7,60 +7,60 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class TrueException extends RuntimeException {
-    protected String code;
-    protected String msg;
+	protected String code;
+	protected String msg;
 
-    public TrueException() {
-        super();
-    }
+	public TrueException() {
+		super();
+	}
 
-    public TrueException(BaseErrorInfoInterface errorInfoInterface) {
-        super(errorInfoInterface.getResultCode());
-        this.code = errorInfoInterface.getResultCode();
-        this.msg = errorInfoInterface.getResultMsg();
-    }
+	public TrueException(BaseErrorInfoInterface errorInfoInterface) {
+		super(errorInfoInterface.getResultCode());
+		this.code = errorInfoInterface.getResultCode();
+		this.msg = errorInfoInterface.getResultMsg();
+	}
 
-    public TrueException(BaseErrorInfoInterface errorInfoInterface, Throwable cause) {
-        super(errorInfoInterface.getResultCode(), cause);
-        this.code = errorInfoInterface.getResultCode();
-        this.msg = errorInfoInterface.getResultMsg();
-    }
+	public TrueException(BaseErrorInfoInterface errorInfoInterface, Throwable cause) {
+		super(errorInfoInterface.getResultCode(), cause);
+		this.code = errorInfoInterface.getResultCode();
+		this.msg = errorInfoInterface.getResultMsg();
+	}
 
-    public TrueException(Throwable cause, String code, String msg) {
-        super(code, cause);
-        this.code = code;
-        this.msg = msg;
-    }
+	public TrueException(Throwable cause, String code, String msg) {
+		super(code, cause);
+		this.code = code;
+		this.msg = msg;
+	}
 
-    public TrueException(String code, String msg) {
-        super(code);
-        this.code = code;
-        this.msg = msg;
-    }
+	public TrueException(String code, String msg) {
+		super(code);
+		this.code = code;
+		this.msg = msg;
+	}
 
-    public TrueException(String msg) {
-        super(msg);
-        this.msg = msg;
-    }
+	public TrueException(String msg) {
+		super(msg);
+		this.msg = msg;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getMsg() {
-        return msg;
-    }
+	public String getMsg() {
+		return msg;
+	}
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
 
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return this;
-    }
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
+	}
 }

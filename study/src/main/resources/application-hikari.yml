@@ -1,10 +1,5 @@
 spring:
   datasource:
-    # jdbc 连接基础配置
-    # sqlite
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite::resource:db.sqlite
-    type: com.zaxxer.hikari.HikariDataSource
     #hikari数据源特性配置
     hikari:
       maximum-pool-size: 100 #最大连接数,默认值10.
@@ -16,3 +11,4 @@ spring:
       max-lifetime: 3000000 #连接最大存活时间,默认值30分钟.设置应该比mysql设置的超时时间短
       connection-test-query: select 'db_test' #连接测试查询
       validation-timeout: 3000
+      auto-commit: true

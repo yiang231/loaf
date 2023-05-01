@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      # 自动生成DDL的执行时机
+      ddl-auto: update
+      # 命名策略大写变下划线
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    show-sql: false
+    # 根据实体类创建DDL语句，自动生成数据库
+    generate-ddl: true
+    open-in-view: true
+  #    database: mysql

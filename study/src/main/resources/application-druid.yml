@@ -1,13 +1,5 @@
 spring:
   datasource:
-    # jdbc 连接基础配置
-    username: root
-    password: root
-    #高版本 Mysql 驱动时，配置的 driver-class-name 不再是 com.mysql.jdbc.Driver，url 后面必须设置时区 serverTimezone
-    url: jdbc:mysql:///springboot?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#    type: com.alibaba.druid.pool.ha.HighAvailableDataSource
-
     #druid 数据源专有配置,对应的是 com.alibaba.druid.pool.DruidDataSource 中的属性
     druid:
       #数据源名称：当存在多个数据源时，设置名字可以很方便的来进行区分,默认自动生成名称，格式是："DataSource-" + System.identityHashCode(this)

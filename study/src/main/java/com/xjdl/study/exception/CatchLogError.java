@@ -12,7 +12,7 @@ public class CatchLogError {
 			throw new RuntimeException();
 		} catch (RuntimeException e) {
 			log.error("", e);
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 		}
 	}
 }

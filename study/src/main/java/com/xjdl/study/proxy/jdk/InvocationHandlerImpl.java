@@ -16,9 +16,9 @@ public class InvocationHandlerImpl implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		log.info("前置方法执行");
-        log.info("代理类的实例化对象 {}", proxy.getClass());
-        Object result = method.invoke(subject, args);
-        log.info("后置方法执行");
+		log.info("代理类的实例化对象 {}", proxy.getClass());
+		Object result = method.invoke(subject, args);
+		log.info("后置方法执行");
 		return result;
 	}
 }

@@ -2,46 +2,62 @@
     - 全局异常处理
     - 切面化
 - [x] T...a
-- [x] Springboot整合Quartz
-- [x] 连接mysql
-- [ ] 多数据源
+- [x] Springboot Quartz
+- [x] mysql
+- [ ] MultiDataSource
 - [x] admin
-- [x] druid监控
+- [x] druid
 - [ ] prometheus
-- [ ] 注解
-- [ ] 切面
-- [ ] 泛型
-- [ ] 代理
-- [ ] 反射
+- [x] annotation
+- [x] BigDecimal
+- [ ] yaml
+- [x] Generic
+- [x] proxy
+- [ ] Spring AOP
+- [ ] reflection
 - [ ] socket
 - [x] stream
+- [x] ~~logback~~
+- [ ] log4j2
 - [ ] tx
-- [ ] jpa
+- [x] jpa
 - [ ] webflux
 - [ ] netty
 - [ ] hibernate
-- [ ] mybatisplus
+- [x] MybatisPlus
+- [ ] mapper.xml tags
 - [x] sqlite
+- [ ] xxl-job
 - [ ] ELK
 - [ ] properties
-- [ ] lambda
+- [x] lambda
 - [ ] swagger -> springdoc
 - [ ] APM
 - [ ] shell
 - [x] resource
 - [ ] devtools
 - [ ] jmh
+- [ ] starter
+- [ ] wls
+- [ ] docker
+- [ ] log4j2
+- [ ] log MDC
+- [ ] wsl2
+- [ ] docker
+- [ ] docker compose
+- [ ] SpringUtils
+- [ ] traceId
+- [ ] lang3
 - [x] undertow
 - [x] init
 - [x] fileNotFound
-- [x] maven 
+- [x] maven
 ```shell
 # 4线程构建
 mvn -T 4 clean install
-# 每个cpu核心1个线程，比如我是4核cpu那么就4个线程
+# 每个cpu核心2个线程，比如我是4核cpu那么就8个线程
+# [INFO] Using the MultiThreadedBuilder implementation with a thread count of 8
 mvn -T 1C clean install
-# 每个cpu核心1.5个线程
-mvn -T 1.5C clean install 
 ```
 
 

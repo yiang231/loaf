@@ -1,28 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- 网页使用的语言 -->
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Servlet测试主页</title>
-    <!--base标签影响当前页面中的所有相对路径-->
-    <!--    <base href="servletDemo">-->
+    <!-- 指定字符集 -->
+    <meta charset="utf-8">
+    <!-- 使用Edge最新的浏览器的渲染方式 -->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <!-- viewport视口：网页可以根据设置的宽度自动进行适配，在浏览器的内部虚拟一个容器，容器的宽度与设备的宽度相同。
+    width: 默认宽度与设备的宽度相同
+    initial-scale: 初始的缩放比，为1:1 -->
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>用户信息管理系统</title>
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+
+    <style type="text/css">
+        td, th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<a href="servletDemo1">ServletDemo1测试</a>
-<br>
-<a href="servletDemo2">ServletDemo2测试</a>
-<br>
-<a href="servletDemo3">ServletDemo3测试</a>
+<div class="container" id="userList">
+    <h3 style="text-align: center">用户信息列表</h3>
 
-<hr>
-
-<form action="servletDemo3" method="post">
-    请选择你的导师
-    <br/>
-    巴西<input name="soccerTeam" type="checkbox" value="Brazil"/>
-    德国<input name="soccerTeam" type="checkbox" value="German"/>
-    荷兰<input name="soccerTeam" type="checkbox" value="Holland"/>
-    波兰<input name="波兰" type="checkbox" value="波兰"/>
-    <input type="submit" value="提交"/>
-</form>
+    <table border="1" class="table table-bordered table-hover" id="data_tab">
+        <tr class="success">
+            <th>编号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+            <th>籍贯</th>
+            <th>QQ</th>
+            <th>邮箱</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="user in userList">
+            <td>{{user.id}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.gender}}</td>
+            <td>{{user.age}}</td>
+            <td>{{user.address}}</td>
+            <td>{{user.qq}}</td>
+            <td>{{user.email}}</td>
+            <td><a class="btn btn-default btn-sm" href="servlet.html">修改</a>
+                <a class="btn btn-default btn-sm" href="">删除</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="js/vuejs-2.5.16.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/list.js"></script>
 </body>
 </html>

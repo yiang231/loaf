@@ -1,0 +1,10 @@
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      logic-delete-field: deleted
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.xjdl.study.myBatisPlus

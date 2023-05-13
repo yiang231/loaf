@@ -1,6 +1,6 @@
 package com.xjdl.study.sqlite3;
 
-import com.xjdl.study.sqlite3.entity.User;
+import com.xjdl.study.jpa.JpaUser;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -20,12 +20,12 @@ public class SqliteConnection {
 			connection.setAutoCommit(false);
 			log.info("Opened database successfully");
 
-			ResultSet resultSet = statement.executeQuery("select * from users;");
-			User user = new User();
+			ResultSet resultSet = statement.executeQuery("select * from jpa_user;");
+			JpaUser jpaUser = new JpaUser();
 			while (resultSet.next()) {
-				user.setId(resultSet.getLong("id"));
-				user.setName(resultSet.getString("name"));
-				log.info("{}", user);
+				jpaUser.setId(resultSet.getLong("id"));
+				jpaUser.setName(resultSet.getString("name"));
+				log.info("{}", jpaUser);
 			}
 			log.info("Operation done successfully");
 		} catch (Exception e) {

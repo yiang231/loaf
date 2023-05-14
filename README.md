@@ -46,6 +46,10 @@
 - [ ] docker
 - [ ] docker compose
 - [ ] SpringUtils
+- [ ] Spring Cache
+- [ ] Caffeine
+- [ ] GraalVM
+- [ ] Quarkus
 - [ ] traceId
 - [ ] lang3
 - [x] undertow

@@ -1,55 +1,51 @@
 <!DOCTYPE html>
-<!-- 网页使用的语言 -->
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <!-- 指定字符集 -->
-    <meta charset="utf-8">
-    <!-- 使用Edge最新的浏览器的渲染方式 -->
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <!-- viewport视口：网页可以根据设置的宽度自动进行适配，在浏览器的内部虚拟一个容器，容器的宽度与设备的宽度相同。
-    width: 默认宽度与设备的宽度相同
-    initial-scale: 初始的缩放比，为1:1 -->
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>用户信息管理系统</title>
-
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-theme.css" rel="stylesheet">
-
-    <style type="text/css">
-        td, th {
-            text-align: center;
-        }
-    </style>
+    <link href="css/table.css" rel="stylesheet">
 </head>
 <body>
-<div class="container" id="userList">
-    <h3 style="text-align: center">用户信息列表</h3>
-
-    <table border="1" class="table table-bordered table-hover" id="data_tab">
-        <tr class="success">
-            <th>编号</th>
-            <th>姓名</th>
-            <th>性别</th>
-            <th>年龄</th>
-            <th>籍贯</th>
-            <th>QQ</th>
-            <th>邮箱</th>
-            <th>操作</th>
-        </tr>
-        <tr v-for="user in userList">
-            <td>{{user.id}}</td>
-            <td>{{user.name}}</td>
-            <td>{{user.gender}}</td>
-            <td>{{user.age}}</td>
-            <td>{{user.address}}</td>
-            <td>{{user.qq}}</td>
-            <td>{{user.email}}</td>
-            <td><a class="btn btn-default btn-sm" href="servlet.html">修改</a>
-                <a class="btn btn-default btn-sm" href="">删除</a>
-            </td>
-        </tr>
-    </table>
+<div class="table" id="userList">
+    <section class="header">
+        <h1>肃反名单</h1>
+        <div class="input-group">
+            <input placeholder="Search Data..." type="search">
+            <img src="images/search.png">
+        </div>
+    </section>
+    <section class="shell">
+        <table>
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>籍贯</th>
+                <th>QQ</th>
+                <th>邮箱</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="user in userList">
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.gender}}</td>
+                <td>{{user.age}}</td>
+                <td>{{user.address}}</td>
+                <td>{{user.qq}}</td>
+                <td>{{user.email}}</td>
+                <td><a class="button" href="servlet.html">修改</a>
+                    <a class="button" href="">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 <script src="js/vuejs-2.5.16.js"></script>
 <script src="js/axios-0.18.0.js"></script>

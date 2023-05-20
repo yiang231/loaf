@@ -7,13 +7,13 @@ package com.xjdl.study.annotation;
  */
 @FunctionalInterface
 public interface FunctionalInterfaceAnnotation {
-    static String staticMethod() {
+    public static String staticMethod() {
         return "@FunctionalInterface 允许存在静态方法";
     }
 
     public abstract void run();
 
-    default String defaultMethod() {
+    public default String defaultMethod() {
         return "@FunctionalInterface 允许存在默认方法";
     }
 }

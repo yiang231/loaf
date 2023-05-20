@@ -2,17 +2,14 @@ package com.xjdl.study.springboot.value;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.annotation.Resource;
 
 /**
  * 获取配置参数
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Slf4j
 public class ConfigurableEnvironmentTest {

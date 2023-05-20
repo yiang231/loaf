@@ -1,5 +1,8 @@
 package com.xjdl.study.generic;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -19,27 +22,21 @@ import java.io.Serializable;
  * N Number
  * ? 不确定的Java类型
  */
+@AllArgsConstructor
+@NoArgsConstructor
 public class GenericMethod<E, V extends Object & Serializable> { // 只能传 Object 或者 Object 的子类
-	public E thingToPrint;
-	public V thing2Print;
+    public E thingToPrint;
+    public V thing2Print;
 
-	public GenericMethod(E thingToPrint, V thing2Print) {
-		this.thingToPrint = thingToPrint;
-		this.thing2Print = thing2Print;
-	}
+    public <T extends V> T print(E thingToPrint, V thing2Print) {
+        return (T) (thingToPrint + " | " + thing2Print);
+    }
 
-	public GenericMethod() {
-	}
+    public E printE(E thingToPrint) {
+        return thingToPrint;
+    }
 
-	public <T extends E, V> T print(E thingToPrint, V thing2Print) {
-		return (T) (thingToPrint + " | " + thing2Print);
-	}
-
-	public E printE(E thingToPrint) {
-		return thingToPrint;
-	}
-
-	public V printV(V thing2Print) {
-		return thing2Print;
-	}
+    public V printV(V thing2Print) {
+        return thing2Print;
+    }
 }

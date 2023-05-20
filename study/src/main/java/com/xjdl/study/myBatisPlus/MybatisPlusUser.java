@@ -10,13 +10,14 @@ import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
 @Data
 @TableName("mp_user")
-public class MybatisPlusUser {
+public class MybatisPlusUser implements Serializable {
 	@TableId(type = IdType.ASSIGN_ID)//第一种 默认主键生成策略Long型，来自twitter的雪花算法，数据库中用bigint类型
 //	@TableId(type = IdType.ASSIGN_UUID)//第二种 UUID去掉连接线长度32 实体类用String 数据库中用varchar至少32长度
 //	@TableId(type = IdType.INPUT)//第三种 自定义主键

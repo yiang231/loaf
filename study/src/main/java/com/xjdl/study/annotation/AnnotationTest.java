@@ -56,9 +56,6 @@ public class AnnotationTest<E> {
 
 			Method printMethod = getClass().getDeclaredMethod("print");
 			Arrays.stream(printMethod.getAnnotations()).forEach(o -> log.info("获取指定方法上的注解信息 {}", o));
-
-			Method[] declaredMethods = getClass().getDeclaredMethods();
-			Arrays.stream(declaredMethods).forEach(o -> log.info("反射获取所有的方法签名 {}", o));
 		} catch (NoSuchFieldException | NoSuchMethodException e) {
 			log.error(e.getMessage(), e);
 		}

@@ -2,14 +2,12 @@ package com.xjdl.study.fileNotFound;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
 
 import java.io.BufferedReader;
@@ -23,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Slf4j
 public class FileNotFound {

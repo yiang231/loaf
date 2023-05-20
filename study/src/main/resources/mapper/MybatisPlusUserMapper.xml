@@ -2,7 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xjdl.study.myBatisPlus.MybatisPlusUserMapper">
+    <resultMap id="BaseResultMap" type="com.xjdl.study.myBatisPlus.MybatisPlusUser">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="version" column="version" jdbcType="INTEGER"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="VARCHAR"/>
+        <result property="qq" column="qq" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+    </resultMap>
 
+    <sql id="Base_Column_List">
+        id,name,age,
+        email,update_time,create_time,
+        version,is_deleted,address,gender,qq,phone,user_name
+    </sql>
     <select id="selectAll" resultType="com.xjdl.study.myBatisPlus.MybatisPlusUser">
         select *
         from mp_user

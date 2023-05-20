@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.11</version><!--换版本时修改-->
+        <version>2.7.12</version><!--换版本时修改-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.xjdl</groupId>
@@ -20,7 +20,7 @@
     </modules>
     <properties>
         <java.version>1.8</java.version>
-        <spring-boot.version>2.7.11</spring-boot.version><!--换版本时修改-->
+        <spring-boot.version>2.7.12</spring-boot.version><!--换版本时修改-->
         <spring-boot-admin.version>2.7.10</spring-boot-admin.version><!--换版本时修改-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

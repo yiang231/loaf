@@ -12,7 +12,7 @@
         <property name="LOG_PATTERN"
                   value="%clr{%d{ABSOLUTE}}{faint} %clr{%5p} %clr{${sys:PID:-PID}}{magenta} %clr{[%10.10t]}{blue} %clr{%c{1.}}{cyan} %clr{:}{faint} %m%n{%xwEx:-}"/>
         <property name="FILE_PATTERN"
-                  value="%d{DEFAULT} %5p ${sys:PID:-PID} [%t] %c{1.} : %m%n{%xwEx:-}"/>
+                  value="%d{DEFAULT} %5p ${sys:PID:-PID} [%t] %X{REQ_ID} %c{1.} : %m%n{%xwEx:-}"/>
         <!-- 定义日志存储的路径，不要配置相对路径 -->
         <property name="FILE_PATH" value="./logs"/>
         <property name="FILE_NAME" value="SbTest"/>
@@ -26,14 +26,12 @@
             <!--输出日志的格式 -->
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <!--控制台只输出level及其以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
-            <ThresholdFilter level="DEBUG" onMatch="ACCEPT"
-                             onMismatch="DENY"/>
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
 
 
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，适合临时测试用 -->
-        <File name="Filelog" fileName="${FILE_PATH}/test.log"
-              append="false">
+        <File name="Filelog" fileName="${FILE_PATH}/test.log" append="false">
             <PatternLayout pattern="${FILE_PATTERN}"/>
         </File>
 

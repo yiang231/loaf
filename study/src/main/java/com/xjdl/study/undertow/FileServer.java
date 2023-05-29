@@ -21,10 +21,13 @@ public class FileServer implements InitializingBean {
 	private int port = 8888;
 	private String host = "127.0.0.1";
 
+	/**
+	 * 获取项目文件
+	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		try {
-			File file = new File("/");
+			File file = new File(System.getProperty("user.dir"));
 			fileServer = Undertow
 					.builder()
 					.addHttpListener(port, host)

@@ -10,10 +10,10 @@
 - [ ] prometheus
 - [x] annotation
 - [x] BigDecimal
-- [ ] yaml
+- [x] yaml
 - [x] Generic
 - [x] proxy
-- [ ] Spring AOP
+- [x] Spring AOP
     - 场景一：记录日志
     - 场景二：监控方法运行时间
         - （监控性能）
@@ -24,6 +24,7 @@
         - （调用方法前开启事务， 调用方法后提交关闭事务）
     - 场景六：协议转换
 - [x] reflect
+- [x] RestTemplate
 - [ ] socket
 - [x] stream
 - [x] ~~logback~~
@@ -44,19 +45,18 @@
 - [ ] APM
 - [ ] shell
 - [x] resource
-- [ ] junitJupiter
+- [x] junitJupiter
 - [ ] mockito
 - [ ] coverage
 - [ ] Intellij Profiler
 - [ ] org.springframework
-- [ ] SpringTest
+- [x] SpringTest
 - [ ] devtools
 - [ ] jmh
 - [ ] starter
-- [ ] wls
 - [ ] docker
 - [ ] log4j2
-- [ ] log MDC
+- [x] log MDC
 - [ ] wsl2
 - [ ] docker
 - [ ] docker compose

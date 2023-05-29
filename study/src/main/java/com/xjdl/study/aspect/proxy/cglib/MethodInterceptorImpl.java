@@ -1,6 +1,6 @@
-package com.xjdl.study.proxy.cglib;
+package com.xjdl.study.aspect.proxy.cglib;
 
-import com.xjdl.study.proxy.RealSubject;
+import com.xjdl.study.aspect.proxy.RealSubject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

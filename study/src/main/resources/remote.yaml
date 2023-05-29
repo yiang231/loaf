@@ -1,0 +1,5 @@
+remoteyaml:
+  person:
+    testName: zhangsan
+    testPassword: 123456
+    testValue: ceshishuju

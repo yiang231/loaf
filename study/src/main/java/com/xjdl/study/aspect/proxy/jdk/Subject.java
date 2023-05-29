@@ -1,4 +1,4 @@
-package com.xjdl.study.proxy.jdk;
+package com.xjdl.study.aspect.proxy.jdk;
 
 /**
  * jdk动态代理
@@ -12,9 +12,6 @@ public interface Subject {
 
 	/**
 	 * 有参调用
-	 *
-	 * @param value
-	 * @return
 	 */
 	String resp();
 }

@@ -1,8 +1,8 @@
-package com.xjdl.study.proxy;
+package com.xjdl.study.aspect.proxy;
 
-import com.xjdl.study.proxy.cglib.MethodInterceptorImpl;
-import com.xjdl.study.proxy.jdk.InvocationHandlerImpl;
-import com.xjdl.study.proxy.jdk.Subject;
+import com.xjdl.study.aspect.proxy.cglib.MethodInterceptorImpl;
+import com.xjdl.study.aspect.proxy.jdk.InvocationHandlerImpl;
+import com.xjdl.study.aspect.proxy.jdk.Subject;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.cglib.proxy.Enhancer;

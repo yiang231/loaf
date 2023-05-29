@@ -1,6 +1,6 @@
-package com.xjdl.study.proxy;
+package com.xjdl.study.aspect.proxy;
 
-import com.xjdl.study.proxy.jdk.Subject;
+import com.xjdl.study.aspect.proxy.jdk.Subject;
 import lombok.extern.slf4j.Slf4j;
 
 /**

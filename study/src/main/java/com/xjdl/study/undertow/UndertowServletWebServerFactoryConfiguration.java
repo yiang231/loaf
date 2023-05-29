@@ -1,4 +1,4 @@
-package com.xjdl.study.config;
+package com.xjdl.study.undertow;
 
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xjdl.study.myBatisPlus.MybatisPlusUserMapper">
+<mapper namespace="com.xjdl.study.myBatisPlus.mapper.MybatisPlusUserMapper">
     <resultMap id="BaseResultMap" type="com.xjdl.study.myBatisPlus.MybatisPlusUser">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
@@ -18,10 +18,13 @@
         <result property="userName" column="user_name" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,name,age,
-        email,update_time,create_time,
-        version,is_deleted,address,gender,qq,phone,user_name
+<!--避免文件报错-->
+    <sql id="Base_Column_List" lang="" databaseId="">
+        <if test="true">
+            id,name,age,
+            email,update_time,create_time,
+            version,is_deleted,address,gender,qq,phone,user_name
+        </if>
     </sql>
     <select id="selectAll" resultType="com.xjdl.study.myBatisPlus.MybatisPlusUser">
         select *

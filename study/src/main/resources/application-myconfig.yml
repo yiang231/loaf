@@ -1,0 +1,19 @@
+newperson:
+  name: xjdl
+  age: 99
+  child: # Obj
+    name: goudan
+    age: 32
+    desc: da, ad
+  dog: # List
+    - name: dog1
+      age: 65
+    - name: dog2
+      age: 3
+  cat: # Map
+    cat1:
+      name: da
+      age: 4
+    cat2:
+      name: fgd
+      age: 3

@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class MybatisPlusConfig {
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
-        // 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
-        mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.SQLITE));
+	@Bean
+	public MybatisPlusInterceptor mybatisPlusInterceptor() {
+		MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+		// 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
+		mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.SQLITE));
         /*
         乐观锁插件
         当要更新一条记录的时候，希望这条记录没有被别人更新
@@ -26,9 +26,9 @@ public class MybatisPlusConfig {
         执行更新时， set version = newVersion where version = oldVersion
         如果 version 不对，就更新失败
         */
-        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
-        // 防全表更新与删除插件 针对 update 和 delete 语句 作用: 阻止恶意的全表更新删除
-        mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
-        return mybatisPlusInterceptor;
-    }
+		mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+		// 防全表更新与删除插件 针对 update 和 delete 语句 作用: 阻止恶意的全表更新删除
+		mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+		return mybatisPlusInterceptor;
+	}
 }

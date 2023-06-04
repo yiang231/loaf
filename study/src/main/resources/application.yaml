@@ -2,11 +2,13 @@ spring:
   profiles:
     include:
       adminclient
+      ,cache
       ,datasource
       ,hikari
       ,jackson
       ,jpa
       ,mybatisplus
+      ,myconfig
       ,springdoc
       ,task
       ,undertow

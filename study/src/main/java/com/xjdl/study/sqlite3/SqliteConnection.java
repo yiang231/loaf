@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class SqliteConnection {
 	public static void main(String[] args) {
 		try (
-				Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db.sqlite");
+				Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db/db.sqlite");
 				Statement statement = connection.createStatement();
 		) {
 			Class.forName("org.sqlite.JDBC");

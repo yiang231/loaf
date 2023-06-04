@@ -9,6 +9,6 @@ spring:
       #如果大于等于 max-lifetime 且 max-lifetime>0,则会被重置为0.
       idle-timeout: 600000
       max-lifetime: 3000000 #连接最大存活时间,默认值30分钟.设置应该比mysql设置的超时时间短
-      connection-test-query: select 'db_test' #连接测试查询
+#      connection-test-query: select 'db_test' #连接测试查询
       validation-timeout: 3000
       auto-commit: true

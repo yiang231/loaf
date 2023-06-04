@@ -5,6 +5,8 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -27,15 +29,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 //默认访问当前包及其子包下的注解
 @EnableTransactionManagement
 @MapperScan({
-		"com.xjdl.study.myBatisPlus"
+		"com.xjdl.study.myBatisPlus.mapper"
 })
 @CrossOrigin
 @EnableScheduling
 @Slf4j
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableCaching
 public class Study {
 	public static void main(String[] args) {
-		SpringApplication.run(Study.class, args);
-		log.info("Study#main execute");
+		// IOC 容器
+		ConfigurableApplicationContext ioc = SpringApplication.run(Study.class, args);
+
+		log.info("{}", PACKAGE_COMMON.PACKAGE_INFO_CONST);
+		log.info("check @Scope(\"prototype\") {}", ioc.getBean("miniDog") == ioc.getBean("miniDog"));
 	}
 }

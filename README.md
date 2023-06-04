@@ -4,6 +4,8 @@
 - [x] T...a
 - [x] Springboot Quartz
 - [x] mysql
+- [x] Optional
+- [x] package-info
 - [ ] MultiDataSource
 - [x] admin
 - [x] druid
@@ -81,6 +83,3 @@ mvn -T 4 clean install
 # [INFO] Using the MultiThreadedBuilder implementation with a thread count of 8
 mvn -T 1C clean install
 ```
-
-
-

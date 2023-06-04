@@ -3,6 +3,7 @@ package com.xjdl.study.stream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,8 @@ class Employee {
  */
 @Slf4j
 public class ParallelStream {
-	public static void main(String[] args) {
+	@Test
+	public void main() {
 		long t1, t2;
 		List<Employee> eList = new ArrayList<>();
 		for (int i = 0; i < 1000000; i++) {

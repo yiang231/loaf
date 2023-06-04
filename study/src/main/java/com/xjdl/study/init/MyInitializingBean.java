@@ -5,14 +5,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 /**
- * 3.类上加注解@Component，实现InitializingBean接口
+ * 类上加注解@Component，实现InitializingBean接口
  */
 @Component
 @Slf4j
-public class InitializingBean3 implements InitializingBean {
-
+public class MyInitializingBean implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		log.info("InitializingBean#InitTest3.afterPropertiesSet");
+		log.info("{}", "com.xjdl.study.init.MyInitializingBean.afterPropertiesSet");
 	}
 }

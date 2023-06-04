@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite::resource:db.sqlite
+    url: jdbc:sqlite::resource:db/db.sqlite
     type: com.zaxxer.hikari.HikariDataSource
 
 #    username: root

@@ -1,10 +1,24 @@
+# 先读取yaml文件，后读取properties文件
 newperson:
-  name: xjdl
+  name: 'xjdl \n' # 单引号不会转义
   age: 99
   child: # Obj
-    name: goudan
+    name: "goudan \n" # 双引号会转义
     age: 32
-    desc: da, ad
+#    desc: qw, er
+    desc:
+      - qw
+      - er
+      - |
+        大文本读取，| 保持原有格式
+        aaaaaaaaaa
+        bbbbbbbbbb
+        cccccccccc
+      - >
+        大文本读取，> 压缩换行的格式
+        aaaaaaaaaa
+        vvvvvvvvvv
+        gggggggggg
   dog: # List
     - name: dog1
       age: 65
@@ -12,8 +26,10 @@ newperson:
       age: 3
   cat: # Map
     cat1:
-      name: da
+      name: zx
       age: 4
     cat2:
-      name: fgd
+      name: cv
       age: 3
+---
+# 使用分隔符分离单个文档

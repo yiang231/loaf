@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface MybatisPlusUserService extends IService<MybatisPlusUser> {
 	List<MybatisPlusUser> selectAll();
+    MybatisPlusUser selectById(Long id);
+    void insert(MybatisPlusUser user);
+    void deleteById(Long id);
 }

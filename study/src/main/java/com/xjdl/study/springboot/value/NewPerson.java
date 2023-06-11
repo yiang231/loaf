@@ -3,7 +3,6 @@ package com.xjdl.study.springboot.value;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +12,8 @@ import java.util.Map;
  */
 @Data
 @Slf4j
-@Component
-@ConfigurationProperties(prefix = "newperson")
+//@Component
+@ConfigurationProperties(prefix = "newperson") // 需要配合 @Component注解 或者 @EnableConfigurationProperties注解 使用
 public class NewPerson {
 	String name;
 	Integer age;

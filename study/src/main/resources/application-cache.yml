@@ -1,5 +1,6 @@
 spring:
   cache:
     type: caffeine
-    caffeine:
-      spec: maximumSize=500,expireAfterAccess=600s
+#    配置全局的caffeine缓存配置，常用针对特定业务指定缓存类型，不全局指定
+#    caffeine:
+#      spec: maximumSize=500,expireAfterAccess=600s

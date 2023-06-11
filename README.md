@@ -46,6 +46,8 @@
 - [ ] swagger -> springdoc
 - [ ] APM
 - [ ] shell
+- [ ] SpEL
+- [x] cron
 - [x] resource
 - [x] junitJupiter
 - [ ] mockito
@@ -64,7 +66,10 @@
 - [ ] docker compose
 - [ ] SpringUtils
 - [ ] Spring Cache
-- [ ] Caffeine
+- [x] Caffeine
+  - API
+  - 创建，读取
+  - 设置为默认的缓存管理器
 - [ ] GraalVM
 - [ ] Quarkus
 - [ ] traceId
@@ -74,6 +79,7 @@
 - [x] fileNotFound
 - [ ] Gradle
 - [ ] Groovy
+- [ ] @Import
 - [x] maven
 
 ```shell

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <meta content="ie=edge,chrome=1" http-equiv="X-UA-Compatible">
     <title>用户信息管理系统</title>
     <link href="css/table.css" rel="stylesheet">
 </head>
@@ -12,7 +12,9 @@
     <section class="header">
         <h1>肃反名单</h1>
         <div class="input-group">
-            <input placeholder="Search Data..." type="search">
+            <label>
+                <input v-model="searchText" @input="handleInput" placeholder="ID or Name" type="search"/>
+            </label>
             <img src="images/search.png">
         </div>
     </section>
@@ -39,7 +41,8 @@
                 <td>{{user.address}}</td>
                 <td>{{user.qq}}</td>
                 <td>{{user.email}}</td>
-                <td><a class="button" href="servlet.html">修改</a>
+                <td>
+                    <a class="button" href="servlet.html">修改</a>
                     <a class="button" href="">删除</a>
                 </td>
             </tr>
@@ -47,8 +50,8 @@
         </table>
     </section>
 </div>
-<script src="js/vuejs-2.5.16.js"></script>
-<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
 <script src="js/list.js"></script>
 </body>
 </html>

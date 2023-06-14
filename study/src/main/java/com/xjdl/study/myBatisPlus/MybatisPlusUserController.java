@@ -15,30 +15,36 @@ import javax.annotation.Resource;
 @RequestMapping("/mpuser")
 @Slf4j
 public class MybatisPlusUserController {
-    @Resource
-    MybatisPlusUserService service;
-    /**
-     * 自定义xml文件写复杂的SQL语句
-     */
-    @GetMapping("/selectAll")
-    public ResultResponse selectAll() {
-        return ResultResponse.success(service.selectAll());
-    }
+	@Resource
+	MybatisPlusUserService service;
 
-    @GetMapping("/selectById/{id}")
-    public ResultResponse selectById(@PathVariable Long id) {
-        return ResultResponse.success(service.selectById(id));
-    }
+	/**
+	 * 自定义xml文件写复杂的SQL语句
+	 */
+	@GetMapping({"/selectAll", "/query/"})
+	public ResultResponse selectAll() {
+		return ResultResponse.success(service.selectAll());
+	}
 
-    @PostMapping("/insert")
-    public ResultResponse insert(MybatisPlusUser user) {
-        service.insert(user);
-        return ResultResponse.success();
-    }
+	@GetMapping("/query/{searchText}")
+	public ResultResponse query(@PathVariable String searchText) {
+		return ResultResponse.success(service.query(searchText));
+	}
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResultResponse deleteById(@PathVariable Long id) {
-        service.deleteById(id);
-        return ResultResponse.success();
-    }
+	@GetMapping("/selectById/{id}")
+	public ResultResponse selectById(@PathVariable String id) {
+		return ResultResponse.success(service.selectById(id));
+	}
+
+	@PostMapping("/insert")
+	public ResultResponse insert(MybatisPlusUser user) {
+		service.insert(user);
+		return ResultResponse.success();
+	}
+
+	@DeleteMapping("/deleteById/{id}")
+	public ResultResponse deleteById(@PathVariable Long id) {
+		service.deleteById(id);
+		return ResultResponse.success();
+	}
 }

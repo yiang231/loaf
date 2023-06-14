@@ -31,6 +31,7 @@ public class UserController {
 
 	@GetMapping("/userByName/{username}")
 	public JpaUser getUserByName(@PathVariable("username") String username) {
+		// 500 MaruyamaHana
 		return userService.getByName(username);
 	}
 

@@ -28,8 +28,11 @@ server:
 # 精确控制SQL日志级别，减少无用日志输出
 logging:
   level:
-    com.xjdl.study.myBatisPlus: debug # MybatisPlus的SQL日志配置方式，trace级别会在日志文件中记录，控制台只有debug级别日志
     sql: debug
+    com.xjdl.study.myBatisPlus: debug # MybatisPlus的SQL日志配置方式，trace级别会在日志文件中记录，控制台只有debug级别日志
+#    打印 hibernate SQL参数
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+#    打印 hibernate SQL字段
+#    org.hibernate.type.descriptor.sql.BasicExtractor: trace
 #JVM启动参数配置
-#-Xms500m -Xmx500m
-
+#-Xms500m -Xmx500m org.hibernate.type.descriptor.sql.BasicBinder

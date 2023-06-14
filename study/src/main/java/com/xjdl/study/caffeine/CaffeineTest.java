@@ -133,14 +133,14 @@ public class CaffeineTest {
      */
     @Test
     void getFromAsync() throws ExecutionException, InterruptedException {
-        MyUtils.logThreadName();
+        MyUtils.getThreadName();
         asyncCache = asyncCache();
         CompletableFuture<Object> completableFuture = asyncCache.get(KEY, key -> {
-            MyUtils.logThreadName();
+            MyUtils.getThreadName();
             return getFromDataBase(key);
         });
         log.info("{}={}", KEY, completableFuture.get());
-        MyUtils.logThreadName();
+        MyUtils.getThreadName();
     }
 
     /**

@@ -22,7 +22,7 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    @Cacheable(cacheNames = "jpaUser", key = "#result.id")
+    @Cacheable(cacheNames = "jpaUser", key = "#name")
     public JpaUser getByName(String name) {
         return userRepository.findByName(name);
     }
@@ -37,7 +37,6 @@ public class UserService {
         return userRepository.findMore(maxId, pageable);
     }
 
-    @CachePut(cacheNames = "jpaUser", key = "#result.id")
     public JpaUser save(JpaUser jpaUser) {
         return userRepository.save(jpaUser);
     }

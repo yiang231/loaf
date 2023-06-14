@@ -18,17 +18,22 @@
         <result property="userName" column="user_name" jdbcType="VARCHAR"/>
     </resultMap>
 
-<!--避免文件报错-->
-    <sql id="Base_Column_List" lang="" databaseId="">
+    <!--避免文件报错，首字母小写-->
+    <sql id="base_Column_List">
         <if test="true">
-            id,name,age,
-            email,update_time,create_time,
-            version,is_deleted,address,gender,qq,phone,user_name
+            id,name,age,email,update_time,create_time,version,is_deleted,address,gender,qq,phone,user_name
         </if>
     </sql>
     <select id="selectAll" resultType="com.xjdl.study.myBatisPlus.MybatisPlusUser">
-        select *
+        select
+        <include refid="base_Column_List"/>
         from mp_user
+    </select>
+    <select id="selectByName" resultType="com.xjdl.study.myBatisPlus.MybatisPlusUser">
+        select
+        <include refid="base_Column_List"/>
+        from mp_user
+        where name = #{searchText};
     </select>
 
 </mapper>

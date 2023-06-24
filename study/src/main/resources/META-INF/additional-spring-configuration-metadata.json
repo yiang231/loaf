@@ -1,0 +1,45 @@
+{
+  "groups": [
+    {
+      "name": "newperson.name",
+      "type": "java.lang.String",
+      "description": "自定义对象.",
+      "sourceType": "com.xjdl.study.springboot.value.NewPerson",
+      "sourceMethod": ""
+    }
+  ],
+  "properties": [
+    {
+      "name": "newperson.age",
+      "type": "java.lang.Integer",
+      "description": "自定义对象的年龄.",
+      "sourceType": "com.xjdl.study.springboot.value.NewPerson",
+      "defaultValue": 16,
+      "deprecation": {
+        "level": "error",
+        "reason": "？你可别太离谱，栽种.",
+        "replacement": 18
+      }
+    }
+  ],
+  "hints": [
+    {
+      "name": "newperson.dog",
+      "values": [
+        {
+          "value": "mouse",
+          "description": "woya."
+        },
+        {
+          "value": "duck",
+          "description": "shushu."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}

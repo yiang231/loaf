@@ -38,6 +38,10 @@ public class EnumConstDemo2 {
 	 * 以及枚举类的一些方法
 	 */
 	public static void main(String[] args) {
+		log.info("6 - 0 = {}", EnumConstDemoTest2.SAT.compareTo(EnumConstDemoTest2.SUN));
+		log.info("0 - 6 = {}", EnumConstDemoTest2.SUN.compareTo(EnumConstDemoTest2.SAT));
+		log.info("4 - 4 = {}", EnumConstDemoTest2.THU.compareTo(EnumConstDemoTest2.THU));
+
 		for (EnumConstDemoTest2 value : EnumConstDemoTest2.values()) {
 			log.info(value.getCode() + " -> " + value.getDaily());
 			log.info("传入一个和枚举常量相同的字符串，返回枚举常量，当前是 {}", EnumConstDemoTest2.valueOf(value.getDaily().substring(0, 3).toUpperCase()));

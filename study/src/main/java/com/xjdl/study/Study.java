@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * 四大资源文件夹访问顺序
- * org.springframework.boot.autoconfigure.web.WebProperties.Resources 2.7.10版本
- * private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
- * "classpath:/resources/", "classpath:/static/", "classpath:/public/" };
- * Locations of static resources. Defaults to classpath:[/META-INF/resources/,
- * /resources/, /static/, /public/].
+ * <p>
+ * org.springframework.boot.autoconfigure.web.WebProperties.Resources#CLASSPATH_RESOURCE_LOCATIONS 更新至 2.7.12 版本
+ * <p>
+ * "classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/"
  */
 @ServletComponentScan(basePackages = {
 		"com.xjdl.study.javaWeb"
@@ -42,6 +41,6 @@ public class Study {
 		ConfigurableApplicationContext ioc = SpringApplication.run(Study.class, args);
 
 		log.info("{}", PACKAGE_COMMON.PACKAGE_INFO_CONST);
-		log.info("check @Scope(\"prototype\") {}", ioc.getBean("miniDog") == ioc.getBean("miniDog"));
+		log.info("validate @Scope(\"prototype\") {}", ioc.getBean("miniDog") == ioc.getBean("miniDog"));
 	}
 }

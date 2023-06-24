@@ -30,7 +30,7 @@
 - [ ] socket
 - [x] stream
 - [x] ~~logback~~
-- [ ] log4j2
+- [x] log4j2
 - [ ] tx
 - [x] jpa
 - [ ] webflux
@@ -41,7 +41,7 @@
 - [ ] sqlite
 - [ ] xxl-job
 - [ ] ELK
-- [ ] properties
+- [x] properties
 - [x] lambda
 - [ ] swagger -> springdoc
 - [ ] APM
@@ -65,7 +65,7 @@
 - [ ] docker
 - [ ] docker compose
 - [ ] SpringUtils
-- [ ] Spring Cache
+- [x] Spring Cache
 - [x] Caffeine
   - API
   - 创建，读取
@@ -79,7 +79,10 @@
 - [x] fileNotFound
 - [ ] Gradle
 - [ ] Groovy
-- [ ] @Import
+- [x] @Import
+- [ ] Spring Validation
+- [x] Spring MVC 消息协商
+- [ ] @ResponseStatus
 - [x] maven
 
 ```shell
@@ -89,3 +92,9 @@ mvn -T 4 clean install
 # [INFO] Using the MultiThreadedBuilder implementation with a thread count of 8
 mvn -T 1C clean install
 ```
+Live Templates
+
+| Description | Abbreviation | Template text                                    | Applicable        | Variables                         |
+| ----------- | ------------ | ------------------------------------------------ | ----------------- | --------------------------------- |
+| 快速日志    | ll           | `log.$LEVEL$("$WORD${}", $MSG$);`                | Java: statement   | LEVEL: completeSmart()            |
+| 快速测试    | tt           | @Test<br>void `$METHODNAME$`() {<br>`$END$`<br>} | Java: declaration | METHODNAME: suggestVariableName() |

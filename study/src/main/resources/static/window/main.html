@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     * 定时检查窗口状态的定时调用函数
+     * 判断内部写业务
+     *
+     * @param popWindow 弹出窗
+     * @param period 调用周期
+     */
+    function getInterval(popWindow, period) {
+        windowInterval = setInterval(() => {
+            if (popWindow && popWindow.closed) {
+                console.log("弹出窗口被关闭了，返回值是 " + window.returnValue);
+                console.log("业务处理中");
+                // 在回调函数内部关闭外部定时器，注意这里不能使用 window.clearInterval() clearInterval(winTimer);
+                clearInterval(winTimer);
+                clearInterval(windowInterval);
+            }
+        }, period);
+        return windowInterval;
+    }
+
+    /**
+     * Chrome 使用 window.open() 在一个方法中实现弹出窗口并获取窗口的返回值，用于替换 IE 的 window.showModalDialog()
+     * 函数被调用会执行完代码，同时开启一个定时调用函数，检查打开的窗口状态，当窗口关闭后，获取到向父窗口传递的返回值
+     * 也可以通过 window.opener.document.getElementById("parentElementId").value = returnValue 直接向父窗口的元素赋值
+     * 还可以通过 window.opener.invokeParentMethod() 执行父窗口的赋值方法
+     */
+    function openWindow() {
+        console.log("弹出窗口开始");
+        showWindowRet();
+        win = window.open("/window/pop.html", "弹出的窗口", "height=640px, width=360px");
+        winTimer = window.setInterval("showWindowRet()", 1000);
+        windowInterval = getInterval(win, 3000);
+        showWindowRet();
+        console.log("弹出窗口结束");
+    }
+
+    /**
+     * 浏览器数据操作
+     */
+    function doBrowse() {
+        if (confirm("确认信息，返回布尔值")) {
+            input = prompt("输入信息");
+            alert(input);
+        } else {
+            document.write("<h1 style=\"text-align:center\">页面信息写回</h1>");
+        }
+    }
+
+    /**
+     * 获取窗口的返回值并且输出到控制台
+     */
+    function showWindowRet() {
+        console.log(window.returnValue);
+    }
+
+    /**
+     * 设置窗口计时器
+     */
+    function windowSetInterval() {
+        window.setInterval("windowIntervalTest()", 1000);
+    }
+
+    /**
+     * 清除窗口计时器
+     */
+    function windowClearInterval() {
+        window.clearInterval(winTimer);
+    }
+
+    /**
+     * 窗口计时器测试
+     */
+    function windowIntervalTest() {
+        console.log("窗口计时器已开启");
+    }
+</script>
+
+<h1 style="text-align: center">主窗口</h1>
+<input type="button" id="showWindow" onclick="openWindow()" value="点击弹出窗口">
+<input type="button" id="showRet" onclick="showWindowRet()" value="展示返回值">
+<hr>
+<input type="button" id="doBrowse" onclick="doBrowse()" value="浏览器数据操作">
+<br>
+<input type="button" id="windowSetInterval" onclick="windowSetInterval()" value="开启窗口计时器">
+<br>
+<input type="button" id="windowClearInterval" onclick="windowClearInterval()" value="关闭窗口计时器">
+</body>
+</html>

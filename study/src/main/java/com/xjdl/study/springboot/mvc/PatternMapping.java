@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,31 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.util.Map;
 
+/**
+ * 路径匹配说明
+ * <p>
+ * ANT_PATH_MATCHER
+ * <p>
+ * * 代表任意字符
+ * ? 代表单个字符
+ * ** 任意数量的目录
+ * {} 表示一个命名模式的占位符
+ * [] 表示字符合集，如 [a-z]表示所有的小写字母
+ * <p>
+ * 特殊转义字符
+ * * -> \\*,
+ * ? -> \\?
+ * <p>
+ * PATH_PATTERN_PARSER
+ * <p>
+ * 兼容 ANT_PATH_MATCHER 语法，性能更好
+ * ，其中 ** 任意数量的目录匹配 仅允许在末尾使用
+ * <p>
+ * 切换方式
+ * spring.mvc.pathmatch.matching-strategy:
+ *
+ * @see WebMvcProperties.MatchingStrategy
+ */
 @Slf4j
 @SpringBootTest
 @RestController
@@ -28,13 +54,14 @@ public class PatternMapping {
 	@Test
 	void pathMapping() {
 		Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+		log.warn("{}", "无法获得函数式Web的请求路径");
 		handlerMethods.forEach((path, method) -> {
 			Object[] array = path.getMethodsCondition().getMethods().toArray();
-			if (array.length == 0) {
-				log.info("{} http://{}:{}{}", "GET", "127.0.0.1", port, path.getPathPatternsCondition().getPatterns().toArray()[0]);
-			} else {
-				log.info("{} http://{}:{}{}", array[0], "127.0.0.1", port, path.getPathPatternsCondition().getPatterns().toArray()[0]);
-			}
+			log.info("{} http://{}:{}{}"
+					, array.length == 0 ? "GET" : array[0]
+					, "127.0.0.1", port
+					, path.getPathPatternsCondition().getPatterns().toArray()[0]
+			);
 		});
 	}
 }

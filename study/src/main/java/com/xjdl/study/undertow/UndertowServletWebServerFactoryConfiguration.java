@@ -2,12 +2,15 @@ package com.xjdl.study.undertow;
 
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+ *
+ * @see ServletWebServerFactoryAutoConfiguration
  */
 @Configuration
 public class UndertowServletWebServerFactoryConfiguration implements WebServerFactoryCustomizer<UndertowServletWebServerFactory> {

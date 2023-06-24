@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pop</title>
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     * 关闭弹出窗口
+     */
+    function closeWindow() {
+        // 弹出窗口向父窗口传值
+        window.opener.window.returnValue = "SUCCESS";
+        window.close();
+        // parent.window.close();
+    }
+</script>
+<h1 style="text-align:center">弹出的窗口</h1>
+<input type="button" id="closeWindow" onclick="closeWindow()" value="关闭弹出窗口">
+</body>
+</html>

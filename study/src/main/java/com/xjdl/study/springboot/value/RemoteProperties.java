@@ -3,7 +3,6 @@ package com.xjdl.study.springboot.value;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +10,8 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 @ConfigurationProperties(prefix = "remoteproperties.person", ignoreInvalidFields = false)
-@PropertySource(value = "classpath:remote.properties", ignoreResourceNotFound = false)
+// 和 spring.config.import 效果相同
+//@PropertySource(value = "classpath:remote.properties", ignoreResourceNotFound = false)
 @Data
 @Component
 public class RemoteProperties {

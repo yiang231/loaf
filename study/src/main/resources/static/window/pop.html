@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>pop</title>
+    <script type="text/javascript" src="./window.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -11,7 +12,7 @@
      */
     function closeWindow() {
         // 弹出窗口向父窗口传值
-        window.opener.window.returnValue = "SUCCESS";
+        windowOpener("SUCCESS");
         window.close();
         // parent.window.close();
     }

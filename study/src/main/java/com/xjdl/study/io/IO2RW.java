@@ -16,6 +16,10 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 简单IO流使用
+ * TODO API 改造
+ */
 @Slf4j
 public class IO2RW {
 	/**

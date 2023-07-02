@@ -1,5 +1,6 @@
 package com.xjdl.study;
 
+import com.xjdl.study.springboot.applicationListener.MyApplicationListener;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -37,10 +38,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableCaching
 public class Study {
 	public static void main(String[] args) {
+		SpringApplication springApplication = new SpringApplication(Study.class);
+		springApplication.addListeners(new MyApplicationListener());
 		// IOC 容器
-		ConfigurableApplicationContext ioc = SpringApplication.run(Study.class, args);
-
+		ConfigurableApplicationContext ioc = springApplication.run(args);
 		log.info("{}", PACKAGE_COMMON.PACKAGE_INFO_CONST);
 		log.info("validate @Scope(\"prototype\") {}", ioc.getBean("miniDog") == ioc.getBean("miniDog"));
 	}
+
+	/**
+	 * FluentBuilder API
+	 */
+//	public static void main(String[] args) {
+//		new SpringApplicationBuilder().sources(Study.class).run(args);
+//	}
 }

@@ -1,9 +1,16 @@
+# 配置优先级，配置不同就都生效（互补），配置相同高优先级覆盖低优先级
+# 命令行 > 所有
+# 包外 > 包内
+# config目录 > 根目录
+# profile > application
 spring:
+  config:
+    import: # 导入外部配置文件，仅适用于 properties 文件
+      remote.properties
   profiles:
-    include:
+    include: # 额外添加生效的配置文件，所有环境生效
       adminclient
       ,cache
-      ,datasource
       ,hikari
       ,jackson
       ,jpa
@@ -12,7 +19,13 @@ spring:
       ,springdoc
       ,task
       ,undertow
-  #    active: pro
+    active: # 激活默认环境 @Profile({"default"})，优先级大于主配置文件。适用于动态变化的配置，如数据源，这里sqlite3表示环境分组名，不是配置文件后缀
+      default
+      ,sqlite3
+    default: default # 默认环境就是default
+    group: # 激活环境分组
+      "mysql8": mysql
+      "sqlite3": sqlite
   application:
     name: study_admin_client
   thymeleaf:
@@ -25,6 +38,9 @@ spring:
       media-types:
         # 对象格式的媒体类型
         "yaml": text/yaml
+  main:
+    log-startup-info: true # 启动信息日志
+    banner-mode: console # 可以关闭 banner
 
 server:
   port: 8080
@@ -43,4 +59,5 @@ logging:
     # 打印 hibernate SQL字段
 #    org.hibernate.type.descriptor.sql.BasicExtractor: trace
 #JVM启动参数配置
-#-Xms500m -Xmx500m org.hibernate.type.descriptor.sql.BasicBinder
+#-Xms500m -Xmx500m
+debug: false # 开启调试模式

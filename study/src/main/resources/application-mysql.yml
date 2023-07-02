@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    #高版本 Mysql 驱动时，配置的 driver-class-name 不再是 com.mysql.jdbc.Driver，url 后面必须设置时区 serverTimezone
+    url: jdbc:mysql:///mybatis-plus?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+#    type: com.alibaba.druid.pool.ha.HighAvailableDataSource

@@ -13,6 +13,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -49,17 +51,27 @@ public class PatternMapping {
 	Integer port;
 	@Autowired
 	RequestMappingHandlerMapping requestMappingHandlerMapping;
+	public static String IP;
 
 	@GetMapping("/pathMapping")
 	@Test
 	void pathMapping() {
 		Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
 		log.warn("{}", "无法获得函数式Web的请求路径");
+		try {
+			IP = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException exception) {
+			IP = InetAddress.getLoopbackAddress().getHostAddress();
+		}
 		handlerMethods.forEach((path, method) -> {
 			Object[] array = path.getMethodsCondition().getMethods().toArray();
+			StringBuilder requestMethod = new StringBuilder(array.length == 0 ? "GET" : array[0].toString());
+			while (requestMethod.length() < 7) {
+				requestMethod.append(" ");
+			}
 			log.info("{} http://{}:{}{}"
-					, array.length == 0 ? "GET" : array[0]
-					, "127.0.0.1", port
+					, requestMethod
+					, IP, port
 					, path.getPathPatternsCondition().getPatterns().toArray()[0]
 			);
 		});

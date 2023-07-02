@@ -1,5 +1,5 @@
 remoteyaml:
   person:
-    testName: zhangsan
-    testPassword: 123456
-    testValue: ceshishuju
+    testName: remote
+    testPassword: 123
+    testValue: remoteyaml

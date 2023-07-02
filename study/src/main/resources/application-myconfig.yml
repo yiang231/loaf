@@ -5,7 +5,7 @@ newperson:
   child: # Obj
     name: "goudan \n" # 双引号会转义
     age: 32
-#    desc: qw, er
+    #    desc: qw, er
     desc:
       - qw
       - er
@@ -31,5 +31,6 @@ newperson:
     cat2:
       name: cv
       age: 3
----
-# 使用分隔符分离单个文档
+--- # 使用分隔符分离单个文档
+ver:
+  Your SpringBoot application name is ${spring.application.name:Give your application a name}

@@ -1,4 +1,4 @@
-package com.xjdl.study.utils;
+package com.xjdl.study.util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ public abstract class MyUtils {
 		try {
 			result = MyUtils.class.getClassLoader().getResource(path).getPath();
 		} catch (NullPointerException e) {
-			log.error("{} 路径对应的文件不存在", path);
+			log.error("{} file not found !", path);
 		}
 		return result;
 	}

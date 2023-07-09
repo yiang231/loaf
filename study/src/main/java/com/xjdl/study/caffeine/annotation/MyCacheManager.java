@@ -1,4 +1,4 @@
-package com.xjdl.study.config.caffeine;
+package com.xjdl.study.caffeine.annotation;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -19,7 +19,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME) // 保留到运行时，会被加载进JVM
 @Target({TYPE}) // 运用场景
 @CacheConfig(cacheNames = MyCacheManager.CACHE_MANAGER)
-@ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class, CaffeineConfig.class})
+@ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 public @interface MyCacheManager {
     String CACHE_MANAGER = "myCaffeineCacheManager";
 

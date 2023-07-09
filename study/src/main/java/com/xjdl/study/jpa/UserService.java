@@ -1,6 +1,6 @@
 package com.xjdl.study.jpa;
 
-import com.xjdl.study.config.caffeine.MyCacheManager;
+import com.xjdl.study.caffeine.annotation.MyCacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;

@@ -3,9 +3,9 @@ package com.xjdl.study.springboot.value;
 import com.xjdl.study.springboot.importBean.MyImportBeanDefinitionRegistrar;
 import com.xjdl.study.springboot.importBean.MyImportSelector;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
  * 通过配置类注入Bean
  */
 @Slf4j
-@SpringBootConfiguration
+@Configuration
 @Import({
         com.xjdl.study.springboot.value.Cat.class
         , MyImportSelector.class

@@ -9,6 +9,6 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class QuartzSpringBootJobDemo3 extends QuartzJobBean {
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		log.info("QuartzSpringBootJobDemo3 执行");
+		log.info("QuartzSpringBootJobDemo3 execute");
 	}
 }

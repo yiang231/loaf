@@ -2,9 +2,9 @@ package com.xjdl.study.myBatisPlus;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xjdl.study.caffeine.CaffeineController;
-import com.xjdl.study.config.caffeine.MyCacheManager;
+import com.xjdl.study.caffeine.annotation.MyCacheManager;
 import com.xjdl.study.myBatisPlus.mapper.MybatisPlusUserMapper;
-import com.xjdl.study.utils.MyUtils;
+import com.xjdl.study.util.MyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;

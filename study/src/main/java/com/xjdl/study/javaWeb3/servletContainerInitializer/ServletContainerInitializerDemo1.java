@@ -16,6 +16,8 @@ import java.util.Set;
  * Servlet容器 最先被加载
  * 同时需要创建好路径以及文件    META-INF/services/javax.servlet.ServletContainerInitializer
  * 内容是实现ServletContainerInitializer的类的全类名
+ * <p>
+ * 这是 Java SPI思想 动态地发现和加载组件 的实现
  */
 @Slf4j
 @HandlesTypes(value = {}) // 里面的参数传到了set中，是ServletContainerInitializer可以处理的类型

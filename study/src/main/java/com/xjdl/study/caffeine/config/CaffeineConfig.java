@@ -1,4 +1,4 @@
-package com.xjdl.study.config.caffeine;
+package com.xjdl.study.caffeine.config;
 
 import com.xjdl.study.caffeine.CaffeineTest;
 import lombok.extern.slf4j.Slf4j;

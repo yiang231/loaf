@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.function.support.RouterFunctionMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -51,6 +52,9 @@ public class PatternMapping {
 	Integer port;
 	@Autowired
 	RequestMappingHandlerMapping requestMappingHandlerMapping;
+	// 函数式 web 映射处理器
+	@Autowired
+	RouterFunctionMapping routerFunctionMapping;
 	public static String IP;
 
 	@GetMapping("/pathMapping")

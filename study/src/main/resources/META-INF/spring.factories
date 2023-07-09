@@ -1,0 +1,9 @@
+# BootstrapRegistryInitializer 引导阶段
+org.springframework.boot.BootstrapRegistryInitializer=\
+  com.xjdl.study.springboot.bootstrapRegistryInitializer.MyBootstrapRegistryInitializer
+# ApplicationContextInitializer IOC初始化完成
+org.springframework.context.ApplicationContextInitializer=\
+  com.xjdl.study.springboot.applicationContextInitializer.MyApplicationContextInitializer
+# Run Listeners
+org.springframework.boot.SpringApplicationRunListener=\
+  com.xjdl.study.springboot.springApplicationRunListener.MySpringApplicationRunListener

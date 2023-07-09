@@ -1,6 +1,7 @@
 package com.xjdl.study.io;
 
-import com.xjdl.study.utils.MyUtils;
+import com.xjdl.study.springboot.banner.MyBanner;
+import com.xjdl.study.util.MyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -8,17 +9,21 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 /**
  * 简单IO流使用
  * TODO API 改造
+ * @see MyBanner#printBanner(PrintStream)
  */
 @Slf4j
 public class IO2RW {
@@ -203,4 +208,19 @@ public class IO2RW {
 	 * Files 类是 JDK 7 添加的新的操作文件的类，它提供了提供了大量处理文件的方法，例如文件复制、读取、写入，获取文件属性、快捷遍历文件目录等，这些方法极大的方便了文件的操作
 	 * write();
 	 */
+	/**
+	 * 二进制文件读取 DataInputStream
+	 */
+	@Test
+	void dataInputStream() {
+		try (DataInputStream dataInputStream = new DataInputStream(new FileInputStream(MyUtils.getResourcePath("iotest/fileName.txt")))) {
+			int length;
+			byte[] data = new byte[8192];
+			while ((length = dataInputStream.read(data)) > 0) {
+				log.info("{}", new String(data, 0, length));
+			}
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
+	}
 }

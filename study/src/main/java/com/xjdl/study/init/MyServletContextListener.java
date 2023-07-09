@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class MyServletContextListener implements ServletContextListener {
 	static {
-		log.info("com.xjdl.study.init.MyServletContextListener 静态代码块");
+		log.info("com.xjdl.study.init.MyServletContextListener Static block code");
 	}
 
 	@Override

@@ -3,21 +3,25 @@ package com.xjdl.study.springboot.value;
 import com.xjdl.outBean.Duck;
 import com.xjdl.outBean.Mouse;
 import com.xjdl.study.exception.globalException.ResultResponse;
+import com.xjdl.study.springboot.event.MyApplicationEvent;
+import com.xjdl.study.springboot.event.MyApplicationEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
-@SpringBootTest
-@RequestMapping("/value")
+@RequestMapping("/spring")
 public class ValueController {
+	@Autowired
+	MyApplicationEventPublisher eventPublisher;
 	@Value("${ver}")
 	String ver;
 	@Autowired
@@ -54,11 +58,27 @@ public class ValueController {
 
 	/**
 	 * 自定义配置文件读取
+	 * <p>
+	 * 注入自定义事件发布器 MyApplicationEventPublisher 发布事件
 	 */
 	@GetMapping("/newperson")
-	public ResultResponse newperson() {
-		log.info("{}", newPerson);
+	public ResultResponse newperson(HttpServletRequest request) {
+		eventPublisher.sendEvent(new MyApplicationEvent(request));
 		return ResultResponse.success(newPerson);
+	}
+
+	/**
+	 * 使用 @EventListener 注解的方式感知事件
+	 *
+	 * @param myApplicationEvent 要感知的事件
+	 */
+	@EventListener
+	public void event(MyApplicationEvent myApplicationEvent) {
+		receiveEvent((HttpServletRequest) myApplicationEvent.getSource());
+	}
+
+	public void receiveEvent(HttpServletRequest req) {
+		log.debug("{}", req);
 	}
 
 	/**

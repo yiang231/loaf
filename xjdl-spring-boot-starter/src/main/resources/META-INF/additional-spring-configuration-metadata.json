@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "bot.words",
+      "type": "java.lang.String",
+      "description": "机器人问候语.",
+      "sourceType": "com.xjdl.bot.properties.BotProperties",
+      "defaultValue": "Say something to me."
+    }
+  ]
+}

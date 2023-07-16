@@ -1,4 +1,4 @@
-package com.xjdl.study.LocalCache;
+package com.xjdl.study.localCache;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

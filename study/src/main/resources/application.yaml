@@ -39,12 +39,16 @@ spring:
       favor-parameter: true # 开启基于请求参数的内容协商功能，默认不开启
       parameter-name: format # ("format" by default)
       media-types:
-        # 对象格式的媒体类型
+        # 对象格式的媒体类型，默认支持xml，浏览器访问时xml优先级高于json
+        # text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
         "yaml": text/yaml
   main:
     log-startup-info: true # 启动信息日志
     banner-mode: console # 可以关闭 banner
-
+  security:
+    user:
+      name: rt
+      password: rt
 server:
   port: 8080
   error:

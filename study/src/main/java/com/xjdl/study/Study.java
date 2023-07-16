@@ -1,5 +1,6 @@
 package com.xjdl.study;
 
+import com.xjdl.bot.annotaion.EnableBot;
 import com.xjdl.study.log.Log4j2OutputStream;
 import com.xjdl.study.springboot.applicationListener.MyApplicationListener;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,7 @@ import java.util.logging.LogManager;
 @Slf4j
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableCaching
+@EnableBot
 public class Study {
 	public static final String LOG4J2_PROPERTIES = "log4j2-test.xml";
 

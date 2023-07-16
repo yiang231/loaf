@@ -34,3 +34,6 @@ newperson:
 --- # 使用分隔符分离单个文档
 ver:
   Your SpringBoot application name is ${spring.application.name:Give your application a name}
+bot:
+  words:
+    Hello! My name is Bot.

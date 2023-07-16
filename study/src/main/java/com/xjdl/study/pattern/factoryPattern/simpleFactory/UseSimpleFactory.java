@@ -1,9 +1,12 @@
 package com.xjdl.study.pattern.factoryPattern.simpleFactory;
 
+import org.junit.jupiter.api.Test;
+
 public class UseSimpleFactory {
-	public static void main(String[] args) {
-		SimpleFactory simpleFactory = new SimpleFactory();
-		Fruit fruit = simpleFactory.makeFruit("Apple");
-		fruit.myName();
-	}
+    @Test
+    void useSimpleFactory() {
+        SimpleFactory simpleFactory = new SimpleFactory();
+
+        simpleFactory.makeFruit("Apple").myName();
+    }
 }

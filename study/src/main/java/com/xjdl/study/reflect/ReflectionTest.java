@@ -1,10 +1,15 @@
 package com.xjdl.study.reflect;
 
+import com.xjdl.study.annotation.AnnotationTest;
+import com.xjdl.study.consts.enumConst.DynamicEnumUtils;
+import com.xjdl.study.springboot.banner.MyBanner;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.env.Environment;
 
 import javax.validation.constraints.NotNull;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -24,6 +29,8 @@ import java.util.stream.Collectors;
 /**
  * 反射
  * java.lang.reflect
+ *
+ * @see DynamicEnumUtils
  */
 @Slf4j
 @Data
@@ -132,6 +139,8 @@ public class ReflectionTest implements Serializable {
 
     /**
      * 反射调用方法
+     *
+     * @see MyBanner#printBannerDefault(Environment, Class, PrintStream)
      */
     @Test
     void useMethod() {
@@ -249,7 +258,7 @@ public class ReflectionTest implements Serializable {
     }
     /**
      * 反射获取注解信息见
-     * com.xjdl.study.annotation.AnnotationTest.print
+     * @see AnnotationTest#print()
      */
 }
 

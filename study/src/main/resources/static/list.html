@@ -5,7 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="ie=edge,chrome=1" http-equiv="X-UA-Compatible">
     <title>用户信息管理系统</title>
-    <link href="css/table.css" rel="stylesheet">
+    <link href="list/css/table.css" rel="stylesheet">
 </head>
 <body>
 <div class="table" id="userList">
@@ -15,7 +15,7 @@
             <label>
                 <input v-model="searchText" @input="handleInput" placeholder="ID or Name" type="search"/>
             </label>
-            <img src="images/search.png">
+            <img src="list/images/search.png">
         </div>
     </section>
     <section class="shell">
@@ -50,8 +50,8 @@
         </table>
     </section>
 </div>
-<script src="js/vue.js"></script>
-<script src="js/axios.js"></script>
-<script src="js/list.js"></script>
+<script src="list/js/vue.js"></script>
+<script src="list/js/axios.js"></script>
+<script src="list/js/list.js"></script>
 </body>
 </html>

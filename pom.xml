@@ -10,13 +10,12 @@
     </parent>
     <groupId>com.xjdl</groupId>
     <artifactId>springboot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
     <name>springboot</name>
     <description>springboot</description>
     <modules>
         <module>study</module>
-        <module>actuator</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -76,6 +75,12 @@
     <!--定义springboot相关版本依赖，以及springboot外的依赖，子模块使用时需要单独引入-->
     <dependencyManagement>
         <dependencies>
+            <!--xml解析器-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson-bom.version}</version>
+            </dependency>
             <!--caffeine 本地缓存-->
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>

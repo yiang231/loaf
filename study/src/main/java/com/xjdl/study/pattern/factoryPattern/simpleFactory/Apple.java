@@ -6,6 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 public class Apple implements Fruit {
 	@Override
 	public void myName() {
-		log.info("Apple");
+		log.info("{}", "Apple");
 	}
 }

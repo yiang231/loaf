@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.availability.AvailabilityChangeEvent;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -21,6 +22,7 @@ import static com.xjdl.study.springboot.banner.MyBanner.MY_BANNER_LOCATION_PROPE
  */
 @Slf4j
 public class MyApplicationListener implements ApplicationListener<ApplicationEvent> {
+	private final DeferredLog dlog = new DeferredLog();
 	@Override
 	public void onApplicationEvent(@NonNull ApplicationEvent applicationEvent) {
 		if (log.isDebugEnabled()) {
@@ -41,12 +43,13 @@ public class MyApplicationListener implements ApplicationListener<ApplicationEve
 			log.debug("{}", getQualifierName(applicationEvent));
 		}
 		if (applicationEvent instanceof ApplicationStartingEvent) {
-			// fixme 被拒绝使用日志输出 org.springframework.boot.logging.DeferredLog
-			System.out.println(getQualifierName(applicationEvent));
+			// 被拒绝使用日志输出 org.springframework.boot.logging.DeferredLog
+			dlog.info(getQualifierName(applicationEvent));
 			return;
 		}
 		/*
 		 * 应用环境准备就绪，设置自定义banner
+		 * 回放日志
 		 * */
 		if (applicationEvent instanceof ApplicationEnvironmentPreparedEvent) {
 			ApplicationEnvironmentPreparedEvent event = (ApplicationEnvironmentPreparedEvent) applicationEvent;
@@ -54,6 +57,7 @@ public class MyApplicationListener implements ApplicationListener<ApplicationEve
 			String location = environment.getProperty(MY_BANNER_LOCATION_PROPERTY, MY_BANNER_LOCATION);
 			Resource resource = new DefaultResourceLoader().getResource(location);
 			event.getSpringApplication().setBanner(new MyBanner((resource)));
+			dlog.replayTo(getClass());
 		}
 	}
 

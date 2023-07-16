@@ -1,4 +1,4 @@
-package com.xjdl.study.LocalCache;
+package com.xjdl.study.localCache;
 
 import lombok.extern.slf4j.Slf4j;
 

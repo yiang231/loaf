@@ -3,10 +3,6 @@ package com.xjdl.study.springboot.banner;
 import com.xjdl.study.util.MyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ResourceBanner;
-import org.springframework.boot.SpringBootVersion;
-import org.springframework.boot.ansi.AnsiColor;
-import org.springframework.boot.ansi.AnsiOutput;
-import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.io.Resource;
@@ -14,13 +10,17 @@ import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 优先级低于 banner.txt
@@ -47,7 +47,6 @@ public class MyBanner extends ResourceBanner implements PrintStyle {
 					"  '  |____| .__|_| |_|_| |_\\__, | / / / /\n" +
 					" =========|_|==============|___/=/_/_/_/";
 	static final String SPRING_BOOT_EXTRA = "==> Spring Boot ";
-	private static final String DEFAULT_SPRING_BOOT_EXTRA = " :: Spring Boot :: ";
 	static final int STRAP_LINE_SIZE = 42;
 	/**
 	 * 自定义banner默认文件名
@@ -73,39 +72,46 @@ public class MyBanner extends ResourceBanner implements PrintStyle {
 //			printBanner(printStream);
 			printBannerPro(environment, sourceClass, printStream);
 		} catch (Exception e) {
-			printBannerDefault(printStream);
+			printBannerDefault(environment, sourceClass, printStream);
 		}
 	}
 
-	/*
+	/**
 	 * 默认banner样式
+	 * <p>
+	 * default 修饰符反射实例化时，构造器也需设置允许访问·
 	 */
-	private void printBannerDefault(PrintStream printStream) {
-		log.warn("{}", "Use the default banner");
-		PrintStyle printStyle = new PrintStyle() {
-			@Override
-			public void printBannerMain(PrintStream printStream, String[] banner) {
-				for (String line : banner) {
-					printStream.println(line);
-				}
-			}
+	private void printBannerDefault(Environment environment, Class<?> sourceClass, PrintStream printStream) {
+		try {
+			Class<?> springBootBanner = Class.forName("org.springframework.boot.SpringBootBanner");
+//			ReflectionUtils.doWithMethods(springBootBanner, method -> {
+//				try {
+//					method.invoke(
+//							ReflectionUtils.accessibleConstructor(springBootBanner).newInstance(), environment, sourceClass, printStream
+//					);
+//				} catch (InvocationTargetException | InstantiationException | NoSuchMethodException e) {
+//					throw new RuntimeException(e);
+//				}
+//			}, method -> {
+//				if (method.getName().equals("printBanner")) {
+//					method.setAccessible(true);
+//					return true;
+//				}
+//				return false;
+//			});
 
-			@Override
-			public void printBannerExtra(PrintStream printStream) {
-				String version = SpringBootVersion.getVersion();
-				version = (version != null) ? " (v" + version + ")" : "";
-				StringBuilder padding = new StringBuilder();
-				while (padding.length() < STRAP_LINE_SIZE - (version.length() + DEFAULT_SPRING_BOOT_EXTRA.length())) {
-					padding.append(" ");
-				}
+			Constructor<?> constructor = springBootBanner.getDeclaredConstructor();
+			constructor.setAccessible(true);
 
-				printStream.println(AnsiOutput.toString(AnsiColor.GREEN, DEFAULT_SPRING_BOOT_EXTRA, AnsiColor.DEFAULT, padding.toString(),
-						AnsiStyle.FAINT, version));
-				printStream.println();
-			}
-		};
-		printStyle.printBannerMain(printStream, SPRING_BOOT_BANNER_0);
-		printStyle.printBannerExtra(printStream);
+			Method printBanner = springBootBanner.getDeclaredMethod("printBanner", Environment.class, Class.class, PrintStream.class);
+			printBanner.setAccessible(true);
+
+			printBanner.invoke(constructor.newInstance(), environment, sourceClass, printStream);
+		} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException |
+				 InstantiationException ignored) {
+//		} catch (ClassNotFoundException ignored) {
+			// 忽略异常信息
+		}
 	}
 
 	/**
@@ -131,8 +137,8 @@ public class MyBanner extends ResourceBanner implements PrintStyle {
 			Path bannerPath = Paths.get(MyUtils.getResourcePath(MY_BANNER_LOCATION));
 			content = Files.readAllLines(bannerPath);
 		} catch (IOException e) {
-//			content = Arrays.stream(SPRING_BOOT_BANNER_0).collect(Collectors.toList());
-			content = Collections.singletonList(SPRING_BOOT_BANNER_1);
+			content = Arrays.stream(SPRING_BOOT_BANNER_0).collect(Collectors.toList());
+//			content = Collections.singletonList(SPRING_BOOT_BANNER_1);
 		}
 		for (String line : content) {
 			printBannerMain(printStream, line);

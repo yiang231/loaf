@@ -26,7 +26,9 @@ import java.io.PrintStream;
 import java.util.logging.LogManager;
 
 /**
- * 四大资源文件夹访问顺序
+ * proxyTargetClass为true则是基于类的代理将起作用（需要cglib库），为false或者省略这个属性，则标准的JDK基于接口的代理将起作用
+ * <p>
+ * 四大资源文件夹访问顺序，配置项 spring.web.resources.static-locations
  * <p>
  * org.springframework.boot.autoconfigure.web.WebProperties.Resources#CLASSPATH_RESOURCE_LOCATIONS 更新至 2.7.13 版本
  * <p>
@@ -58,7 +60,7 @@ import java.util.logging.LogManager;
 @CrossOrigin
 @EnableScheduling
 @Slf4j
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = false)
 @EnableCaching
 @EnableBot
 public class Study {

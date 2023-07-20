@@ -98,7 +98,7 @@ public class CaffeineTest {
                 // 记录命中信息
                 .recordStats()
                 // 淘汰监听机制，监听缓存被移除
-                .removalListener(((key, value, cause) -> log.debug("淘汰通知\n\t{}={}\t{}", key, value, cause)));
+                .removalListener(((key, value, cause) -> log.warn("淘汰通知\n\t{}={}\t{}", key, value, cause)));
     }
 
     /**

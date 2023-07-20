@@ -1,11 +1,15 @@
 package com.xjdl.study.springboot.importBean;
 
+import com.xjdl.study.springboot.bootstrapRegistryInitializer.MyBootstrapRegistryInitializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
+import java.util.List;
+
 /**
  * 注入 鸭脖 类
+ * 注入自定义SPI文件内容
  * <p>
  * 全类名方式注入 bean
  * <p>
@@ -22,6 +26,8 @@ public class MyImportSelector implements ImportSelector {
 	 */
 	@Override
 	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		return new String[]{"com.xjdl.outBean.Mouse"};
+		List<String> mySPI = MyBootstrapRegistryInitializer.SPI_RESULT;
+		mySPI.add("com.xjdl.outBean.Mouse");
+		return  mySPI.toArray(new String[mySPI.size()]);
 	}
 }

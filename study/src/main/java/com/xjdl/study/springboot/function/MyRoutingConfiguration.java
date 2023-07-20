@@ -12,7 +12,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 /**
  * 函数式 web
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class MyRoutingConfiguration {
 	private static final RequestPredicate ACCEPT_JSON = RequestPredicates.accept(MediaType.APPLICATION_JSON);
 

@@ -8,6 +8,8 @@ import com.xjdl.study.springboot.event.MyApplicationEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/spring")
 public class ValueController {
+	@Autowired
+	List<ApplicationListener<ApplicationEvent>> applicationListeners;
 	@Autowired
 	MyApplicationEventPublisher eventPublisher;
 	@Value("${ver}")
@@ -55,7 +60,15 @@ public class ValueController {
 		log.info("{}", port);
 		return port;
 	}
-
+	/**
+	 * 特殊的依赖注入
+	 * <p>
+	 * 获取容器中所有实现 ApplicationListener 接口的 bean 组件
+	 */
+	@GetMapping("/applicationListeners")
+	public void applicationListeners() {
+		applicationListeners.forEach(listener -> log.info("{}", listener.getClass().getName()));
+	}
 	/**
 	 * 自定义配置文件读取
 	 * <p>

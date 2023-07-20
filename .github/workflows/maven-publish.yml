@@ -23,8 +23,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
-        run: mvn clean -DskipTests=true -B package --file pom.xml
+#      - name: Build with Maven1
+#        run: mvn clean install -pl com.xjdl:xjdl-spring-boot-starter -am -DskipTests=true -e -X
+
+#      - name: Build with Maven2
+#        run: mvn clean install -DskipTests=true -pl com.xjdl:study -am -T 1C
 
 #      - name: Run jar
 #        run: java -jar /home/runner/work/loaf/loaf/study/target/study-1.0.jar

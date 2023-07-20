@@ -61,13 +61,15 @@ logging:
   config: classpath:log4j2-test.xml
   level:
     sql: debug
-#    com.xjdl.study.util: debug
-    com.xjdl.study.springboot.applicationListener: debug
-    com.xjdl.study.myBatisPlus: debug # MybatisPlus的SQL日志配置方式，trace级别会在日志文件中记录，控制台只有debug级别日志
-    # 打印 hibernate SQL参数
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-    # 打印 hibernate SQL字段
-#    org.hibernate.type.descriptor.sql.BasicExtractor: trace
+    com.xjdl.study:
+      designPatterns: debug # 使用 @SpringTest 注解进行方法测试才会打出 DEBUG 级别的日志，直接使用 @Test 注解只有 INFO 往上的日志
+      myBatisPlus: debug # MybatisPlus的SQL日志配置方式，trace级别会在日志文件中记录，控制台只有debug级别日志
+      springboot:
+        applicationListener: debug
+#      util: debug
+    org.hibernate.type.descriptor.sql:
+      BasicBinder: trace # 打印 hibernate SQL参数
+#      BasicExtractor: trace # 打印 hibernate SQL字段
 #JVM启动参数配置
 #-Xms500m -Xmx500m
 debug: false # 开启应用调试模式

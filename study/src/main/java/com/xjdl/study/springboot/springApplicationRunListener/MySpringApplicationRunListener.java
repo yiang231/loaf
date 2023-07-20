@@ -4,25 +4,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
-import org.springframework.boot.logging.DeferredLog;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.time.Duration;
+
+import static com.xjdl.study.springboot.bootstrapRegistryInitializer.MyBootstrapRegistryInitializer.Dlog;
 
 /**
  * SpringBoot 应用全阶段生命周期监听器，功能强大
  */
 @Slf4j
 public class MySpringApplicationRunListener implements SpringApplicationRunListener {
-	private final DeferredLog dlog ;
 	/**
-	 * 2.7.* 版本 必须有这个构造器
+	 * 必须有这个构造器
 	 *
 	 * @see SpringApplication#getRunListeners(String[])
 	 */
 	public MySpringApplicationRunListener(SpringApplication application, String[] args) {
-		this.dlog = new DeferredLog();
 	}
 
 	/**
@@ -31,7 +30,7 @@ public class MySpringApplicationRunListener implements SpringApplicationRunListe
 	@Override
 	public void starting(ConfigurableBootstrapContext bootstrapContext) {
 		// 被拒绝使用日志输出 org.springframework.boot.logging.DeferredLog
-		dlog.info("com.xjdl.study.springboot.springApplicationRunListener.MySpringApplicationRunListener.starting");
+		Dlog.info("com.xjdl.study.springboot.springApplicationRunListener.MySpringApplicationRunListener.starting");
 	}
 
 	/**
@@ -42,7 +41,6 @@ public class MySpringApplicationRunListener implements SpringApplicationRunListe
 	@Override
 	public void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
 		log.info("{}", "com.xjdl.study.springboot.springApplicationRunListener.MySpringApplicationRunListener.environmentPrepared");
-		dlog.replayTo(getClass());
 	}
 
 	/**

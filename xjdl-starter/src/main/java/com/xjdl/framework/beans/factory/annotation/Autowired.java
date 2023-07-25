@@ -1,4 +1,4 @@
-package com.xjdl.context.annotation;
+package com.xjdl.framework.beans.factory.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,8 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.FIELD, ElementType.CONSTRUCTOR})
 @Documented
-public @interface ComponentScan {
-	String value();
+public @interface Autowired {
 }

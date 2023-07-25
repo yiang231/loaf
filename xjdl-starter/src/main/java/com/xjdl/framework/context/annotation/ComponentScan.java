@@ -1,4 +1,4 @@
-package com.xjdl.stereotype;
+package com.xjdl.framework.context.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-public @interface Component {
-	String value() default "";
+public @interface ComponentScan {
+    String value();
 }

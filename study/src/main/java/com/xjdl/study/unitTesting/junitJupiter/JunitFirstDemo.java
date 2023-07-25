@@ -273,9 +273,9 @@ public class JunitFirstDemo {
 	@DisplayName("参数化测试-CSV文件多条记录入参")
 	@ParameterizedTest
 	// 文件应该在测试目录下的resources下，和main有相同的目录结构。这里在main中测试，所以文件位置在main里面的resources下
-	@CsvFileSource(resources = "/csv/password.csv", numLinesToSkip = 0)
-	void testCsvFileSource(String name, String url, String username, String password) {
-		log.info("{}, {}, {}, {}", name, url, username, password);
+	@CsvFileSource(resources = "/csv/newcsv.csv", numLinesToSkip = 0)
+	void testCsvFileSource(String name, String url, String username) {
+		log.info("{}, {}, {}", name, url, username);
 	}
 
 	/**

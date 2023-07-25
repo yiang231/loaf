@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.xjdl</groupId>
         <artifactId>springboot</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
     </parent>
 
-    <groupId>com.xjdl.study</groupId>
     <artifactId>study</artifactId>
+    <version>1.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.xjdl</groupId>
             <artifactId>xjdl-spring-boot-starter</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>

@@ -32,8 +32,17 @@ newperson:
       name: cv
       age: 3
 --- # 使用分隔符分离单个文档
-ver:
-  Your SpringBoot application name is ${spring.application.name:Give your application a name}
-bot:
-  words:
-    Hello! My name is Bot.
+xjdl:
+  apis:
+    lunardate:
+      desc: 公历与农历对照表 ?date={yyyy-MM-dd}
+      baseUrl: https://data.weather.gov.hk/weatherAPI/opendata/lunardate.php
+      queryParam: date
+      method: GET
+  banner:
+    location: classpath:xjdl_banner.txt
+  bot:
+    words:
+      Hello! My name is Bot.
+  ver:
+    Your SpringBoot application name is ${spring.application.name:Give your application a name}

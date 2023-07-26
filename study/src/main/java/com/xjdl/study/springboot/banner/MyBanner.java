@@ -55,7 +55,7 @@ public class MyBanner extends ResourceBanner implements PrintStyle {
 	/**
 	 * 设置自定义banner的位置配置
 	 */
-	public static final String MY_BANNER_LOCATION_PROPERTY = "spring.xjdl.banner.location";
+	public static final String MY_BANNER_LOCATION_PROPERTY = "xjdl.banner.location";
 	Resource resource;
 
 	public MyBanner(Resource resource) {

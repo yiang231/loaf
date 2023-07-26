@@ -4,9 +4,6 @@
 # config目录 > 根目录
 # profile > application
 spring:
-  xjdl:
-    banner:
-      location: classpath:xjdl_banner.txt
   config:
     import: # 导入外部配置文件，仅适用于 properties 文件
       remote.properties

@@ -1,5 +1,6 @@
 package com.xjdl.study.dateFormat;
 
+import com.xjdl.study.rpc.service.RpcInterfaceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,8 @@ import java.util.TimeZone;
 
 /**
  * 日期时间和字符串互转
+ *
+ * @see RpcInterfaceImpl#getLunardate(String)
  */
 @Slf4j
 public class DateFormat {

@@ -5,6 +5,7 @@ import com.xjdl.outBean.Mouse;
 import com.xjdl.study.exception.globalException.ResultResponse;
 import com.xjdl.study.springboot.event.MyApplicationEvent;
 import com.xjdl.study.springboot.event.MyApplicationEventPublisher;
+import com.xjdl.study.rpc.config.Xjdl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +28,8 @@ public class ValueController {
 	List<ApplicationListener<ApplicationEvent>> applicationListeners;
 	@Autowired
 	MyApplicationEventPublisher eventPublisher;
-	@Value("${ver}")
-	String ver;
+	@Autowired
+	Xjdl xjdl;
 	@Autowired
 	ValueDemo valueDemo;
 	@Autowired
@@ -120,7 +121,6 @@ public class ValueController {
 
 	@GetMapping("/remoteYaml")
 	public void remoteYaml() {
-		System.out.println(ver);
 		log.info(remoteYaml.getTestName());
 		log.info(remoteYaml.getTestPassword());
 		log.info(remoteYaml.getTestValue());
@@ -144,6 +144,6 @@ public class ValueController {
 
 	@GetMapping("/placeholder")
 	public String placeholder() {
-		return ver;
+		return xjdl.getVer();
 	}
 }

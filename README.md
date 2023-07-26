@@ -38,6 +38,7 @@
     - 场景六：协议转换
 - [x] reflect
 - [x] RestTemplate
+- [x] WebClient
 - [ ] socket
 - [x] stream
 - [x] ~~logback~~

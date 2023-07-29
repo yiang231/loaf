@@ -47,6 +47,7 @@ public abstract class MyUtils {
 	 * @return 判断结果
 	 */
 	public static boolean isNumber(String text) {
+		// text 完全匹配
 		boolean result = Pattern.compile(REGEX).matcher(text).matches();
 		if (log.isDebugEnabled()) {
 			log.debug("{} is{} a number", text, result ? "" : " not");

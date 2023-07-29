@@ -8,4 +8,11 @@ public interface RpcInterface {
 	Lunardate getLunardate() throws JsonProcessingException;
 
 	Mono<String> getLunardate(String date);
+
+	/**
+	 * 方法重载，返回值不同，方法参数名不同都不算
+	 */
+	Lunardate forLunardate(String date) throws JsonProcessingException;
+
+	String nstool();
 }

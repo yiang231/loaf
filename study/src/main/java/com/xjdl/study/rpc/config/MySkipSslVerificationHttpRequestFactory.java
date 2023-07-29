@@ -18,7 +18,7 @@ import java.security.cert.X509Certificate;
 /**
  * {@link SimpleClientHttpRequestFactory} that skips SSL certificate verification.
  * <p>
- * SkipSslVerificationHttpRequestFactory#prepareHttpsConnection(HttpsURLConnection)
+ * {@code SkipSslVerificationHttpRequestFactory#prepareHttpsConnection(HttpsURLConnection)}
  */
 @Component
 public class MySkipSslVerificationHttpRequestFactory extends SimpleClientHttpRequestFactory {
@@ -29,7 +29,7 @@ public class MySkipSslVerificationHttpRequestFactory extends SimpleClientHttpReq
 
 	@Override
 	public void setReadTimeout(int readTimeout) {
-		super.setReadTimeout(5000);
+		super.setReadTimeout(10000);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ import java.util.TimeZone;
 /**
  * 日期时间和字符串互转
  *
- * @see RpcInterfaceImpl#getLunardate(String)
+ * @see RpcInterfaceImpl#getValidDate(String)
  */
 @Slf4j
 public class DateFormat {

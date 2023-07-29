@@ -17,10 +17,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAdjusters;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -39,9 +42,66 @@ public class RpcInterfaceImpl implements RpcInterface {
 	ObjectMapper objectMapper;
 
 	@Override
+	public Lunardate forLunardate(String date) throws JsonProcessingException {
+		Api lunardate = xjdl.getApis().get("lunardate");
+		String baseUrl = lunardate.getBaseUrl();
+		String queryParam = lunardate.getData();
+		String result;
+		if (StringUtils.isEmpty(date)) {
+			ResponseEntity<String> entity = restTemplate
+					.getForEntity(getUri(baseUrl, queryParam, LocalDate.now()), String.class);
+			result = entity.getBody();
+		} else {
+			Mono<String> ret = webClient.method(lunardate.getMethod())
+					.uri(getUri(baseUrl, queryParam, getValidDate(date)))
+					.accept(MediaType.APPLICATION_JSON)
+					.retrieve()
+					.bodyToMono(String.class);
+			result = ret.block(Duration.ofSeconds(5));
+		}
+		return objectMapper.readValue(result, Lunardate.class);
+	}
+
+	@Override
+	public String nstool() {
+		Api nstool = xjdl.getApis().get("nstool");
+		String ret = restTemplate.getForEntity(getUri(nstool.getBaseUrl()), String.class).getBody();
+		Matcher matcher = Pattern.compile("(http[^']+)").matcher(ret);
+		boolean matchesResult = matcher.find();
+		String url = matcher.group();
+		if (log.isDebugEnabled()) {
+			log.debug("[{}] url[{}] match {} completely!", nstool, url, matchesResult ? "success" : "failed");
+		}
+		String back = webClient.method(nstool.getMethod())
+				.uri(getUri(url))
+				.accept(MediaType.TEXT_HTML)
+				.retrieve()
+				.bodyToMono(String.class)
+				.block(Duration.ofSeconds(10));
+		return back.replace("网易", "星际大陆");
+	}
+
+	private URI getUri(String baseUrl) {
+		return getUriComponentsBuilder(baseUrl)
+				.build().encode().toUri();
+	}
+
+	private URI getUri(String baseUrl, String queryParam, Object variables) {
+		return getUriComponentsBuilder(baseUrl)
+				.queryParam(queryParam, variables)
+				.build().encode().toUri();
+	}
+
+	private UriComponentsBuilder getUriComponentsBuilder(String baseUrl) {
+		return UriComponentsBuilder.fromUriString(baseUrl);
+	}
+
+	@Override
 	public Lunardate getLunardate() throws JsonProcessingException {
 		Api lunardate = xjdl.getApis().get("lunardate");
-		URI uri = UriComponentsBuilder.fromUri(URI.create(lunardate.getBaseUrl())).queryParam(lunardate.getQueryParam(), LocalDate.now()).build().encode().toUri();
+		URI uri = getUriComponentsBuilder(lunardate.getBaseUrl())
+				.queryParam(lunardate.getData(), LocalDate.now())
+				.build().encode().toUri();
 		ResponseEntity<String> entity = restTemplate.getForEntity(uri, String.class);
 		return objectMapper.readValue(entity.getBody(), Lunardate.class);
 	}
@@ -51,7 +111,7 @@ public class RpcInterfaceImpl implements RpcInterface {
 		Api lunardate = xjdl.getApis().get("lunardate");
 		Mono<String> result = webClient.get()
 				.uri(lunardate.getBaseUrl(), uriBuilder -> uriBuilder
-						.queryParam(lunardate.getQueryParam(), getValidDate(date))
+						.queryParam(lunardate.getData(), getValidDate(date))
 						.build())
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()

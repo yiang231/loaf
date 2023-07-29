@@ -1,7 +1,6 @@
 package com.xjdl.study.reflect;
 
 import com.xjdl.study.annotation.AnnotationTest;
-import com.xjdl.study.consts.enumConst.DynamicEnumUtils;
 import com.xjdl.study.springboot.banner.MyBanner;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +28,6 @@ import java.util.stream.Collectors;
 /**
  * 反射
  * java.lang.reflect
- *
- * @see DynamicEnumUtils
  */
 @Slf4j
 @Data

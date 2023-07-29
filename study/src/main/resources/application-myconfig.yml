@@ -37,7 +37,12 @@ xjdl:
     lunardate:
       desc: 公历与农历对照表 ?date={yyyy-MM-dd}
       baseUrl: https://data.weather.gov.hk/weatherAPI/opendata/lunardate.php
-      queryParam: date
+      data: date
+      method: GET
+    nstool:
+      desc: 网易DNS检测工具
+      base-url: http://www.nstool.netease.com/
+      data:
       method: GET
   banner:
     location: classpath:xjdl_banner.txt

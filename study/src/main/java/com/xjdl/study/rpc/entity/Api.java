@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod;
 @Data
 public class Api {
 	String baseUrl;
-	String queryParam;
+	String data;
 	HttpMethod method;
 	String desc;
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * lunardate 返回json
+ */
 @NoArgsConstructor
 @Data
 public class Lunardate {

@@ -70,7 +70,7 @@
 - [ ] devtools
 - [ ] jmh
 - [ ] docker
-- [ ] log4j2
+- [x] log4j2
 - [x] log MDC
 - [ ] wsl2
 - [ ] docker
@@ -96,6 +96,7 @@
 - [ ] @ResponseStatus
 - [x] maven
 - [x] SPI
+- [x] Pattern
 - [x] design patterns
   - behavioral
     - 责任链

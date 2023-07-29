@@ -16,25 +16,10 @@ import javax.net.ssl.SSLException;
 
 /**
  * 全面提供  https 支持
- * SkipSslVerificationHttpRequestFactory#prepareHttpsConnection(HttpsURLConnection)
+ * {@code SkipSslVerificationHttpRequestFactory#prepareHttpsConnection(HttpsURLConnection)}
  */
 @Configuration
 public class RpcConfig {
-//	@Bean
-//	public RestTemplate restTemplateByReflect() {
-//		ClientHttpRequestFactory factory;
-//		try {
-//			Class<?> clazz = Class.forName("org.springframework.boot.actuate.autoconfigure.cloudfoundry.servlet.SkipSslVerificationHttpRequestFactory");
-//			Constructor<?> constructor = clazz.getDeclaredConstructor();
-//			constructor.setAccessible(true);
-//			factory = (ClientHttpRequestFactory) constructor.newInstance();
-//		} catch (ClassNotFoundException | InstantiationException | NoSuchMethodException | IllegalAccessException |
-//				 IllegalArgumentException | InvocationTargetException | SecurityException e) {
-//			throw new RuntimeException(e);
-//		}
-//		return new RestTemplate(factory);
-//	}
-
 	/**
 	 * autowireCandidate = false
 	 * 其不会参与依赖注入
@@ -43,8 +28,6 @@ public class RpcConfig {
 	public RestTemplate restTemplateByNetty() throws SSLException {
 		Netty4ClientHttpRequestFactory factory = new Netty4ClientHttpRequestFactory();
 		factory.setSslContext(SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build());
-		factory.setConnectTimeout(15000);
-		factory.setReadTimeout(5000);
 		return new RestTemplate(factory);
 	}
 
@@ -55,10 +38,14 @@ public class RpcConfig {
 
 	/**
 	 * WebClient 已提供 https 请求支持
+	 *
+	 * @see Netty4ClientHttpRequestFactory#getDefaultClientSslContext()
 	 */
 	@Bean
 	public WebClient webClient() throws SSLException {
-		SslContext context = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+		SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+//		sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE);
+		SslContext context = sslContextBuilder.build();
 		HttpClient httpClient = HttpClient.create().secure(sslContextSpec -> sslContextSpec.sslContext(context));
 		return WebClient.builder().clientConnector(new ReactorClientHttpConnector(httpClient)).build();
 	}

@@ -43,7 +43,8 @@
 - [x] stream
 - [x] ~~logback~~
 - [x] log4j2
-- [ ] tx
+- [x] spring tx lose
+- [ ] transaction
 - [x] jpa
 - [ ] webflux
 - [ ] netty
@@ -105,11 +106,15 @@
     - 观察者
     - 策略
     - 模板
+    - 命令
+    - 状态
   - creational
     - 简单工厂
     - 工厂方法
     - 抽象工厂
     - 单例
+    - 建造者
+    - 原型
   - structural
     - 适配器
     - 装饰器

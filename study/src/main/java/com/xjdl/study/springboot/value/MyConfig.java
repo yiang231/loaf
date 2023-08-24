@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 /**
  * 通过配置类注入Bean
@@ -26,6 +28,8 @@ import org.springframework.context.annotation.Scope;
 // 在配置类上使用此注解可以直接注入一个属性绑定好的Bean，一般用于第三方组件的配置绑定。原本的实体类就不用 @Component
 // 和 @Import 使用场景都是导入第三方的组件，区别是是否进行了属性绑定
 @EnableConfigurationProperties(value = NewPerson.class)
+// 注入 XML 文件中定义的 bean
+//@ImportResource(locations = "classpath:")
 public class MyConfig {
     /**
      * bean的名称默认是方法名
@@ -37,5 +41,15 @@ public class MyConfig {
         dog.setName("duke");
         dog.setAge(3);
         return dog;
+    }
+
+    /**
+     * 类的元数据读取器
+     * <P>
+     * ASM 机制
+     */
+    @Bean
+    public MetadataReaderFactory metadataReaderFactory() {
+        return new SimpleMetadataReaderFactory();
     }
 }

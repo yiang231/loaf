@@ -1,5 +1,6 @@
 package com.xjdl.study.transaction;
 
+import com.xjdl.study.springboot.value.ValueController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TxController {
 	TxService txService;
 
+	/**
+	 * 构造注入
+	 *
+	 * @see ValueController#print()
+	 */
 	@Autowired
 	public TxController(TxService txService) {
 		this.txService = txService;

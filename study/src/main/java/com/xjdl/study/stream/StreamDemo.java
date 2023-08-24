@@ -154,7 +154,7 @@ public class StreamDemo {
     }
 
     /**
-     * 过滤
+     * 过滤，找出符合条件的元素
      */
     @Test
     public void filter() {

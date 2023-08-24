@@ -37,6 +37,23 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+/**
+ * 测试多线程时，只要 @Test 方法执行结束就立即结束，不会等待子线程结束
+ * <p>
+ * 1、 调用线程池的 awaitTermination() 方法进行等待
+ * 2、 每一个子线程调用 join() 通知主线程等待自己
+ * 3、 方法的最后根据执行时间休眠线程
+ */
+/**
+ * [A-Z][A-Za-z\d]*Test(s|Case)?|Test[A-Z][A-Za-z\d]*|IT(.*)|(.*)IT(Case)?
+ * <p>
+ * [A-Z]：匹配一个大写字母。
+ * [A-Za-z\d]*：匹配零个或多个字母（大小写不限）或数字。
+ * Test(s|Case)?：匹配可选的 "Test" 或 "TestCase" 字符串，其中 (s|Case)? 表示括号内的部分可以出现零次或一次。
+ * Test[A-Z][A-Za-z\d]*：匹配以 "Test" 开头后跟一个大写字母，然后是零个或多个字母或数字的字符串。
+ * IT(.*)：匹配以 "IT" 集成测试开头，后面是任意字符的字符串。
+ * (.*)IT(Case)?：匹配以任意字符开始，然后是 "IT"，最后可选的 "Case" 的字符串
+ */
 //@SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Slf4j

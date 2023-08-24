@@ -35,6 +35,14 @@ import java.util.Map;
 @RequestMapping("/spring")
 public class ValueController {
 	@Autowired
+	AbstractDuck abstractDuck;
+
+	@Autowired
+	public void print() {
+		log.info("@Autowired 注解加在方法上，有类似 @PostConstruct 注解的效果。");
+	}
+
+	@Autowired
 	Banner springBootBanner;
 	@Resource
 	ConfigurableEnvironment configurableEnvironment;
@@ -68,6 +76,11 @@ public class ValueController {
 	 */
 	@Value("${server.port}")
 	private String port;
+
+	@GetMapping("methodInjection")
+	public void methodInjection() {
+		log.info("通过 @Lookup 注解进行方法注入\t{}", abstractDuck.methodInjection());
+	}
 
 	@GetMapping("/port")
 	public String value() {

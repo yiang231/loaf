@@ -1,6 +1,10 @@
 package com.xjdl.framework.beans.factory.config;
 
 // interface
+
+/**
+ * 内部类的问题
+ */
 public class BeanDefinition {
     private String scope;
     private Class<?> type;

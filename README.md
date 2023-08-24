@@ -48,6 +48,10 @@
 - [x] jpa
 - [ ] webflux
 - [ ] netty
+- [x] nio
+- [x] bio
+- [ ] juc
+- [x] 位运算
 - [ ] hibernate
 - [x] MybatisPlus
 - [ ] mapper.xml tags
@@ -98,6 +102,7 @@
 - [x] maven
 - [x] SPI
 - [x] Pattern
+- [ ] WebSocket
 - [x] design patterns
   - behavioral
     - 责任链
@@ -128,6 +133,10 @@ mvn -T 4 clean install
 # [INFO] Using the MultiThreadedBuilder implementation with a thread count of 8
 mvn -T 1C clean install
 ```
+```shell
+-Deditable.java.test.console=true #开启控制台输入
+```
+
 Live Templates
 
 | Description | Abbreviation | Template text                                    | Applicable        | Variables                         |

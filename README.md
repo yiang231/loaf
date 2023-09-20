@@ -13,7 +13,7 @@
 - [x] Spring Function Web
 - [x] Spring 配置补全
 - [x] Springboot Quartz
-- [x] Files Paths
+- [x] Files Paths 文件夹拷贝/遍历目录
 - [x] mysql
 - [x] Optional
 - [x] package-info
@@ -50,6 +50,7 @@
 - [ ] netty
 - [x] nio
 - [x] bio
+- [x] udp通信
 - [ ] juc
 - [x] 位运算
 - [ ] hibernate
@@ -140,6 +141,7 @@ mvn -T 1C clean install
 Live Templates
 
 | Description | Abbreviation | Template text                                    | Applicable        | Variables                         |
-| ----------- | ------------ | ------------------------------------------------ | ----------------- | --------------------------------- |
-| 快速日志    | ll           | `log.$LEVEL$("$WORD${}", $MSG$);`                | Java: statement   | LEVEL: completeSmart()            |
-| 快速测试    | tt           | @Test<br>void `$METHODNAME$`() {<br>`$END$`<br>} | Java: declaration | METHODNAME: suggestVariableName() |
+|-------------|--------------| ------------------------------------------------ | ----------------- | --------------------------------- |
+| 快速日志        | ll           | `log.$LEVEL$("$WORD${}", $MSG$);`                | Java: statement   | LEVEL: completeSmart()            |
+| 快速测试        | tt           | @Test<br>void `$METHODNAME$`() {<br>`$END$`<br>} | Java: declaration | METHODNAME: suggestVariableName() |
+| 快速异常日志      | le           | log.error($e$.getMessage(), $e$); | Java: statement | METHODNAME: `typeParameterOf(VAR[,indexOrName])` |

@@ -3,9 +3,8 @@ package com.xjdl.study.io.nio.channel;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -13,14 +12,14 @@ import java.nio.channels.FileChannel;
  * 数据分散与聚集
  */
 @Slf4j
-public class NioChannel3 {
+public class NioChannel3Test {
 	@Test
 	void copy() {
 		try (
-				FileInputStream fis = new FileInputStream("");
-				FileOutputStream fos = new FileOutputStream("");
-				FileChannel fisChannel = fis.getChannel();
-				FileChannel fosChannel = fos.getChannel()
+				RandomAccessFile rafi = new RandomAccessFile("", "r");
+				RandomAccessFile rafo = new RandomAccessFile("", "rw");
+				FileChannel fisChannel = rafi.getChannel();
+				FileChannel fosChannel = rafo.getChannel();
 		) {
 			log.info("开始文件复制");
 			// 2 * 80 MB

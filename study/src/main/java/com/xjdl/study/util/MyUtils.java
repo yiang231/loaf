@@ -9,7 +9,7 @@ public abstract class MyUtils {
 	/**
 	 * 判断是否为正整数的正则表达式
 	 */
-	public static final String REGEX = "^[1-9]\\d*$";
+	private static final String IS_NUMBER_REGEX = "^[1-9]\\d*$";
 
 	/**
 	 * 获取SpringBoot项目资源路径
@@ -41,6 +41,14 @@ public abstract class MyUtils {
 	}
 
 	/**
+	 * 设置当前线程名称
+	 * @param name 线程名称
+	 */
+	public static void setThreadName(String name) {
+		Thread.currentThread().setName(name);
+	}
+
+	/**
 	 * 判断是否为正整数
 	 *
 	 * @param text 要判断的字符
@@ -48,7 +56,7 @@ public abstract class MyUtils {
 	 */
 	public static boolean isNumber(String text) {
 		// text 完全匹配
-		boolean result = Pattern.compile(REGEX).matcher(text).matches();
+		boolean result = Pattern.compile(IS_NUMBER_REGEX).matcher(text).matches();
 		if (log.isDebugEnabled()) {
 			log.debug("{} is{} a number", text, result ? "" : " not");
 		}

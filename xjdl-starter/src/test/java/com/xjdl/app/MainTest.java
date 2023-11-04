@@ -2,16 +2,17 @@ package com.xjdl.app;
 
 import com.xjdl.app.config.AppConfig;
 import com.xjdl.app.service.BaseService;
-import com.xjdl.framework.context.XjdlApplicationContext;
+import com.xjdl.framework.context.support.ClassPathApplicationContext;
 import org.junit.jupiter.api.Test;
 
 class MainTest {
 
 	@Test
-	void main() {
-		XjdlApplicationContext applicationContext = new XjdlApplicationContext(AppConfig.class);
+	void mainTest() throws Exception {
+		ClassPathApplicationContext classPathApplicationContext = new ClassPathApplicationContext(AppConfig.class);
+		classPathApplicationContext.refresh();
 
-		BaseService userService = (BaseService) applicationContext.getBean("userService");
-		userService.test();
+		BaseService adapterService = (BaseService) classPathApplicationContext.getComponent("adapterService");
+		adapterService.test();
 	}
 }

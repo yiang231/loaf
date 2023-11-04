@@ -101,7 +101,7 @@
 - [x] Spring MVC 消息协商
 - [ ] @ResponseStatus
 - [x] maven
-- [x] SPI
+- [x] SPI 新增工具类
 - [x] Pattern
 - [ ] WebSocket
 - [x] design patterns
@@ -140,8 +140,10 @@ mvn -T 1C clean install
 
 Live Templates
 
-| Description | Abbreviation | Template text                                    | Applicable        | Variables                         |
-|-------------|--------------| ------------------------------------------------ | ----------------- | --------------------------------- |
-| 快速日志        | ll           | `log.$LEVEL$("$WORD${}", $MSG$);`                | Java: statement   | LEVEL: completeSmart()            |
-| 快速测试        | tt           | @Test<br>void `$METHODNAME$`() {<br>`$END$`<br>} | Java: declaration | METHODNAME: suggestVariableName() |
-| 快速异常日志      | le           | log.error($e$.getMessage(), $e$); | Java: statement | METHODNAME: `typeParameterOf(VAR[,indexOrName])` |
+| Description  | Abbreviation | Template text                                    | Applicable                                                               | Variables                                        |
+| ------------ | ------------ | ------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------ |
+| 快速日志     | ll           | `log.$LEVEL$("$WORD${}", $MSG$);`                | Java: statement                                                          | LEVEL: completeSmart()                           |
+| 快速测试     | tt           | @Test<br>void `$METHODNAME$`() {<br>`$END$`<br>} | Java: declaration                                                        | METHODNAME: suggestVariableName()                |
+| 快速异常日志 | le           | log.error($e$.getMessage(), $e$);                | Java: statement                                                          | METHODNAME: `typeParameterOf(VAR[,indexOrName])` |
+| fixme        | fixme        | `// FIXME: $date$ $todo$`                        | Java: statement, expression, declaration, comment, smart type completion | date() true                                      |
+| todo         | todo         | `// TODO: $date$ $todo$`                         | Java: statement, expression, declaration, comment, smart type completion | date() true                                      |

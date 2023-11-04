@@ -1,4 +1,4 @@
-package com.xjdl.framework.context.annotation;
+package com.xjdl.framework.web.bind.annotation;
 
 
 import java.lang.annotation.Documented;
@@ -7,12 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * component 的作用域
- */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.METHOD})
 @Documented
-public @interface Scope {
-	ScopeType type() default ScopeType.singleton;
+@RequestMapping(method = RequestMethod.POST)
+public @interface PostMapping {
+	String value();
 }

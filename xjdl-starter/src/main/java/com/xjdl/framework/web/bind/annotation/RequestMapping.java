@@ -1,4 +1,5 @@
-package com.xjdl.framework.stereotype;
+package com.xjdl.framework.web.bind.annotation;
+
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,16 +8,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 类上有这个注解才有机会进入单例池
+ * 主要是配置类级别的访问路径
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
-public @interface Component {
+public @interface RequestMapping {
 	String value() default "";
 
-	/**
-	 * 目前懒加载组件无法实现
-	 */
-	boolean lazyInit() default false;
+	RequestMethod[] method() default {};
 }

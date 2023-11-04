@@ -1,5 +1,6 @@
 package com.xjdl.framework.context.annotation;
 
+import com.xjdl.framework.stereotype.Component;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -8,11 +9,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * component 的作用域
+ * 属于配置类，同样也是组件
  */
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Scope {
-	ScopeType type() default ScopeType.singleton;
+@Component
+public @interface Configuration {
 }

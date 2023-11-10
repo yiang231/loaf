@@ -5,6 +5,7 @@ import com.xjdl.framework.beans.factory.BeanFactoryAware;
 import com.xjdl.framework.beans.factory.BeanNameAware;
 import com.xjdl.framework.beans.factory.ComponentFactory;
 import com.xjdl.framework.beans.factory.InitializingBean;
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.BeanReference;
 import com.xjdl.framework.context.annotation.ScopeType;

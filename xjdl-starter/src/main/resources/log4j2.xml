@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration monitorInterval="5">
+    <Properties>
+        <property name="LOG_PATTERN"
+                  value="%d{ABSOLUTE} [%5p] ${sys:PID:-PID} [%10.10t] %c{1.}.[%L]: %m%n{%xwEx:-}"/>
+    </Properties>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <!--            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>-->
+        </Console>
+    </appenders>
+    <loggers>
+        <root level="all">
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+</configuration>

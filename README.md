@@ -136,6 +136,8 @@ mvn -T 1C clean install
 ```
 ```shell
 -Deditable.java.test.console=true #开启控制台输入
+-Dlog4j.skipJansi=false #log4j2控制台彩色日志
+-Dfile.encoding=GBK #Maven控制台乱码
 ```
 
 Live Templates

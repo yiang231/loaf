@@ -2,7 +2,7 @@ package com.xjdl.framework.context.support;
 
 
 import com.xjdl.framework.beans.factory.support.AbstractComponentFactory;
-import com.xjdl.framework.beans.factory.support.BeanDefinition;
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.support.ClassPathBeanDefinitionReader;
 import com.xjdl.framework.beans.factory.support.ClassPathComponentFactory;
 import com.xjdl.framework.beans.factory.xml.XmlBeanDefinitionReader;

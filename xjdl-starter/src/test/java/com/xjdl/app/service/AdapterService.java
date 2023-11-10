@@ -6,16 +6,18 @@ import com.xjdl.framework.beans.factory.ComponentFactory;
 import com.xjdl.framework.beans.factory.InitializingBean;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 @Component
+@Slf4j
 //@Scope(ScopeType.prototype)
 public class AdapterService implements BeanNameAware, BeanFactoryAware, BeanPostProcessor, InitializingBean, BaseService {
 	static {
-		System.out.println("AdapterService.static initializer");
+		log.info("AdapterService.static initializer");
 	}
 
 	private String beanName;
@@ -23,18 +25,18 @@ public class AdapterService implements BeanNameAware, BeanFactoryAware, BeanPost
 
 	@Override
 	public Object postProcessBeforeInitialize(String name, Object bean) {
-		System.out.println("AdapterService.postProcessBeforeInitialize");
+		log.info("AdapterService.postProcessBeforeInitialize");
 		return bean;
 	}
 
 	@Override
 	public Object postProcessAfterInitialize(String name, Object bean) {
-		System.out.println(name + ".postProcessAfterInitialize");
+		log.info("{}.postProcessAfterInitialize", name);
 		if (bean instanceof BaseService) {
 			Object instance = Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{BaseService.class}, new InvocationHandler() {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-					System.out.println(name + " invoke proxy method");
+					log.info("{} invoke proxy method", name);
 					return method.invoke(bean, args);
 				}
 			});
@@ -45,23 +47,23 @@ public class AdapterService implements BeanNameAware, BeanFactoryAware, BeanPost
 
 	@Override
 	public void afterPropertiesSet() {
-		System.out.println("AdapterService.afterPropertiesSet");
+		log.info("AdapterService.afterPropertiesSet");
 	}
 
 	@Override
 	public void setBeanFactory(ComponentFactory beanFactory) {
-		System.out.println("AdapterService.setBeanFactory");
+		log.info("AdapterService.setBeanFactory");
 		this.factory = beanFactory;
 	}
 
 	@Override
 	public void setBeanName(String name) {
-		System.out.println("AdapterService.setBeanName");
+		log.info("AdapterService.setBeanName");
 		this.beanName = name;
 	}
 
 	@Override
 	public void test() {
-		System.out.println(beanName);
+		log.info(beanName);
 	}
 }

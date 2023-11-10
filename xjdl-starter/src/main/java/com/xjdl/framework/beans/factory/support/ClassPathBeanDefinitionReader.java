@@ -1,11 +1,13 @@
 package com.xjdl.framework.beans.factory.support;
 
 
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.context.annotation.Scope;
 import com.xjdl.framework.context.annotation.ScopeType;
 import com.xjdl.framework.core.io.ResourceLoader;
 import com.xjdl.framework.exception.FrameException;
 import com.xjdl.framework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
 import java.beans.Introspector;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.net.URL;
 /**
  * 在类路径下扫描并且加载 BeanDefinition
  */
+@Slf4j
 public class ClassPathBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	public static final String DEFAULT_COMPONENT_NAME = "";
 	public static final String CLASS_FILE_SUFFIX = ".class";
@@ -34,10 +37,10 @@ public class ClassPathBeanDefinitionReader extends AbstractBeanDefinitionReader 
 	}
 
 	private void log(String description) {
-		System.out.println(description);
+		log.debug(description);
 		if (this.getRegistryComponentClassesSet().size() != 0) {
 			for (String clazz : this.getRegistryComponentClassesSet()) {
-				System.out.println("\t[" + clazz + "]");
+				log.debug("\t[{}]", clazz);
 			}
 		}
 	}

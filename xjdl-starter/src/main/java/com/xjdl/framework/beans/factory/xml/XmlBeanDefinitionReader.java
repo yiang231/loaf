@@ -3,7 +3,7 @@ package com.xjdl.framework.beans.factory.xml;
 import com.xjdl.framework.beans.PropertyValue;
 import com.xjdl.framework.beans.factory.config.BeanReference;
 import com.xjdl.framework.beans.factory.support.AbstractBeanDefinitionReader;
-import com.xjdl.framework.beans.factory.support.BeanDefinition;
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.context.annotation.ScopeType;
 import com.xjdl.framework.core.io.ResourceLoader;
 import org.w3c.dom.Document;

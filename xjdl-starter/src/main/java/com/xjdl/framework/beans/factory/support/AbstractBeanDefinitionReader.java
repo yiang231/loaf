@@ -1,6 +1,7 @@
 package com.xjdl.framework.beans.factory.support;
 
 
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.core.io.ResourceLoader;
 
 import java.util.LinkedHashSet;

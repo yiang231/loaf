@@ -2,8 +2,9 @@ package com.xjdl.framework.context.support;
 
 
 import com.xjdl.framework.beans.factory.support.AbstractComponentFactory;
-import com.xjdl.framework.beans.factory.support.BeanDefinition;
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.context.ApplicationContext;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 /**
  * 可以视作 AbstractComponentFactory 的代理
  */
+@Slf4j
 public abstract class AbstractApplicationContext implements ApplicationContext {
 	private AbstractComponentFactory factory;
 
@@ -32,9 +34,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	@Override
 	public void refresh() throws Exception {
 		this.loadBeanDefinitions(factory);
-		System.out.println("[Singleton Component initial start]");
+		log.debug("[Singleton Component initial start]");
 		this.initComponent(factory);
-		System.out.println("[Singleton Component initial end]");
+		log.debug("[Singleton Component initial end]");
 		this.log();
 	}
 
@@ -46,32 +48,32 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	}
 
 	public void logBeanPostProcessors(String description) {
-		System.out.println(description);
-//        for (String item : this.getFactory().getBeanPostProcessors()) {
-//            System.out.println("\t[" + item + "]");
-//        }
-		System.out.println("\t" + this.getFactory().getBeanPostProcessors());
+		log.debug(description);
+//		for (String item : this.getFactory().getBeanPostProcessors()) {
+//			log.debug("\t[{}]", item);
+//		}
+		log.debug("\t{}", this.getFactory().getBeanPostProcessors());
 	}
 
 	public void logSingletonComponentName(String description) {
-		System.out.println(description);
-//        for (String item : context.getFactory().getSingletonComponentName()) {
-//            System.out.println("\t[" + item + "]");
-//        }
-		System.out.println("\t" + this.getFactory().getSingletonComponentName());
+		log.debug(description);
+//		for (String item : this.getFactory().getSingletonComponentName()) {
+//			log.debug("\t[{}]", item);
+//		}
+		log.debug("\t{}", this.getFactory().getSingletonComponentName());
 	}
 
 	public void logSingletonObjects(String description) {
-		System.out.println(description);
+		log.debug(description);
 		for (Map.Entry<String, Object> entry : this.getFactory().getSingletonObjects().entrySet()) {
-			System.out.println("\t[" + entry + "]");
+			log.debug("\t[{}]", entry);
 		}
 	}
 
 	public void logBeanDefinitionMap(String description) {
-		System.out.println(description);
+		log.debug(description);
 		for (Map.Entry<String, BeanDefinition> entry : this.getFactory().getBeanDefinitionMap().entrySet()) {
-			System.out.println("\t[" + entry + "]");
+			log.debug("\t[{}]", entry);
 		}
 	}
 

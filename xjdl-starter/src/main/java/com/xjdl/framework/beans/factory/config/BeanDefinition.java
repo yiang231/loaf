@@ -1,4 +1,4 @@
-package com.xjdl.framework.beans.factory.support;
+package com.xjdl.framework.beans.factory.config;
 
 import com.xjdl.framework.beans.PropertyValues;
 import com.xjdl.framework.context.annotation.ScopeType;

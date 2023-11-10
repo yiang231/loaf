@@ -1,6 +1,8 @@
 package com.xjdl.framework.beans.factory.support;
 
 
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
+
 public interface BeanDefinitionReader {
 	void loadBeanDefinitions(String scanPackage) throws Exception;
 

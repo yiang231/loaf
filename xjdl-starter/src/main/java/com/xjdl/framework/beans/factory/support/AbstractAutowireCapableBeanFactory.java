@@ -3,6 +3,7 @@ package com.xjdl.framework.beans.factory.support;
 import com.xjdl.framework.beans.PropertyValue;
 import com.xjdl.framework.beans.factory.BeanCreationException;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
+import com.xjdl.framework.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -34,6 +35,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
 				Object value = propertyValue.getValue();
+				if (value instanceof BeanReference) {
+					BeanReference beanReference = (BeanReference) value;
+					value = getBean(beanReference.getBeanName());
+				}
 				try {
 					// setter 注入
 					Method declaredMethod = bean.getClass().getDeclaredMethod(

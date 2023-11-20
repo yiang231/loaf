@@ -1,5 +1,5 @@
 springdoc:
-  # 开启之后地址变为 /actuator/managementPort/swagger-ui，/actuator/managementPort/openapi/${swagger中的definition} ,show-actuator才会生效
+  # 开启之后地址变为 managementPort/actuator/swagger-ui，managementPort/actuator/openapi/${swagger中的definition} ,show-actuator才会生效
   use-management-port: true
   show-actuator: true
   swagger-ui:

@@ -13,7 +13,7 @@ class ClassPathBeanDefinitionReaderTest {
 	@Test
 	void loadBeanDefinitions() throws Exception {
 		ClassPathBeanDefinitionReader classPathBeanDefinitionReader = new ClassPathBeanDefinitionReader(new ResourceLoader());
-		classPathBeanDefinitionReader.loadBeanDefinitions("com.xjdl");
+		classPathBeanDefinitionReader.loadBeanDefinitions("com.xjdl.app");
 		for (Map.Entry<String, BeanDefinition> entry : classPathBeanDefinitionReader.getRegistryBeanDefinition().entrySet()) {
 			log.info("{}", entry);
 		}

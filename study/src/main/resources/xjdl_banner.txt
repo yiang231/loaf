@@ -1,6 +1,16 @@
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
+XXXXXXX       XXXXXXX          JJJJJJJJJJJDDDDDDDDDDDDD      LLLLLLLLLLL
+X:::::X       X:::::X          J:::::::::JD::::::::::::DDD   L:::::::::L
+X:::::X       X:::::X          J:::::::::JD:::::::::::::::DD L:::::::::L
+X::::::X     X::::::X          JJ:::::::JJDDD:::::DDDDD:::::DLL:::::::LL
+XXX:::::X   X:::::XXX            J:::::J    D:::::D    D:::::D L:::::L
+   X:::::X X:::::X               J:::::J    D:::::D     D:::::DL:::::L
+    X:::::X:::::X                J:::::J    D:::::D     D:::::DL:::::L
+     X:::::::::X                 J:::::j    D:::::D     D:::::DL:::::L
+     X:::::::::X                 J:::::J    D:::::D     D:::::DL:::::L
+    X:::::X:::::X    JJJJJJJ     J:::::J    D:::::D     D:::::DL:::::L
+   X:::::X X:::::X   J:::::J     J:::::J    D:::::D     D:::::DL:::::L
+XXX:::::X   X:::::XXXJ::::::J   J::::::J    D:::::D    D:::::D L:::::L         LLLLLL
+X::::::X     X::::::XJ:::::::JJJ:::::::J  DDD:::::DDDDD:::::DLL:::::::LLLLLLLLL:::::L
+X:::::X       X:::::X JJ:::::::::::::JJ   D:::::::::::::::DD L::::::::::::::::::::::L
+X:::::X       X:::::X   JJ:::::::::JJ     D::::::::::::DDD   L::::::::::::::::::::::L
+XXXXXXX       XXXXXXX     JJJJJJJJJ       DDDDDDDDDDDDD      LLLLLLLLLLLLLLLLLLLLLLLL

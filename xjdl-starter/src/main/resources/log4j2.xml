@@ -2,7 +2,7 @@
 <configuration monitorInterval="5">
     <Properties>
         <property name="LOG_PATTERN"
-                  value="%d{ABSOLUTE} [%5p] ${sys:PID:-PID} [%10.10t] %c{1.}.[%L]: %m%n{%xwEx:-}"/>
+                  value="%d{ABSOLUTE} [%5p] ${sys:PID:-PID} [%10.10t] %c{1.}:%L: %m%n{%xwEx:-}"/>
     </Properties>
     <appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="false">

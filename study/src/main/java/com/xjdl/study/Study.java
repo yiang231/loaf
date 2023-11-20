@@ -64,7 +64,7 @@ import java.util.logging.LogManager;
 @EnableCaching
 @EnableBot
 public class Study {
-	public static final String LOG4J2_PROPERTIES = "log4j2-test.xml";
+	public static final String LOG4J2_PROPERTIES = "log4j2-spring.xml";
 
 	public static void main(String[] args) {
 //		setLog4j2PrintStream();

@@ -5,14 +5,15 @@ server:
       enabled: true           # 是否启动日志
       pattern: combined          # 日志格式
       prefix: access_log.      # 日志文件名前缀
+      rotate : true # 是否开启日志滚动
       suffix: log            # 日志文件名后缀
-    max-http-post-size: 0     # HTTP POST请求最大的大小
+    buffer-size: 1024 # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    direct-buffers: true # 是否分配的直接内存(NIO直接分配的堆外内存)
+    max-http-post-size: -1     # HTTP POST请求最大的大小
     threads:
       io: 4 # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程，不可设置过大，否则启动项目会报错：打开文件数过多。
       worker: 32 # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载，默认值是 io-threads*8
-    buffer-size: 1024 # 每块buffer的空间大小,越小的空间被利用越充，不要设置太大，以免影响其他应用，合适即可
-    direct-buffers: true # 是否分配的直接内存(NIO直接分配的堆外内存)
-
+# https://springdoc.cn/spring-boot-undertow/
 # https://undertow.io/javadoc/1.4.x/io/undertow/server/handlers/accesslog/AccessLogHandler.html
 # common - %h %l %u %t "%r" %s %b
 # combined - %h %l %u %t "%r" %s %b "%{i,Referer}" "%{i,User-Agent}"

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
+    <bean id="customBeanDefinitionRegistryPostProcessor" class="com.xjdl.app.config.CustomBeanDefinitionRegistryPostProcessor"/>
+
     <bean id="outputService" name="outputService" scope="singleton" lazy-init="true"
           init-method="initMethodName" destroy-method="destroyMethodName"
           class="com.xjdl.app.service.OutputService">

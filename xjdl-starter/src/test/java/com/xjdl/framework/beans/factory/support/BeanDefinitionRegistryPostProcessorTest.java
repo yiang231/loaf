@@ -14,11 +14,11 @@ class BeanDefinitionRegistryPostProcessorTest {
         postProcessor.postProcessBeanFactory(beanFactory);
         postProcessor.postProcessBeanDefinitionRegistry(beanFactory);
 
-        OutputService outPutService = (OutputService) beanFactory.getBean("outPutService");
+        OutputService outPutService = (OutputService) beanFactory.getBean("outputService0");
         Assertions.assertNotNull(outPutService, "直接注册的单例Bean");
 
-        beanFactory.getBean("helloWorldService");
-        HelloWorldService helloWorldService = (HelloWorldService) beanFactory.getBean("helloWorldService");
+        beanFactory.getBean("helloWorldService0");
+        HelloWorldService helloWorldService = (HelloWorldService) beanFactory.getBean("helloWorldService0");
         Assertions.assertNotNull(helloWorldService, "直接注册的BeanDefinition");
     }
 }

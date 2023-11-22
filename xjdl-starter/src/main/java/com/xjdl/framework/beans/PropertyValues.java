@@ -1,9 +1,11 @@
 package com.xjdl.framework.beans;
 
 public interface PropertyValues {
-	PropertyValue[] getPropertyValues();
+    PropertyValue[] getPropertyValues();
 
-	PropertyValue getPropertyValue(String propertyName);
+    PropertyValue getPropertyValue(String propertyName);
 
-	void addPropertyValue(PropertyValue pv);
+    void addPropertyValue(PropertyValue pv);
+
+    boolean contains(String propertyName);
 }

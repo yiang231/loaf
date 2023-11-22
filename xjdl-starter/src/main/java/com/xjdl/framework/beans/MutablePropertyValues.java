@@ -5,36 +5,41 @@ import java.util.List;
 
 public class MutablePropertyValues implements PropertyValues {
 
-	private final List<PropertyValue> propertyValueList;
+    private final List<PropertyValue> propertyValueList;
 
-	public MutablePropertyValues() {
-		this.propertyValueList = new ArrayList<>(0);
-	}
+    public MutablePropertyValues() {
+        this.propertyValueList = new ArrayList<>(0);
+    }
 
-	@Override
-	public void addPropertyValue(PropertyValue pv) {
-		this.propertyValueList.add(pv);
-	}
+    @Override
+    public void addPropertyValue(PropertyValue pv) {
+        this.propertyValueList.add(pv);
+    }
 
-	@Override
-	public PropertyValue[] getPropertyValues() {
-		return this.propertyValueList.toArray(new PropertyValue[0]);
-	}
+    @Override
+    public PropertyValue[] getPropertyValues() {
+        return this.propertyValueList.toArray(new PropertyValue[0]);
+    }
 
-	@Override
-	public PropertyValue getPropertyValue(String propertyName) {
-		for (PropertyValue pv : this.propertyValueList) {
-			if (pv.getName().equals(propertyName)) {
-				return pv;
-			}
-		}
-		return null;
-	}
+    @Override
+    public PropertyValue getPropertyValue(String propertyName) {
+        for (PropertyValue pv : this.propertyValueList) {
+            if (pv.getName().equals(propertyName)) {
+                return pv;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public String toString() {
-		return "MutablePropertyValues{" +
-				"propertyValueList=" + propertyValueList +
-				'}';
-	}
+    @Override
+    public boolean contains(String propertyName) {
+        return getPropertyValue(propertyName) != null;
+    }
+
+    @Override
+    public String toString() {
+        return "MutablePropertyValues{" +
+                "propertyValueList=" + propertyValueList +
+                '}';
+    }
 }

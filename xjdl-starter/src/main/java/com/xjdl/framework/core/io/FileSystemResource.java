@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileSystemResource extends AbstractResource {
-	protected FileSystemResource(Object path) {
+	public FileSystemResource(Object path) {
 		super(path);
 	}
 

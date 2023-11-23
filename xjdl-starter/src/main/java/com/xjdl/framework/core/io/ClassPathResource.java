@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ClassPathResource extends AbstractResource {
-	protected ClassPathResource(Object path) {
+	public ClassPathResource(Object path) {
 		super(path);
 	}
 

@@ -5,7 +5,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class UrlResource extends AbstractResource {
-	protected UrlResource(Object path) {
+	public UrlResource(Object path) {
 		super(path);
 	}
 

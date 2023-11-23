@@ -2,12 +2,15 @@ package com.xjdl.framework.beans.factory.support;
 
 import com.xjdl.framework.beans.BeansException;
 import com.xjdl.framework.beans.factory.BeanDefinitionStoreException;
+import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.NoSuchBeanDefinitionException;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.ConfigurableListableBeanFactory;
 import com.xjdl.framework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +19,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
+	private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories = new ConcurrentHashMap<>(8);
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 	private final List<String> beanDefinitionNames = new ArrayList<>();
+	private String serializationId;
+
+	public DefaultListableBeanFactory(BeanFactory parentBeanFactory) {
+		super(parentBeanFactory);
+	}
+
+	public DefaultListableBeanFactory() {
+		super();
+	}
 
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) throws BeanDefinitionStoreException {
@@ -75,5 +88,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Override
 	public int getBeanDefinitionCount() {
 		return beanDefinitionMap.size();
+	}
+
+	public void setSerializationId(String serializationId) {
+		if (serializationId != null) {
+			serializableFactories.put(serializationId, new WeakReference<>(this));
+		} else if (this.serializationId != null) {
+			serializableFactories.remove(this.serializationId);
+		}
+		this.serializationId = serializationId;
 	}
 }

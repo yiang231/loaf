@@ -31,7 +31,7 @@ class DefaultListableBeanFactoryTest {
 		factory.addBeanPostProcessor(beanPostProcessor);
 
 		BeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(factory);
-		int loaded = xmlBeanDefinitionReader.loadBeanDefinitions("classpath:application.xml");
+		int loaded = xmlBeanDefinitionReader.loadBeanDefinitions("classpath:applicationContext.xml");
 		Assertions.assertTrue(loaded > 0);
 
 		for (String name : factory.getBeanDefinitionNames()) {

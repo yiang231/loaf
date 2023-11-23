@@ -8,18 +8,23 @@ import com.xjdl.framework.core.io.ResourceLoader;
  * 获取 BeanDefinition 信息的接口
  */
 public interface BeanDefinitionReader {
-    /**
-     * 关键方法
-     */
-    BeanDefinitionRegistry getRegistry();
+	/**
+	 * 关键方法
+	 */
+	BeanDefinitionRegistry getRegistry();
 
-    ResourceLoader getResourceLoader();
+	ResourceLoader getResourceLoader();
 
-    ClassLoader getBeanClassLoader();
+	ClassLoader getBeanClassLoader();
 
-    int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException;
+	/**
+	 * 最终实现
+	 */
+	int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException;
 
-    int loadBeanDefinitions(String location) throws BeanDefinitionStoreException;
+	int loadBeanDefinitions(Resource... resources) throws BeanDefinitionStoreException;
 
-    int loadBeanDefinitions(String... locations) throws BeanDefinitionStoreException;
+	int loadBeanDefinitions(String location) throws BeanDefinitionStoreException;
+
+	int loadBeanDefinitions(String... locations) throws BeanDefinitionStoreException;
 }

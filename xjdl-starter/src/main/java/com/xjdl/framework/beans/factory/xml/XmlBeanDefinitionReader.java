@@ -57,7 +57,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public int loadBeanDefinitions(Resource resource) {
         int count = 0;
         try (InputStream is = resource.getInputStream()) {
-            count += loadBeanDefinitions(new InputSource(is));
+			InputSource inputSource = new InputSource(is);
+			count += doLoadBeanDefinitions(inputSource);
         } catch (Exception e) {
             throw new BeanDefinitionStoreException("Exception parsing XML document from " + resource.getPath(), e);
         }

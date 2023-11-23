@@ -5,12 +5,14 @@ import com.xjdl.framework.beans.PropertyValue;
 import com.xjdl.framework.beans.factory.Aware;
 import com.xjdl.framework.beans.factory.BeanClassLoaderAware;
 import com.xjdl.framework.beans.factory.BeanCreationException;
+import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.BeanFactoryAware;
 import com.xjdl.framework.beans.factory.BeanNameAware;
 import com.xjdl.framework.beans.factory.config.AutowireCapableBeanFactory;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.BeanReference;
+import com.xjdl.framework.core.NativeDetector;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -18,7 +20,21 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
-	private final InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
+	private InstantiationStrategy instantiationStrategy;
+
+	public AbstractAutowireCapableBeanFactory(BeanFactory parentBeanFactory) {
+		this();
+		setParentBeanFactory(parentBeanFactory);
+	}
+
+	public AbstractAutowireCapableBeanFactory() {
+		super();
+		if (NativeDetector.inNativeImage()) {
+			this.instantiationStrategy = new SimpleInstantiationStrategy();
+		} else {
+			this.instantiationStrategy = new CglibSubclassingInstantiationStrategy();
+		}
+	}
 
 	@Override
 	protected Object creatBean(String beanName, BeanDefinition beanDefinition) {

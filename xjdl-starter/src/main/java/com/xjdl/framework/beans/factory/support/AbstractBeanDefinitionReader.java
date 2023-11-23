@@ -1,56 +1,66 @@
 package com.xjdl.framework.beans.factory.support;
 
-
-import com.xjdl.framework.beans.factory.config.BeanDefinition;
+import com.xjdl.framework.beans.factory.BeanDefinitionStoreException;
+import com.xjdl.framework.core.io.DefaultResourceLoader;
+import com.xjdl.framework.core.io.Resource;
 import com.xjdl.framework.core.io.ResourceLoader;
 
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
+	private final BeanDefinitionRegistry registry;
 	private ResourceLoader resourceLoader;
-	private Set<String> registryComponentClassesSet;
-	private Map<String, BeanDefinition> registryBeanDefinition;
+	private BeanNameGenerator beanNameGenerator = DefaultBeanNameGenerator.INSTANCE;
 
-	public AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
+	public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
+		this.registry = registry;
 		this.resourceLoader = resourceLoader;
-		this.registryComponentClassesSet = new LinkedHashSet<String>();
-		this.registryBeanDefinition = new ConcurrentHashMap<String, BeanDefinition>();
 	}
 
-	public abstract void loadBeanDefinitions(String scanPackage) throws Exception;
+	public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry) {
+		this(registry, new DefaultResourceLoader());
+	}
 
+	public BeanNameGenerator getBeanNameGenerator() {
+		return beanNameGenerator;
+	}
+
+	public void setBeanNameGenerator(BeanNameGenerator beanNameGenerator) {
+		this.beanNameGenerator = (beanNameGenerator != null ? beanNameGenerator : DefaultBeanNameGenerator.INSTANCE);
+	}
+
+	@Override
+	public BeanDefinitionRegistry getRegistry() {
+		return this.registry;
+	}
+
+	@Override
 	public ResourceLoader getResourceLoader() {
-		return resourceLoader;
+		return this.resourceLoader;
 	}
 
-	public Map<String, BeanDefinition> getRegistryBeanDefinition() {
-		return registryBeanDefinition;
-	}
-
-	public Set<String> getRegistryComponentClassesSet() {
-		return registryComponentClassesSet;
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
 	}
 
 	@Override
-	public boolean containsBeanDefinition(String beanName) {
-		return registryBeanDefinition.containsKey(beanName);
+	public ClassLoader getBeanClassLoader() {
+		return resourceLoader.getClassLoader();
 	}
 
 	@Override
-	public int getBeanDefinitionCount() {
-		return registryBeanDefinition.size();
+	public int loadBeanDefinitions(String... locations) throws BeanDefinitionStoreException {
+		int count = 0;
+		for (String location : locations) {
+			count += loadBeanDefinitions(location);
+		}
+		return count;
 	}
 
 	@Override
-	public BeanDefinition getBeanDefinition(String beanName) {
-		return registryBeanDefinition.get(beanName);
-	}
-
-	@Override
-	public void removeBeanDefinition(String beanName) {
-		registryBeanDefinition.remove(beanName);
+	public int loadBeanDefinitions(Resource... resources) throws BeanDefinitionStoreException {
+		int count = 0;
+		for (Resource resource : resources) {
+			count += loadBeanDefinitions(resource);
+		}
+		return count;
 	}
 }

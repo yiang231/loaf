@@ -1,5 +1,5 @@
 package com.xjdl.framework.beans.factory;
 
-public interface BeanNameAware {
+public interface BeanNameAware extends Aware {
 	void setBeanName(String name);
 }

@@ -1,7 +1,12 @@
 package com.xjdl.framework.beans.factory.config;
 
-public interface BeanPostProcessor {
-	Object postProcessBeforeInitialize(String name, Object bean);
+import com.xjdl.framework.beans.BeansException;
 
-	Object postProcessAfterInitialize(String name, Object bean);
+/**
+ * Bean 执行初始化方法前后的操作
+ */
+public interface BeanPostProcessor {
+	Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException;
+
+	Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;
 }

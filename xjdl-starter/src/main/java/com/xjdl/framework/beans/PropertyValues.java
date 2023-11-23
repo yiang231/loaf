@@ -1,38 +1,11 @@
 package com.xjdl.framework.beans;
 
+public interface PropertyValues {
+    PropertyValue[] getPropertyValues();
 
-import java.util.ArrayList;
-import java.util.List;
+    PropertyValue getPropertyValue(String propertyName);
 
-public class PropertyValues {
+    void addPropertyValue(PropertyValue pv);
 
-	private final List<PropertyValue> propertyValueList = new ArrayList<PropertyValue>();
-
-	public PropertyValues() {
-	}
-
-	public void addPropertyValue(PropertyValue pv) {
-		// TODO 这里可以对于重复propertyName进行判断，直接用list没法做到
-		this.propertyValueList.add(pv);
-	}
-
-	public List<PropertyValue> getPropertyValues() {
-		return this.propertyValueList;
-	}
-
-	public PropertyValue getPropertyValue(String propertyName) {
-		for (PropertyValue pv : this.propertyValueList) {
-			if (pv.getName().equals(propertyName)) {
-				return pv;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public String toString() {
-		return "PropertyValues{" +
-				"propertyValueList=" + propertyValueList +
-				'}';
-	}
+    boolean contains(String propertyName);
 }

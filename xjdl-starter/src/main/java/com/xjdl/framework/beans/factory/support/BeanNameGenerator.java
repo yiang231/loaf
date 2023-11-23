@@ -1,5 +1,10 @@
 package com.xjdl.framework.beans.factory.support;
 
+import com.xjdl.framework.beans.factory.config.BeanDefinition;
+
+/**
+ * 注册 BeanDefinition 时生成名称
+ */
 public interface BeanNameGenerator {
-	<T> String generate(Class<T> beanClass);
+    String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry);
 }

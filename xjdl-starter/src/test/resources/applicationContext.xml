@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="customBeanDefinitionRegistryPostProcessor"
+          class="com.xjdl.app.config.CustomBeanDefinitionRegistryPostProcessor"/>
+
+    <bean id="customBeanPostProcessor" class="com.xjdl.app.config.CustomBeanPostProcessor"/>
+
+    <bean id="outputService" name="outputService" scope="singleton" lazy-init="true"
+          init-method="initMethodName" destroy-method="destroyMethodName"
+          class="com.xjdl.app.service.OutputService">
+    </bean>
+
+    <bean id="helloWorldService" name="helloWorldService" scope="singleton"
+          class="com.xjdl.app.service.HelloWorldService">
+        <property name="text" value="Hello World!"/>
+        <property name="outputService" ref="outputService"/>
+    </bean>
+</beans>

@@ -40,6 +40,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void preInstantiateSingletons() throws BeansException {
+		if (log.isTraceEnabled()) {
+			log.trace("Pre-instantiating singletons in " + this);
+		}
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 		for (String beanName : beanNames) {
 			getBean(beanName);

@@ -22,6 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 
 @Slf4j
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
@@ -87,7 +91,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (log.isTraceEnabled()) {
 				log.trace("Invoking afterPropertiesSet() on bean with name '" + beanName + "'");
 			}
-			((InitializingBean) bean).afterPropertiesSet();
+			if (System.getSecurityManager() != null) {
+				try {
+					AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
+						((InitializingBean) bean).afterPropertiesSet();
+						return null;
+					}, getAccessControlContext());
+				} catch (PrivilegedActionException pae) {
+					throw pae.getException();
+				}
+			} else {
+				((InitializingBean) bean).afterPropertiesSet();
+			}
 		}
 		if (mbd != null) {
 			String initMethodName = mbd.getInitMethodName();
@@ -104,11 +119,26 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (log.isTraceEnabled()) {
 			log.trace("Invoking init method  '" + initMethodName + "' on bean with name '" + beanName + "'");
 		}
-		try {
-			ReflectionUtils.makeAccessible(initMethod);
-			initMethod.invoke(bean);
-		} catch (InvocationTargetException ex) {
-			throw ex.getTargetException();
+		Method methodToInvoke = initMethod;
+		if (System.getSecurityManager() != null) {
+			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+				ReflectionUtils.makeAccessible(methodToInvoke);
+				return null;
+			});
+			try {
+				AccessController.doPrivileged((PrivilegedExceptionAction<Object>)
+						() -> methodToInvoke.invoke(bean), getAccessControlContext());
+			} catch (PrivilegedActionException pae) {
+				InvocationTargetException ex = (InvocationTargetException) pae.getException();
+				throw ex.getTargetException();
+			}
+		} else {
+			try {
+				ReflectionUtils.makeAccessible(methodToInvoke);
+				methodToInvoke.invoke(bean);
+			} catch (InvocationTargetException ex) {
+				throw ex.getTargetException();
+			}
 		}
 	}
 
@@ -156,7 +186,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	protected Object instantiateBean(String beanName, BeanDefinition mbd) {
 		try {
-			return getInstantiationStrategy().instantiate(mbd, beanName, this);
+			Object beanInstance;
+			if (System.getSecurityManager() != null) {
+				beanInstance = AccessController.doPrivileged(
+						(PrivilegedAction<Object>) () -> getInstantiationStrategy().instantiate(mbd, beanName, this),
+						getAccessControlContext());
+			} else {
+				beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, this);
+			}
+			return beanInstance;
 		} catch (Throwable ex) {
 			throw new BeanCreationException("Instantiation of bean named " + beanName + " failed", ex);
 		}
@@ -172,7 +210,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	protected Object initializeBean(String beanName, Object bean, BeanDefinition mbd) {
-		invokeAwareMethods(beanName, bean);
+		if (System.getSecurityManager() != null) {
+			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+				invokeAwareMethods(beanName, bean);
+				return null;
+			}, getAccessControlContext());
+		} else {
+			invokeAwareMethods(beanName, bean);
+		}
 		applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 		try {
 			invokeInitMethods(beanName, bean, mbd);

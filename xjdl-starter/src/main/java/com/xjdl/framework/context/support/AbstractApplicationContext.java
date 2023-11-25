@@ -144,6 +144,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		beanFactory.setBeanClassLoader(getClassLoader());
+		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		if (!beanFactory.containsLocalBean(APPLICATION_STARTUP_BEAN_NAME)) {
 			beanFactory.registerSingleton(APPLICATION_STARTUP_BEAN_NAME, getApplicationStartup());
 		}

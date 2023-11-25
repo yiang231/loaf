@@ -98,4 +98,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 		this.serializationId = serializationId;
 	}
+
+	@Override
+	public void destroySingletons() {
+		super.destroySingletons();
+	}
+
+	@Override
+	public String[] getBeanNamesForType(Class<?> type) {
+		return getBeansOfType(type).keySet().toArray(new String[0]);
+	}
 }

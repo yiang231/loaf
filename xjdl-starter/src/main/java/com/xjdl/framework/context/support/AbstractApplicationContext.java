@@ -5,6 +5,9 @@ import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.config.AutowireCapableBeanFactory;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.ConfigurableListableBeanFactory;
+import com.xjdl.framework.beans.factory.support.AbstractBeanFactory;
+import com.xjdl.framework.beans.factory.support.BeanDefinitionRegistry;
+import com.xjdl.framework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import com.xjdl.framework.beans.factory.support.BeanFactoryPostProcessor;
 import com.xjdl.framework.context.ApplicationContext;
 import com.xjdl.framework.context.ConfigurableApplicationContext;
@@ -15,6 +18,7 @@ import com.xjdl.framework.util.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,6 +32,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	private final AtomicBoolean closed = new AtomicBoolean();
 	private final Object startupShutdownMonitor = new Object();
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+	private Thread shutdownHook;
 	private long startupDate;
 	private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
 	private ApplicationContext parent;
@@ -66,25 +71,156 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 				if (log.isWarnEnabled()) {
 					log.warn("Exception encountered during context initialization - " + "cancelling refresh attempt: " + ex);
 				}
+				destroyBeans();
 				cancelRefresh(ex);
 				throw ex;
 			} finally {
+				resetCommonCaches();
 				contextRefresh.end();
 			}
 		}
 	}
 
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessors) {
-			beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
+		Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessors = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
+		for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessors.values()) {
+			this.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
+		}
+		invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
+	}
+
+	public void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
+		if (beanFactory instanceof BeanDefinitionRegistry) {
+			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
+
+			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
+				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
+					BeanDefinitionRegistryPostProcessor registryProcessor =
+							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					registryProcessor.postProcessBeanDefinitionRegistry(registry);
+					registryProcessors.add(registryProcessor);
+				} else {
+					regularPostProcessors.add(postProcessor);
+				}
+			}
+
+			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
+			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
+		}
+	}
+
+	private void invokeBeanFactoryPostProcessors(Collection<? extends BeanFactoryPostProcessor> postProcessors, ConfigurableListableBeanFactory beanFactory) {
+		for (BeanFactoryPostProcessor postProcessor : postProcessors) {
+			StartupStep postProcessBeanFactory = beanFactory.getApplicationStartup()
+					.start("context.bean-factory.post-process")
+					.tag("postProcessor", postProcessor::toString);
+			postProcessor.postProcessBeanFactory(beanFactory);
+			postProcessBeanFactory.end();
 		}
 	}
 
 	protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
-		for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
-			beanFactory.addBeanPostProcessor(beanPostProcessor);
+		List<BeanPostProcessor> beanPostProcessors = new ArrayList<>(beanPostProcessorMap.values());
+		registerBeanPostProcessors(beanFactory, beanPostProcessors);
+	}
+
+	private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory, List<BeanPostProcessor> postProcessors) {
+		if (beanFactory instanceof AbstractBeanFactory) {
+			((AbstractBeanFactory) beanFactory).addBeanPostProcessors(postProcessors);
+		} else {
+			for (BeanPostProcessor postProcessor : postProcessors) {
+				beanFactory.addBeanPostProcessor(postProcessor);
+			}
 		}
+	}
+
+	@Override
+	public String[] getBeanNamesForType(Class<?> type) {
+		return getBeanFactory().getBeanNamesForType(type);
+	}
+
+	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+		beanFactory.setBeanClassLoader(getClassLoader());
+		if (!beanFactory.containsLocalBean(APPLICATION_STARTUP_BEAN_NAME)) {
+			beanFactory.registerSingleton(APPLICATION_STARTUP_BEAN_NAME, getApplicationStartup());
+		}
+	}
+
+	public List<BeanFactoryPostProcessor> getBeanFactoryPostProcessors() {
+		return this.beanFactoryPostProcessors;
+	}
+
+	@Override
+	public ApplicationStartup getApplicationStartup() {
+		return this.applicationStartup;
+	}
+
+	@Override
+	public void close() {
+		synchronized (this.startupShutdownMonitor) {
+			doClose();
+			// If we registered a JVM shutdown hook, we don't need it anymore now:
+			// We've already explicitly closed the context.
+			if (this.shutdownHook != null) {
+				try {
+					Runtime.getRuntime().removeShutdownHook(this.shutdownHook);
+				} catch (IllegalStateException ex) {
+					// ignore - VM is already shutting down
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean containsLocalBean(String name) {
+		return getBeanFactory().containsLocalBean(name);
+	}
+
+	protected void doClose() {
+		if (this.active.get() && this.closed.compareAndSet(false, true)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Closing " + this);
+			}
+			destroyBeans();
+			closeBeanFactory();
+			onClose();
+			resetCommonCaches();
+			this.active.set(false);
+		}
+	}
+
+	protected void resetCommonCaches() {
+	}
+
+	protected void onClose() {
+	}
+
+	protected void destroyBeans() {
+		getBeanFactory().destroySingletons();
+	}
+
+	@Override
+	public void registerShutdownHook() {
+		if (this.shutdownHook == null) {
+			// No shutdown hook registered yet.
+			this.shutdownHook = new Thread(SHUTDOWN_HOOK_THREAD_NAME) {
+				@Override
+				public void run() {
+					synchronized (startupShutdownMonitor) {
+						doClose();
+					}
+				}
+			};
+			Runtime.getRuntime().addShutdownHook(this.shutdownHook);
+		}
+	}
+
+	@Override
+	public boolean isActive() {
+		return this.active.get();
 	}
 
 	protected void cancelRefresh(BeansException ex) {
@@ -93,10 +229,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 	protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
 		beanFactory.preInstantiateSingletons();
-	}
-
-	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-		beanFactory.setBeanClassLoader(getClassLoader());
 	}
 
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {

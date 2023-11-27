@@ -71,7 +71,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		} catch (BeanDefinitionValidationException ex) {
 			throw new BeanCreationException("Invalid destruction signature " + beanName, ex);
 		}
-		super.registerSingleton(beanName, exposedObject);
+		if (beanDefinition.isSingleton()) {
+			super.registerSingleton(beanName, exposedObject);
+		}
 		return exposedObject;
 	}
 

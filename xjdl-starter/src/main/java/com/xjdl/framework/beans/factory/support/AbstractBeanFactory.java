@@ -97,9 +97,16 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
 	protected abstract boolean containsBeanDefinition(String beanName);
 
+	/**
+	 * 多例 Bean 不注册销毁方法
+	 */
 	protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition mbd) {
-		if (bean instanceof DisposableBean || StringUtils.hasText(mbd.getDestroyMethodName())) {
-			registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, mbd));
+		if (!mbd.isPrototype()) {
+			if (mbd.isSingleton()) {
+				if (bean instanceof DisposableBean || StringUtils.hasText(mbd.getDestroyMethodName())) {
+					registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, mbd));
+				}
+			}
 		}
 	}
 

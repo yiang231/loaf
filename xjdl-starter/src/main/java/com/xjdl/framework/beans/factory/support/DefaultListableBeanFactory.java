@@ -45,7 +45,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 		for (String beanName : beanNames) {
-			getBean(beanName);
+			BeanDefinition bd = getBeanDefinition(beanName);
+			if (bd.isSingleton()) {
+				getBean(beanName);
+			}
 		}
 	}
 

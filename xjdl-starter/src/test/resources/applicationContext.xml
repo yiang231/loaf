@@ -5,7 +5,7 @@
 
     <bean id="customBeanPostProcessor" class="com.xjdl.app.config.CustomBeanPostProcessor"/>
 
-    <bean id="outputService" name="outputService" scope="singleton" lazy-init="true"
+    <bean id="outputService" name="outputService" scope="prototype" lazy-init="true"
           init-method="initMethod" destroy-method="destroyMethod"
           class="com.xjdl.app.service.OutputService">
     </bean>

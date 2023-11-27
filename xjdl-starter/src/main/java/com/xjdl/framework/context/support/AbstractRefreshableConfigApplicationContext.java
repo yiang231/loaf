@@ -1,9 +1,10 @@
 package com.xjdl.framework.context.support;
 
 import com.xjdl.framework.beans.factory.BeanNameAware;
+import com.xjdl.framework.beans.factory.InitializingBean;
 import com.xjdl.framework.context.ApplicationContext;
 
-public abstract class AbstractRefreshableConfigApplicationContext extends AbstractRefreshableApplicationContext implements BeanNameAware {
+public abstract class AbstractRefreshableConfigApplicationContext extends AbstractRefreshableApplicationContext implements BeanNameAware, InitializingBean {
 	private boolean setIdCalled = false;
 	private String[] configLocations;
 
@@ -28,5 +29,12 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	 */
 	protected String[] getDefaultConfigLocations() {
 		return null;
+	}
+
+	@Override
+	public void afterPropertiesSet() {
+		if (!isActive()) {
+			refresh();
+		}
 	}
 }

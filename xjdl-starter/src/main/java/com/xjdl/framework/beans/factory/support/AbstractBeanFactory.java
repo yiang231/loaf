@@ -2,11 +2,17 @@ package com.xjdl.framework.beans.factory.support;
 
 import com.xjdl.framework.beans.BeansException;
 import com.xjdl.framework.beans.factory.BeanFactory;
+import com.xjdl.framework.beans.factory.DisposableBean;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.ConfigurableBeanFactory;
+import com.xjdl.framework.core.metrics.ApplicationStartup;
 import com.xjdl.framework.util.ClassUtils;
+import com.xjdl.framework.util.StringUtils;
 
+import java.security.AccessControlContext;
+import java.security.AccessController;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -15,6 +21,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
+	private SecurityContextProvider securityContextProvider;
+	private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
 	private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 	private BeanFactory parentBeanFactory;
 
@@ -57,6 +65,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 		return beanPostProcessors;
 	}
 
+	@Override
 	public ClassLoader getBeanClassLoader() {
 		return this.beanClassLoader;
 	}
@@ -80,5 +89,48 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 			throw new IllegalStateException("Cannot set parent bean factory to self");
 		}
 		this.parentBeanFactory = parentBeanFactory;
+	}
+
+	@Override
+	public boolean containsLocalBean(String name) {
+		return (containsSingleton(name) || containsBeanDefinition(name));
+	}
+
+	protected abstract boolean containsBeanDefinition(String beanName);
+
+	/**
+	 * 多例 Bean 不注册销毁方法
+	 */
+	protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition mbd) {
+		if (!mbd.isPrototype()) {
+			if (mbd.isSingleton()) {
+				if (bean instanceof DisposableBean || StringUtils.hasText(mbd.getDestroyMethodName())) {
+					registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, mbd));
+				}
+			}
+		}
+	}
+
+	@Override
+	public ApplicationStartup getApplicationStartup() {
+		return this.applicationStartup;
+	}
+
+	public void addBeanPostProcessors(Collection<? extends BeanPostProcessor> beanPostProcessors) {
+		synchronized (this.beanPostProcessors) {
+			this.beanPostProcessors.removeAll(beanPostProcessors);
+			this.beanPostProcessors.addAll(beanPostProcessors);
+		}
+	}
+
+	@Override
+	public AccessControlContext getAccessControlContext() {
+		return (this.securityContextProvider != null ?
+				this.securityContextProvider.getAccessControlContext() :
+				AccessController.getContext());
+	}
+
+	public void setSecurityContextProvider(SecurityContextProvider securityProvider) {
+		this.securityContextProvider = securityProvider;
 	}
 }

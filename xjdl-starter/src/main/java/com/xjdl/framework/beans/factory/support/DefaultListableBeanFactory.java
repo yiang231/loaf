@@ -40,9 +40,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void preInstantiateSingletons() throws BeansException {
+		if (log.isTraceEnabled()) {
+			log.trace("Pre-instantiating singletons in " + this);
+		}
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 		for (String beanName : beanNames) {
-			getBean(beanName);
+			BeanDefinition bd = getBeanDefinition(beanName);
+			if (bd.isSingleton()) {
+				getBean(beanName);
+			}
 		}
 	}
 
@@ -97,5 +103,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			serializableFactories.remove(this.serializationId);
 		}
 		this.serializationId = serializationId;
+	}
+
+	@Override
+	public void destroySingletons() {
+		super.destroySingletons();
+	}
+
+	@Override
+	public String[] getBeanNamesForType(Class<?> type) {
+		return getBeansOfType(type).keySet().toArray(new String[0]);
 	}
 }

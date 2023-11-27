@@ -11,21 +11,30 @@ import java.util.Collection;
 @Slf4j
 class DefaultResourceLoaderTest {
 
-    @Test
-    void getResource() throws Exception {
-        DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+	@Test
+	void getResource() throws Exception {
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 
-        Resource resource = resourceLoader.getResource("classpath:log4j2.xml");
-        Assertions.assertEquals(resource.getPath(), "log4j2.xml");
+		Resource resource = resourceLoader.getResource("classpath:log4j2.xml");
+		Assertions.assertEquals(resource.getPath(), "log4j2.xml");
 
-        InputStream inputStream = resource.getInputStream();
-        print(inputStream);
+		InputStream inputStream = resource.getInputStream();
+		print(inputStream);
 
-        inputStream.close();
-    }
+		inputStream.close();
+	}
 
-    private void print(InputStream inputStream) {
-        Collection<String> content = IOUtil.readLines(inputStream);
-        content.forEach(log::info);
-    }
+	@Test
+	void testClassPathResource() throws Exception {
+		Resource classPathResource = new ClassPathResource("applicationContext.xml");
+		InputStream is = classPathResource.getInputStream();
+		print(is);
+
+		is.close();
+	}
+
+	private void print(InputStream inputStream) {
+		Collection<String> content = IOUtil.readLines(inputStream);
+		content.forEach(log::info);
+	}
 }

@@ -6,7 +6,11 @@ import com.xjdl.framework.beans.BeansException;
  * Bean 执行初始化方法前后的操作
  */
 public interface BeanPostProcessor {
-	Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException;
+	default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
 
-	Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;
+	default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
 }

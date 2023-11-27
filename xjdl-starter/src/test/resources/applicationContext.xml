@@ -5,8 +5,8 @@
 
     <bean id="customBeanPostProcessor" class="com.xjdl.app.config.CustomBeanPostProcessor"/>
 
-    <bean id="outputService" name="outputService" scope="singleton" lazy-init="true"
-          init-method="initMethodName" destroy-method="destroyMethodName"
+    <bean id="outputService" name="outputService" scope="prototype" lazy-init="true"
+          init-method="initMethod" destroy-method="destroyMethod"
           class="com.xjdl.app.service.OutputService">
     </bean>
 
@@ -15,4 +15,10 @@
         <property name="text" value="Hello World!"/>
         <property name="outputService" ref="outputService"/>
     </bean>
+
+    <bean class="com.xjdl.app.config.ContextClosedEventListener" id="contextClosedEventListener"/>
+
+    <bean class="com.xjdl.app.config.ContextRefreshedEventListener" id="contextRefreshedEventListener"/>
+
+    <bean class="com.xjdl.app.config.CustomEventListener" id="customEventListener"/>
 </beans>

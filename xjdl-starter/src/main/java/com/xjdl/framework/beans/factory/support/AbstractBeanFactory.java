@@ -20,8 +20,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 面向框架本身
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
-	private SecurityContextProvider securityContextProvider;
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
+	private SecurityContextProvider securityContextProvider;
 	private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
 	private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 	private BeanFactory parentBeanFactory;
@@ -65,6 +65,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 		return beanPostProcessors;
 	}
 
+	@Override
 	public ClassLoader getBeanClassLoader() {
 		return this.beanClassLoader;
 	}
@@ -121,6 +122,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 			this.beanPostProcessors.addAll(beanPostProcessors);
 		}
 	}
+
 	@Override
 	public AccessControlContext getAccessControlContext() {
 		return (this.securityContextProvider != null ?

@@ -10,13 +10,22 @@ import com.xjdl.framework.beans.factory.support.BeanDefinitionRegistry;
 import com.xjdl.framework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import com.xjdl.framework.beans.factory.support.BeanFactoryPostProcessor;
 import com.xjdl.framework.context.ApplicationContext;
+import com.xjdl.framework.context.ApplicationEvent;
+import com.xjdl.framework.context.ApplicationListener;
 import com.xjdl.framework.context.ConfigurableApplicationContext;
+import com.xjdl.framework.context.event.ApplicationEventMulticaster;
+import com.xjdl.framework.context.event.ContextClosedEvent;
+import com.xjdl.framework.context.event.ContextRefreshedEvent;
+import com.xjdl.framework.context.event.SimpleApplicationEventMulticaster;
 import com.xjdl.framework.core.io.DefaultResourceLoader;
+import com.xjdl.framework.core.io.Resource;
+import com.xjdl.framework.core.io.support.ResourcePatternResolver;
 import com.xjdl.framework.core.metrics.ApplicationStartup;
 import com.xjdl.framework.core.metrics.StartupStep;
 import com.xjdl.framework.util.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,10 +37,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @Slf4j
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
+	public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
 	private final AtomicBoolean active = new AtomicBoolean();
 	private final AtomicBoolean closed = new AtomicBoolean();
 	private final Object startupShutdownMonitor = new Object();
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+	private ApplicationEventMulticaster applicationEventMulticaster;
+	private ResourcePatternResolver resourcePatternResolver;
 	private Thread shutdownHook;
 	private long startupDate;
 	private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
@@ -45,6 +57,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 	public AbstractApplicationContext() {
+		this.resourcePatternResolver = getResourcePatternResolver();
 	}
 
 	@Override
@@ -64,9 +77,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 				invokeBeanFactoryPostProcessors(beanFactory);
 				registerBeanPostProcessors(beanFactory);
 				beanPostProcess.end();
-				StartupStep preInstantiateSingletons = this.applicationStartup.start("context.preInstantiateSingletons");
+				initApplicationEventMulticaster();
+				onRefresh();
+				registerListeners();
 				finishBeanFactoryInitialization(beanFactory);
-				preInstantiateSingletons.end();
+				finishRefresh();
 			} catch (BeansException ex) {
 				if (log.isWarnEnabled()) {
 					log.warn("Exception encountered during context initialization - " + "cancelling refresh attempt: " + ex);
@@ -79,6 +94,53 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 				contextRefresh.end();
 			}
 		}
+	}
+
+	protected void finishRefresh() {
+		publishEvent(new ContextRefreshedEvent(this));
+	}
+
+	protected void initApplicationEventMulticaster() {
+		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+		beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
+		if (log.isTraceEnabled()) {
+			log.trace("No '" + APPLICATION_EVENT_MULTICASTER_BEAN_NAME + "' bean, using " + "[" + this.applicationEventMulticaster.getClass().getSimpleName() + "]");
+		}
+	}
+
+	protected void onRefresh() throws BeansException {
+		// 交由 WebApplicationContext 处理
+	}
+
+	protected void registerListeners() {
+		Map<String, ApplicationListener> applicationListenerMap = getBeansOfType(ApplicationListener.class);
+		List<ApplicationListener> applicationListeners = new ArrayList<>(applicationListenerMap.values());
+		for (ApplicationListener applicationListener : applicationListeners) {
+			getApplicationEventMulticaster().addApplicationListener(applicationListener);
+		}
+	}
+
+	ApplicationEventMulticaster getApplicationEventMulticaster() {
+		if (this.applicationEventMulticaster == null) {
+			throw new IllegalStateException("ApplicationEventMulticaster not initialized - " + "call 'refresh' before multicasting events via the context: " + this);
+		}
+		return this.applicationEventMulticaster;
+	}
+
+	@Override
+	public void publishEvent(Object event) {
+		getApplicationEventMulticaster().multicastEvent((ApplicationEvent) event);
+	}
+
+	@Override
+	public Resource[] getResources(String locationPattern) throws IOException {
+		return this.resourcePatternResolver.getResources(locationPattern);
+	}
+
+	protected ResourcePatternResolver getResourcePatternResolver() {
+		// TODO 后期实现
+		return null;
 	}
 
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
@@ -184,6 +246,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		if (this.active.get() && this.closed.compareAndSet(false, true)) {
 			if (log.isDebugEnabled()) {
 				log.debug("Closing " + this);
+			}
+			try {
+				publishEvent(new ContextClosedEvent(this));
+			} catch (Throwable ex) {
+				log.warn("Exception thrown from ApplicationListener handling ContextClosedEvent", ex);
 			}
 			destroyBeans();
 			closeBeanFactory();

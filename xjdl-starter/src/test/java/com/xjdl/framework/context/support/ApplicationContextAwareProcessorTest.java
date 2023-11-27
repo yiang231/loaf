@@ -28,5 +28,6 @@ class ApplicationContextAwareProcessorTest {
 		Assertions.assertNotNull(customBeanPostProcessor.getApplicationContext());
 		Assertions.assertNotNull(customBeanPostProcessor.getApplicationStartup());
 		Assertions.assertNotNull(customBeanPostProcessor.getResourceLoader());
+		Assertions.assertNotNull(customBeanPostProcessor.getApplicationEventPublisher());
 	}
 }

@@ -15,4 +15,10 @@
         <property name="text" value="Hello World!"/>
         <property name="outputService" ref="outputService"/>
     </bean>
+
+    <bean class="com.xjdl.app.config.ContextClosedEventListener" id="contextClosedEventListener"/>
+
+    <bean class="com.xjdl.app.config.ContextRefreshedEventListener" id="contextRefreshedEventListener"/>
+
+    <bean class="com.xjdl.app.config.CustomEventListener" id="customEventListener"/>
 </beans>

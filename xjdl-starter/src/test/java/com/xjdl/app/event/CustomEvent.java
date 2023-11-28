@@ -1,4 +1,4 @@
-package com.xjdl.app.config;
+package com.xjdl.app.event;
 
 import com.xjdl.framework.context.ApplicationContext;
 import com.xjdl.framework.context.event.ApplicationContextEvent;

@@ -9,8 +9,9 @@
         <version>2.7.17</version><!--换版本时修改-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <groupId>com.xjdl</groupId>
     <artifactId>xjdl-starter</artifactId>
-    <version>1.2.0</version>
+    <version>2.1.0</version>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

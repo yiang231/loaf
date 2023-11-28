@@ -207,11 +207,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	@Override
-	public Object initializeBean(Object existingBean, String beanName) throws BeansException {
-		return initializeBean(beanName, existingBean, null);
-	}
-
-	protected Object initializeBean(String beanName, Object bean, BeanDefinition mbd) {
+	public Object initializeBean(String beanName, Object bean, BeanDefinition mbd) {
 		if (System.getSecurityManager() != null) {
 			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
 				invokeAwareMethods(beanName, bean);

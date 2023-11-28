@@ -3,10 +3,11 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!--springboot2最终版 20231123-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.7.17</version><!--换版本时修改-->
+        <version>2.7.18</version><!--换版本时修改-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.xjdl</groupId>

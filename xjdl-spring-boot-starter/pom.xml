@@ -5,18 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xjdl-spring-boot-starter</artifactId>
     <groupId>com.xjdl</groupId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
+    <!--springboot2最终版 20231123-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.17</version><!--换版本时修改-->
+        <version>2.7.18</version><!--换版本时修改-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot.version>2.7.17</spring-boot.version><!--换版本时修改-->
+        <spring-boot.version>2.7.18</spring-boot.version><!--换版本时修改-->
     </properties>
     <dependencies>
         <dependency>

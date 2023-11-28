@@ -1,6 +1,6 @@
 package com.xjdl.framework.context.support;
 
-import com.xjdl.app.config.CustomEvent;
+import com.xjdl.app.event.CustomEvent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -104,9 +104,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 		beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
-		if (log.isTraceEnabled()) {
-			log.trace("No '" + APPLICATION_EVENT_MULTICASTER_BEAN_NAME + "' bean, using " + "[" + this.applicationEventMulticaster.getClass().getSimpleName() + "]");
-		}
 	}
 
 	protected void onRefresh() throws BeansException {
@@ -204,6 +201,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		return getBeanFactory().getBeanNamesForType(type);
 	}
 
+	/**
+	 * 准备 BeanFactory ，并且配置各种属性
+	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		beanFactory.setBeanClassLoader(getClassLoader());
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
@@ -295,6 +295,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		this.active.set(false);
 	}
 
+	/**
+	 * 预实例化对象
+	 */
 	protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
 		beanFactory.preInstantiateSingletons();
 	}
@@ -378,6 +381,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		this.parent = parent;
 	}
 
+	/**
+	 * 创建 DefaultListableBeanFactory，并且扫描 XML 配置文件
+	 */
 	protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
 
 	protected abstract void closeBeanFactory();

@@ -16,9 +16,11 @@
         <property name="outputService" ref="outputService"/>
     </bean>
 
-    <bean class="com.xjdl.app.config.ContextClosedEventListener" id="contextClosedEventListener"/>
+    <bean class="com.xjdl.app.event.ContextClosedEventListener" id="contextClosedEventListener"/>
 
-    <bean class="com.xjdl.app.config.ContextRefreshedEventListener" id="contextRefreshedEventListener"/>
+    <bean class="com.xjdl.app.event.ContextRefreshedEventListener" id="contextRefreshedEventListener"/>
 
-    <bean class="com.xjdl.app.config.CustomEventListener" id="customEventListener"/>
+    <bean class="com.xjdl.app.event.CustomEventListener" id="customEventListener"/>
+
+    <bean class="com.xjdl.app.event.CustomEventListener0" id="customEventListener0"/>
 </beans>

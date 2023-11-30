@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 
 /**
  * 基于 CGLib 的动态代理
+ *
+ * @see org.springframework.aop.framework.ObjenesisCglibAopProxy
  */
 @Slf4j
 class CglibAopProxy implements AopProxy, Serializable {
@@ -56,6 +58,7 @@ class CglibAopProxy implements AopProxy, Serializable {
         private DynamicAdvisedInterceptor(AdvisedSupport advised) {
             this.advised = advised;
         }
+
         /**
          * com.xjdl.framework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept(java.lang.Object, java.lang.reflect.Method, java.lang.Object[], net.sf.cglib.proxy.MethodProxy)
          * com.xjdl.app.config.DurationMethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)

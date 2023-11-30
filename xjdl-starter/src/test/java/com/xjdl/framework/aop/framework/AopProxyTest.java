@@ -6,15 +6,17 @@ import com.xjdl.app.service.OutputService;
 import com.xjdl.framework.aop.aspectj.AspectJExpressionPointcut;
 import com.xjdl.framework.aop.target.TargetSource;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AopProxyTest {
-    private static volatile AdvisedSupport advisedSupport;
+    private volatile AdvisedSupport advisedSupport;
 
     @BeforeAll
     void beforeAll() {
@@ -34,7 +36,7 @@ class AopProxyTest {
         advisedSupport.setMethodMatcher(pointcut);
     }
 
-    static Stream<AopProxy> aopProxyProvider() {
+    Stream<AopProxy> aopProxyProvider() {
         return Stream.of(
                 new JdkDynamicAopProxy(advisedSupport),
                 new CglibAopProxy(advisedSupport)
@@ -43,8 +45,27 @@ class AopProxyTest {
 
     @ParameterizedTest
     @MethodSource("com.xjdl.framework.aop.framework.AopProxyTest#aopProxyProvider")
-    void testWithMultiArgMethodSource(AopProxy aopProxy) {
+    void testAopProxy(AopProxy aopProxy) {
         IService outputServiceProxy = (IService) aopProxy.getProxy();
+        outputServiceProxy.say();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void testAopProxyFactory(Boolean isProxyTargetClass) {
+        advisedSupport.setProxyTargetClass(isProxyTargetClass);
+
+        AopProxyFactory aopProxyFactory = new DefaultAopProxyFactory();
+        AopProxy aopProxy = aopProxyFactory.createAopProxy(advisedSupport);
+
+        IService outputServiceProxy = (IService) aopProxy.getProxy();
+        outputServiceProxy.say();
+    }
+
+    @Test
+    void testProxyFactory() {
+        ProxyFactory proxyFactory = new ProxyFactory(advisedSupport);
+        IService outputServiceProxy = (IService) proxyFactory.getProxy();
         outputServiceProxy.say();
     }
 }

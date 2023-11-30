@@ -9,18 +9,18 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Resource
-public class OutputService implements InitializingBean, DisposableBean {
+public class OutputService implements InitializingBean, DisposableBean, IService {
 	public void output(String text) {
-		log.info(text);
+		log.info("OutputService.output {}", text);
 	}
 
 	@PostConstruct
 	public void initMethod() {
-		log.info("OutputService.initMethod");
+		log.debug("OutputService.initMethod");
 	}
 
 	public void destroyMethod() {
-		log.info("OutputService.destroyMethod");
+		log.debug("OutputService.destroyMethod");
 	}
 
 	@Override
@@ -31,5 +31,10 @@ public class OutputService implements InitializingBean, DisposableBean {
 	@Override
 	public void afterPropertiesSet() {
 		log.debug("OutputService.afterPropertiesSet");
+	}
+
+	@Override
+	public void say() {
+		log.info("OutputService.say");
 	}
 }

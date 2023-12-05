@@ -2,6 +2,8 @@ package com.xjdl.app.service;
 
 import com.xjdl.framework.beans.factory.DisposableBean;
 import com.xjdl.framework.beans.factory.InitializingBean;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +11,10 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Resource
+@Setter
+@Getter
 public class OutputService implements InitializingBean, DisposableBean, IService {
+	private String name;
 	public void output(String text) {
 		log.info("OutputService.output {}", text);
 	}

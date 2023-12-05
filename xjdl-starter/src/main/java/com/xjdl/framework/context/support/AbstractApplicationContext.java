@@ -387,4 +387,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
 
 	protected abstract void closeBeanFactory();
+
+	@Override
+	public boolean containsBean(String name) {
+		return getBeanFactory().containsBean(name);
+	}
 }

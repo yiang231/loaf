@@ -15,8 +15,8 @@ class DefaultResourceLoaderTest {
 	void getResource() throws Exception {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 
-		Resource resource = resourceLoader.getResource("classpath:log4j2.xml");
-		Assertions.assertEquals(resource.getPath(), "log4j2.xml");
+		Resource resource = resourceLoader.getResource("classpath:log4j2-test.xml");
+		Assertions.assertEquals(resource.getPath(), "log4j2-test.xml");
 
 		InputStream inputStream = resource.getInputStream();
 		print(inputStream);

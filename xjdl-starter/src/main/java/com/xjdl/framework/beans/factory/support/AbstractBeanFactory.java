@@ -133,4 +133,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 	public void setSecurityContextProvider(SecurityContextProvider securityProvider) {
 		this.securityContextProvider = securityProvider;
 	}
+
+	@Override
+	public boolean containsBean(String beanName) {
+		if (containsSingleton(beanName) || containsBeanDefinition(beanName)) {
+			return true;
+		}
+		BeanFactory parentBeanFactory = getParentBeanFactory();
+		return (parentBeanFactory != null && parentBeanFactory.containsBean(beanName));
+	}
 }

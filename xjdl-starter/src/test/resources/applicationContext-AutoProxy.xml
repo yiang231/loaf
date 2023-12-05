@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <!--普通对象依赖了 outputService-->
+    <bean id="helloWorldService" name="helloWorldService" scope="singleton"
+          class="com.xjdl.app.service.HelloWorldService">
+        <property name="text" value="Hello World!"/>
+        <property name="outputService" ref="outputService"/>
+    </bean>
+    <!--需要代理的对象，实现了 IService#say 方法-->
+    <bean class="com.xjdl.app.service.OutputService" id="outputService">
+        <property name="name" value="output"/>
+    </bean>
+    <!--自动代理实现类-->
+    <bean class="com.xjdl.framework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          id="defaultAdvisorAutoProxyCreator"/>
+    <!--Advisor，自带切点 AspectJExpressionPointcut，需要配置切点表达式，以及 AdviceInterceptor 【增强方法拦截器】-->
+    <bean class="com.xjdl.framework.aop.aspectj.AspectJExpressionPointcutAdvisor"
+          id="aspectJExpressionPointcutAdvisor">
+        <property name="advice" ref="durationMethodInterceptor"/>
+        <property name="expression" value="execution(* com.xjdl.app.service.IService.say())"/>
+    </bean>
+    <!--AdviceInterceptor 增强方法前置拦截器-->
+    <bean class="com.xjdl.framework.aop.framework.adapter.MethodBeforeAdviceInterceptor"
+          id="methodBeforeAdviceInterceptor">
+        <property name="advice" ref="simpleMethodBeforeAdvice"/>
+    </bean>
+    <!--AdviceInterceptor 增强方法正常返回拦截器-->
+    <bean class="com.xjdl.framework.aop.framework.adapter.AfterReturningAdviceInterceptor"
+          id="afterReturningAdviceInterceptor">
+        <property name="advice" ref="simpleAfterReturningAdvice"/>
+    </bean>
+    <!--增强方法前置实现-->
+    <bean class="com.xjdl.app.advice.SimpleMethodBeforeAdvice" id="simpleMethodBeforeAdvice"/>
+    <!--增强方法正常返回实现-->
+    <bean class="com.xjdl.app.advice.SimpleAfterReturningAdvice" id="simpleAfterReturningAdvice"/>
+    <!--自定义增强实现-->
+    <bean class="com.xjdl.app.config.DurationMethodInterceptor" id="durationMethodInterceptor"/>
+</beans>

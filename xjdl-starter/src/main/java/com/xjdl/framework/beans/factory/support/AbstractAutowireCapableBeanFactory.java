@@ -13,6 +13,7 @@ import com.xjdl.framework.beans.factory.config.AutowireCapableBeanFactory;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.BeanReference;
+import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import com.xjdl.framework.core.NativeDetector;
 import com.xjdl.framework.util.BeanUtils;
 import com.xjdl.framework.util.ReflectionUtils;
@@ -47,11 +48,55 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	@Override
 	protected Object creatBean(String beanName, BeanDefinition beanDefinition) {
-		Object beanInstance = doCreateBean(beanName, beanDefinition);
 		if (log.isTraceEnabled()) {
-			log.trace("Finished creating instance of bean '" + beanName + "'");
+			log.trace("Creating instance of bean '" + beanName + "'");
 		}
-		return beanInstance;
+		try {
+			Object bean = resolveBeforeInstantiation(beanName, beanDefinition);
+			if (bean != null) {
+				return bean;
+			}
+		} catch (Throwable ex) {
+			throw new BeanCreationException("BeanPostProcessor before instantiation of bean '" + beanName + "' failed", ex);
+		}
+		try {
+			Object beanInstance = doCreateBean(beanName, beanDefinition);
+			if (log.isTraceEnabled()) {
+				log.trace("Finished creating instance of bean '" + beanName + "'");
+			}
+			return beanInstance;
+		} catch (BeanCreationException | IllegalStateException ex) {
+			throw ex;
+		} catch (Throwable ex) {
+			throw new BeanCreationException("Unexpected exception during bean '" + beanName + "' creation", ex);
+		}
+	}
+
+	/**
+	 * AOP的第一个时机，需要满足条件：手动创建 TargetSourceCreator，并且在 AbstractAutoProxyCreator 添加
+	 * <p>
+	 * 预处理阶段返回 BeanPostProcessors 处理后的代理对象，很少使用，
+	 * 因为若交由框架进行管理 Bean，此方法一旦返回了对象，就不会走创建分支，是不完整的 Bean，所以能在这里返回的都是使用者创建好的完整的 Bean
+	 */
+	protected Object resolveBeforeInstantiation(String beanName, BeanDefinition bd) {
+		Object bean = null;
+		bean = applyBeanPostProcessorsBeforeInstantiation(bd.getBeanClass(), beanName);
+		if (bean != null) {
+			bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+		}
+		return bean;
+	}
+
+	protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
+		for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+			if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+				Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

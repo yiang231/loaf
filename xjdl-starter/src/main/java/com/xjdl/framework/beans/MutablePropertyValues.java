@@ -44,6 +44,11 @@ public class MutablePropertyValues implements PropertyValues {
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return this.propertyValueList.isEmpty();
+	}
+
+	@Override
 	public String toString() {
 		return "MutablePropertyValues{" +
 				"propertyValueList=" + propertyValueList +

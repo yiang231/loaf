@@ -9,6 +9,7 @@ import com.xjdl.framework.aop.framework.AdvisedSupport;
 import com.xjdl.framework.aop.framework.ProxyFactory;
 import com.xjdl.framework.aop.target.TargetSource;
 import com.xjdl.framework.beans.BeansException;
+import com.xjdl.framework.beans.PropertyValues;
 import com.xjdl.framework.beans.factory.BeanClassLoaderAware;
 import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.BeanFactoryAware;
@@ -114,4 +115,9 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
     }
 
     protected abstract List<PointcutAdvisor> getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName) throws BeansException;
+
+    @Override
+    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
+    }
 }

@@ -29,5 +29,9 @@ public class BeanDefinition {
     public boolean isPrototype() {
         return SCOPE_PROTOTYPE.equals(this.scope);
     }
+
+    public boolean hasPropertyValues() {
+        return (this.propertyValues != null && !this.propertyValues.isEmpty());
+    }
 }
 

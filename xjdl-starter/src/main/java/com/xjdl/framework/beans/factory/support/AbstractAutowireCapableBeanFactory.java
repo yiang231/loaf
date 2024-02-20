@@ -2,6 +2,7 @@ package com.xjdl.framework.beans.factory.support;
 
 import com.xjdl.framework.beans.BeansException;
 import com.xjdl.framework.beans.PropertyValue;
+import com.xjdl.framework.beans.PropertyValues;
 import com.xjdl.framework.beans.factory.Aware;
 import com.xjdl.framework.beans.factory.BeanClassLoaderAware;
 import com.xjdl.framework.beans.factory.BeanCreationException;
@@ -80,7 +81,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected Object resolveBeforeInstantiation(String beanName, BeanDefinition bd) {
 		Object bean = null;
-		bean = applyBeanPostProcessorsBeforeInstantiation(bd.getBeanClass(), beanName);
+//		bean = applyBeanPostProcessorsBeforeInstantiation(bd.getBeanClass(), beanName);
 		if (bean != null) {
 			bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
 		}
@@ -126,7 +127,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param instanceWrapper 包装对象
 	 */
 	private void populateBean(String name, BeanDefinition beanDefinition, Object instanceWrapper) {
-		applyPropertyValues(name, beanDefinition, instanceWrapper);
+		PropertyValues pvs = (beanDefinition.hasPropertyValues() ? beanDefinition.getPropertyValues() : null);
+		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+		if (hasInstAwareBpps) {
+			for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				if (InstantiationAwareBeanPostProcessor.class.isAssignableFrom(bp.getClass())) {
+					PropertyValues pvsToUse = ((InstantiationAwareBeanPostProcessor) bp).postProcessProperties(pvs, instanceWrapper, name);
+					if (pvsToUse != null) {
+						pvs = pvsToUse;
+					}
+				}
+			}
+		}
+		if (pvs != null) {
+			applyPropertyValues(name, beanDefinition, instanceWrapper, pvs);
+		}
 	}
 
 	/**
@@ -192,9 +207,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	/**
 	 * 普通属性的注入
 	 */
-	private void applyPropertyValues(String name, BeanDefinition beanDefinition, Object bean) {
+	private void applyPropertyValues(String name, BeanDefinition beanDefinition, Object bean, PropertyValues pvs) {
 		try {
-			for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
+			for (PropertyValue propertyValue : pvs.getPropertyValues()) {
 				Object value = propertyValue.getValue();
 				if (value instanceof BeanReference) {
 					BeanReference beanReference = (BeanReference) value;

@@ -6,6 +6,7 @@ import com.xjdl.framework.beans.factory.DisposableBean;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.ConfigurableBeanFactory;
+import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import com.xjdl.framework.core.metrics.ApplicationStartup;
 import com.xjdl.framework.util.ClassUtils;
 import com.xjdl.framework.util.StringUtils;
@@ -141,5 +142,14 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 		}
 		BeanFactory parentBeanFactory = getParentBeanFactory();
 		return (parentBeanFactory != null && parentBeanFactory.containsBean(beanName));
+	}
+
+	protected boolean hasInstantiationAwareBeanPostProcessors() {
+		for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+			if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -4,19 +4,19 @@ import com.xjdl.framework.aop.Advisor;
 import com.xjdl.framework.aop.ClassFilter;
 import com.xjdl.framework.aop.Pointcut;
 import com.xjdl.framework.aop.PointcutAdvisor;
+import com.xjdl.framework.aop.TargetSource;
 import com.xjdl.framework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import com.xjdl.framework.aop.framework.AdvisedSupport;
 import com.xjdl.framework.aop.framework.ProxyFactory;
-import com.xjdl.framework.aop.target.TargetSource;
+import com.xjdl.framework.aop.target.SingletonTargetSource;
 import com.xjdl.framework.beans.BeansException;
 import com.xjdl.framework.beans.PropertyValues;
 import com.xjdl.framework.beans.factory.BeanClassLoaderAware;
 import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.BeanFactoryAware;
-import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
-import com.xjdl.framework.beans.factory.support.DefaultListableBeanFactory;
 import com.xjdl.framework.util.ClassUtils;
+import com.xjdl.framework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -50,20 +50,6 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
         this.proxyClassLoader = classLoader;
     }
 
-    @Override
-    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-        if (isInfrastructureClass(beanClass)) {
-            return null;
-        }
-        TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
-        if (targetSource != null) {
-            List<PointcutAdvisor> specificInterceptors = getAdvicesAndAdvisorsForBean(beanClass, beanName);
-            Object proxy = createProxy(beanClass, beanName, specificInterceptors, targetSource);
-            return proxy;
-        }
-        return null;
-    }
-
     /**
      * 排除掉相关切面类，避免重复创建 AspectJExpressionPointcutAdvisor
      */
@@ -72,28 +58,9 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
                 Pointcut.class.isAssignableFrom(beanClass) ||
                 Advisor.class.isAssignableFrom(beanClass);
         if (retVal && log.isTraceEnabled()) {
-            log.trace("Did not attempt to auto-proxy infrastructure class [" + beanClass.getName() + "]");
+			log.trace("Did not attempt to auto-proxy infrastructure class [{}]", beanClass.getName());
         }
         return retVal;
-    }
-
-    /**
-     * 创建代理对象的必要条件，拥有 TargetSourceCreator，在这里会返回绝大部分的 null
-     *
-     * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#getCustomTargetSource(Class, String)
-     */
-    protected TargetSource getCustomTargetSource(Class<?> beanClass, String beanName) {
-        if (this.beanFactory != null && this.beanFactory.containsBean(beanName)) {
-            return getTargetSource(beanClass, beanName);
-        }
-        return null;
-    }
-
-    public final TargetSource getTargetSource(Class<?> beanClass, String beanName) {
-        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) beanFactory;
-        BeanDefinition beanDefinition = defaultListableBeanFactory.getBeanDefinition(beanName);
-        Object instantiate = defaultListableBeanFactory.getInstantiationStrategy().instantiate(beanDefinition, beanName, defaultListableBeanFactory);
-        return new TargetSource(instantiate);
     }
 
     protected Object createProxy(Class<?> beanClass, String beanName, List<PointcutAdvisor> specificInterceptors, TargetSource targetSource) {
@@ -119,5 +86,27 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
     @Override
     public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
         return pvs;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean != null) {
+            return wrapIfNecessary(bean, beanName);
+        }
+        return null;
+    }
+
+    protected Object wrapIfNecessary(Object bean, String beanName) {
+        if (StringUtils.hasLength(beanName)) {
+            return bean;
+        }
+        if (isInfrastructureClass(bean.getClass())) {
+            return bean;
+        }
+        List<PointcutAdvisor> specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName);
+        if (specificInterceptors != null) {
+            return createProxy(bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+        }
+        return bean;
     }
 }

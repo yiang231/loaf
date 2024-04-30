@@ -29,6 +29,8 @@ import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
+import static java.util.Locale.ENGLISH;
+
 @Slf4j
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
 	private InstantiationStrategy instantiationStrategy;
@@ -50,20 +52,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Override
 	protected Object creatBean(String beanName, BeanDefinition beanDefinition) {
 		if (log.isTraceEnabled()) {
-			log.trace("Creating instance of bean '" + beanName + "'");
-		}
-		try {
-			Object bean = resolveBeforeInstantiation(beanName, beanDefinition);
-			if (bean != null) {
-				return bean;
-			}
-		} catch (Throwable ex) {
-			throw new BeanCreationException("BeanPostProcessor before instantiation of bean '" + beanName + "' failed", ex);
+			log.trace("Creating instance of bean '{}'", beanName);
 		}
 		try {
 			Object beanInstance = doCreateBean(beanName, beanDefinition);
 			if (log.isTraceEnabled()) {
-				log.trace("Finished creating instance of bean '" + beanName + "'");
+				log.trace("Finished creating instance of bean '{}'", beanName);
 			}
 			return beanInstance;
 		} catch (BeanCreationException | IllegalStateException ex) {
@@ -71,33 +65,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		} catch (Throwable ex) {
 			throw new BeanCreationException("Unexpected exception during bean '" + beanName + "' creation", ex);
 		}
-	}
-
-	/**
-	 * AOP的第一个时机，需要满足条件：手动创建 TargetSourceCreator，并且在 AbstractAutoProxyCreator 添加
-	 * <p>
-	 * 预处理阶段返回 BeanPostProcessors 处理后的代理对象，很少使用，
-	 * 因为若交由框架进行管理 Bean，此方法一旦返回了对象，就不会走创建分支，是不完整的 Bean，所以能在这里返回的都是使用者创建好的完整的 Bean
-	 */
-	protected Object resolveBeforeInstantiation(String beanName, BeanDefinition bd) {
-		Object bean = null;
-//		bean = applyBeanPostProcessorsBeforeInstantiation(bd.getBeanClass(), beanName);
-		if (bean != null) {
-			bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
-		}
-		return bean;
-	}
-
-	protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
-		for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
-			if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
-				Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
-				if (result != null) {
-					return result;
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -151,7 +118,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean isInitializingBean = (bean instanceof InitializingBean);
 		if (isInitializingBean && mbd != null) {
 			if (log.isTraceEnabled()) {
-				log.trace("Invoking afterPropertiesSet() on bean with name '" + beanName + "'");
+				log.trace("Invoking afterPropertiesSet() on bean with name '{}'", beanName);
 			}
 			if (System.getSecurityManager() != null) {
 				try {
@@ -179,7 +146,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		String initMethodName = mbd.getInitMethodName();
 		Method initMethod = BeanUtils.findMethod(bean.getClass(), initMethodName);
 		if (log.isTraceEnabled()) {
-			log.trace("Invoking init method  '" + initMethodName + "' on bean with name '" + beanName + "'");
+			log.trace("Invoking init method  '{}' on bean with name '{}'", initMethodName, beanName);
 		}
 		Method methodToInvoke = initMethod;
 		if (System.getSecurityManager() != null) {
@@ -215,17 +182,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					BeanReference beanReference = (BeanReference) value;
 					value = getBean(beanReference.getBeanName());
 				}
+				String propertyName = propertyValue.getName();
 				try {
-					// setter 注入
-					Method declaredMethod = bean.getClass().getDeclaredMethod(
-							// set + 首字母大写 + 后续字母
-							"set" + propertyValue.getName().substring(0, 1).toUpperCase() +
-									propertyValue.getName().substring(1), value.getClass());
+//					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(propertyName, bean.getClass());
+//					Method writeMethod = propertyDescriptor.getWriteMethod();
+//					writeMethod.invoke(bean, value);
+
+					// setter 注入 set + 首字母大写 + 后续字母
+					String setterName = "set" + propertyName.substring(0, 1).toUpperCase(ENGLISH) + propertyName.substring(1);
+					Method declaredMethod = bean.getClass().getDeclaredMethod(setterName, value.getClass());
 					declaredMethod.setAccessible(true);
 					declaredMethod.invoke(bean, value);
 				} catch (NoSuchMethodException e) {
 					// Field 注入
-					Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
+					Field declaredField = bean.getClass().getDeclaredField(propertyName);
 					declaredField.setAccessible(true);
 					declaredField.set(bean, value);
 				}

@@ -5,10 +5,11 @@ import com.xjdl.app.advice.SimpleMethodBeforeAdvice;
 import com.xjdl.app.config.DurationMethodInterceptor;
 import com.xjdl.app.service.IService;
 import com.xjdl.app.service.OutputService;
+import com.xjdl.framework.aop.TargetSource;
 import com.xjdl.framework.aop.aspectj.AspectJExpressionPointcut;
 import com.xjdl.framework.aop.framework.AdvisedSupport;
 import com.xjdl.framework.aop.framework.ProxyFactory;
-import com.xjdl.framework.aop.target.TargetSource;
+import com.xjdl.framework.aop.target.SingletonTargetSource;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +26,7 @@ class AdviceInterceptorTest {
     @BeforeAll
     void beforeAll() {
         IService outputService = new OutputService();
-        TargetSource targetSource = new TargetSource(outputService);
+        TargetSource targetSource = new SingletonTargetSource(outputService);
 
         String pointcutExpression = "execution(* com.xjdl.app.service.IService.say())";
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut(pointcutExpression);

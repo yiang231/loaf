@@ -3,8 +3,9 @@ package com.xjdl.framework.aop.framework;
 import com.xjdl.app.config.DurationMethodInterceptor;
 import com.xjdl.app.service.IService;
 import com.xjdl.app.service.OutputService;
+import com.xjdl.framework.aop.TargetSource;
 import com.xjdl.framework.aop.aspectj.AspectJExpressionPointcut;
-import com.xjdl.framework.aop.target.TargetSource;
+import com.xjdl.framework.aop.target.SingletonTargetSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,7 +22,7 @@ class AopProxyTest {
     @BeforeAll
     void beforeAll() {
         IService outputService = new OutputService();
-        TargetSource targetSource = new TargetSource(outputService);
+        TargetSource targetSource = new SingletonTargetSource(outputService);
 
         DurationMethodInterceptor methodInterceptor = new DurationMethodInterceptor();
 

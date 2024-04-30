@@ -26,7 +26,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
     }
 
     private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
-        Class<?>[] ifcs = config.getTargetSource().getTargetClass();
+        Class<?>[] ifcs = config.getTargetSource().getTargetClass().getInterfaces();
         return (ifcs.length == 0 || (ifcs.length == 1));
     }
 }

@@ -1,7 +1,7 @@
 package com.xjdl.framework.aop.framework;
 
 import com.xjdl.framework.aop.MethodMatcher;
-import com.xjdl.framework.aop.target.TargetSource;
+import com.xjdl.framework.aop.TargetSource;
 import lombok.Setter;
 import org.aopalliance.intercept.MethodInterceptor;
 

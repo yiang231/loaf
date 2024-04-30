@@ -30,15 +30,15 @@ class CglibAopProxy implements AopProxy, Serializable {
     @Override
     public Object getProxy(ClassLoader classLoader) {
         if (log.isTraceEnabled()) {
-            log.trace("Creating CGLIB proxy: " + this.advised.getTargetSource());
+			log.trace("Creating CGLIB proxy: {}", this.advised.getTargetSource());
         }
         try {
             Enhancer enhancer = createEnhancer();
             if (classLoader != null) {
                 enhancer.setClassLoader(classLoader);
             }
-            enhancer.setSuperclass(advised.getTargetSource().getTarget().getClass());
-            enhancer.setInterfaces(advised.getTargetSource().getTargetClass());
+            enhancer.setSuperclass(advised.getTargetSource().getTargetClass());
+            enhancer.setInterfaces(advised.getTargetSource().getTargetClass().getInterfaces());
             enhancer.setCallback(new DynamicAdvisedInterceptor(advised));
             return enhancer.create();
         } catch (CodeGenerationException | IllegalArgumentException ex) {

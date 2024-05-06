@@ -146,7 +146,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		String initMethodName = mbd.getInitMethodName();
 		Method initMethod = BeanUtils.findMethod(bean.getClass(), initMethodName);
 		if (log.isTraceEnabled()) {
-			log.trace("Invoking init method  '{}' on bean with name '{}'", initMethodName, beanName);
+			log.trace("Invoking init method '{}' on bean with name '{}'", initMethodName, beanName);
 		}
 		Method methodToInvoke = initMethod;
 		if (System.getSecurityManager() != null) {
@@ -191,7 +191,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					// setter 注入 set + 首字母大写 + 后续字母
 					String setterName = "set" + propertyName.substring(0, 1).toUpperCase(ENGLISH) + propertyName.substring(1);
 					Method declaredMethod = bean.getClass().getDeclaredMethod(setterName, value.getClass());
-					declaredMethod.setAccessible(true);
+					ReflectionUtils.makeAccessible(declaredMethod);
 					declaredMethod.invoke(bean, value);
 				} catch (NoSuchMethodException e) {
 					// Field 注入
@@ -246,14 +246,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		} else {
 			invokeAwareMethods(beanName, bean);
 		}
-		applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+		Object wrappedBean = bean;
+		wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		try {
-			invokeInitMethods(beanName, bean, mbd);
+			invokeInitMethods(beanName, wrappedBean, mbd);
 		} catch (Throwable ex) {
 			throw new BeanCreationException("Invocation of init method failed", ex);
 		}
-		applyBeanPostProcessorsAfterInitialization(bean, beanName);
-		return bean;
+		return applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 	}
 
 	private void invokeAwareMethods(String beanName, Object bean) {

@@ -97,7 +97,7 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
     }
 
     protected Object wrapIfNecessary(Object bean, String beanName) {
-        if (StringUtils.hasLength(beanName)) {
+        if (!StringUtils.hasLength(beanName)) {
             return bean;
         }
         if (isInfrastructureClass(bean.getClass())) {

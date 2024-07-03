@@ -13,10 +13,24 @@
     <!--自动代理实现类-->
     <bean class="com.xjdl.framework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           id="defaultAdvisorAutoProxyCreator"/>
+    <bean class="com.xjdl.framework.aop.framework.adapter.AdvisorAdapterRegistrationManager"
+          id="advisorAdapterRegistrationManager"/>
+    <!--多切面——前置增强Advisor-->
+    <bean class="com.xjdl.framework.aop.aspectj.AspectJExpressionPointcutAdvisor"
+          id="aspectJExpressionPointcutAdvisor_before">
+        <property name="advice" ref="methodBeforeAdviceInterceptor"/>
+        <property name="expression" value="execution(* com.xjdl.app.service.IService.say())"/>
+    </bean>
     <!--Advisor，自带切点 AspectJExpressionPointcut，需要配置切点表达式，以及 AdviceInterceptor 【增强方法拦截器】-->
     <bean class="com.xjdl.framework.aop.aspectj.AspectJExpressionPointcutAdvisor"
           id="aspectJExpressionPointcutAdvisor">
         <property name="advice" ref="durationMethodInterceptor"/>
+        <property name="expression" value="execution(* com.xjdl.app.service.IService.say())"/>
+    </bean>
+    <!--多切面——后置增强Advisor-->
+    <bean class="com.xjdl.framework.aop.aspectj.AspectJExpressionPointcutAdvisor"
+          id="aspectJExpressionPointcutAdvisor_after">
+        <property name="advice" ref="afterReturningAdviceInterceptor"/>
         <property name="expression" value="execution(* com.xjdl.app.service.IService.say())"/>
     </bean>
     <!--AdviceInterceptor 增强方法前置拦截器-->

@@ -1,13 +1,18 @@
 package com.xjdl.framework.aop.framework;
 
+import com.xjdl.framework.aop.AopInvocationException;
+import com.xjdl.framework.aop.support.AopUtils;
 import com.xjdl.framework.util.ClassUtils;
+import com.xjdl.framework.util.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * 基于 CGLib 的动态代理
@@ -51,7 +56,7 @@ class CglibAopProxy implements AopProxy, Serializable {
         return new Enhancer();
     }
 
-    private static class DynamicAdvisedInterceptor implements net.sf.cglib.proxy.MethodInterceptor {
+    private static class DynamicAdvisedInterceptor implements MethodInterceptor {
 
         private final AdvisedSupport advised;
 
@@ -65,28 +70,59 @@ class CglibAopProxy implements AopProxy, Serializable {
          * com.xjdl.framework.aop.framework.ReflectiveMethodInvocation#proceed()
          */
         @Override
-        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-            CglibMethodInvocation methodInvocation = new CglibMethodInvocation(advised.getTargetSource().getTarget(), method, objects, methodProxy);
-            boolean matches = advised.getMethodMatcher().matches(method, advised.getTargetSource().getTarget().getClass());
-            if (matches) {
-                // 方法被切入
-                return advised.getMethodInterceptor().invoke(methodInvocation);
+        public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+            Object target = advised.getTargetSource().getTarget();
+            Class<?> targetClass = target.getClass();
+            List<Object> chain = advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+            Object retVal;
+            if (CollectionUtils.isEmpty(chain)) {
+                retVal = invokeMethod(target, method, args, methodProxy);
+            } else {
+                retVal = new CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy).proceed();
             }
-            return methodInvocation.proceed();
+            retVal = processReturnType(proxy, target, method, retVal);
+            return retVal;
+        }
+    }
+
+    private static Object processReturnType(Object proxy, Object target, Method method, Object returnValue) {
+        Class<?> returnType = method.getReturnType();
+        if (returnValue == null && returnType != Void.TYPE && returnType.isPrimitive()) {
+            throw new AopInvocationException("Null return value from advice does not match primitive return type for: " + method);
+        }
+        return returnValue;
+    }
+
+    private static Object invokeMethod(Object target, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+        try {
+            return methodProxy.invoke(target, args);
+        } catch (CodeGenerationException ex) {
+            CglibMethodInvocation.logFastClassGenerationFailure(method);
+            return AopUtils.invokeJoinpointUsingReflection(target, method, args);
         }
     }
 
     private static class CglibMethodInvocation extends ReflectiveMethodInvocation {
         private final MethodProxy methodProxy;
 
-        public CglibMethodInvocation(Object target, Method method, Object[] arguments, MethodProxy methodProxy) {
-            super(target, method, arguments);
+        public CglibMethodInvocation(Object proxy, Object target, Method method, Object[] arguments, Class<?> targetClass, List<Object> interceptorsAndDynamicMethodMatchers, MethodProxy methodProxy) {
+            super(proxy, target, method, arguments, targetClass, interceptorsAndDynamicMethodMatchers);
             this.methodProxy = methodProxy;
         }
 
         @Override
         public Object proceed() throws Throwable {
-            return this.methodProxy.invoke(this.target, this.arguments);
+            try {
+                return super.proceed();
+            } catch (CodeGenerationException e) {
+                throw new RuntimeException();
+            }
+        }
+
+        static void logFastClassGenerationFailure(Method method) {
+            if (log.isDebugEnabled()) {
+                log.debug("Failed to generate CGLIB fast class for method: {}", method);
+            }
         }
     }
 }

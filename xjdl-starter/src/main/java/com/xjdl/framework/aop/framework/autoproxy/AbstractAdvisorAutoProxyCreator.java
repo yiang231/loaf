@@ -25,9 +25,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
     }
 
     @Override
-    protected List<PointcutAdvisor> getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName) throws BeansException {
+    protected Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName) throws BeansException {
         List<PointcutAdvisor> advisors = findEligibleAdvisors(beanClass, beanName);
-        return advisors;
+        return advisors.toArray();
     }
 
     protected List<PointcutAdvisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {

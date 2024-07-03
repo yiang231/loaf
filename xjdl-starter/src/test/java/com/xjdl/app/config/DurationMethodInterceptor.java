@@ -10,11 +10,10 @@ public class DurationMethodInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         long startTime = System.nanoTime();
         String methodName = invocation.getMethod().getName();
-        log.debug("Invocation of Method " + methodName + " start!");
+		log.debug("Invocation of Method {} start!", methodName);
         Object proceed = invocation.proceed();
         // 1 s【秒】 = 1000 ms【毫秒】 = 1000^2 us【微秒】 = 1000^3 ns【纳秒】 = 1000^4 ps【皮秒】
-        log.debug("Invocation of Method " + methodName +
-                " end! takes " + (System.nanoTime() - startTime) + " ns.");
+		log.debug("Invocation of Method {} end! takes {} ns.", methodName, System.nanoTime() - startTime);
         return proceed;
     }
 }

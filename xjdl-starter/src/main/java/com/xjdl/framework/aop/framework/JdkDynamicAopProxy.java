@@ -1,13 +1,16 @@
 package com.xjdl.framework.aop.framework;
 
+import com.xjdl.framework.aop.AopInvocationException;
 import com.xjdl.framework.util.ClassUtils;
+import com.xjdl.framework.util.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 /**
  * 基于接口的 JDK 动态代理
@@ -39,17 +42,29 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
      * com.xjdl.app.config.DurationMethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      * com.xjdl.framework.aop.framework.ReflectiveMethodInvocation#proceed()
      */
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        boolean matches = advised.getMethodMatcher().matches(method, advised.getTargetSource().getTarget().getClass());
-        if (matches) {
-            // 方法被切入
-            MethodInterceptor methodInterceptor = advised.getMethodInterceptor();
-            return methodInterceptor.invoke(new ReflectiveMethodInvocation(advised.getTargetSource().getTarget(), method, args));
-        }
-        return method.invoke(advised.getTargetSource().getTarget(), args);
-    }
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		Object target = advised.getTargetSource().getTarget();
+		Class<?> targetClass = target.getClass();
+		Object retVal;
+		List<Object> chain = advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+		if (CollectionUtils.isEmpty(chain)) {
+			return method.invoke(target, args);
+		} else {
+			MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
+			retVal = invocation.proceed();
+		}
+		retVal = processReturnType(proxy, target, method, retVal);
+		return retVal;
+	}
 
+	private static Object processReturnType(Object proxy, Object target, Method method, Object returnValue) {
+		Class<?> returnType = method.getReturnType();
+		if (returnValue == null && returnType != Void.TYPE && returnType.isPrimitive()) {
+			throw new AopInvocationException("Null return value from advice does not match primitive return type for: " + method);
+		}
+		return returnValue;
+	}
     private ClassLoader determineClassLoader(ClassLoader classLoader) {
         if (classLoader == null) {
             // JDK bootstrap loader -> use spring-aop ClassLoader instead.

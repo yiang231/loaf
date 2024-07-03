@@ -1,6 +1,9 @@
 package com.xjdl.framework.aop.framework;
 
 public class ProxyFactory extends ProxyCreatorSupport {
+	public ProxyFactory() {
+	}
+
     public ProxyFactory(AdvisedSupport config) {
         super.setProxyTargetClass(config.isProxyTargetClass());
         super.setTargetSource(config.getTargetSource());

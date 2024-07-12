@@ -225,13 +225,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	public void close() {
 		synchronized (this.startupShutdownMonitor) {
 			doClose();
-			// If we registered a JVM shutdown hook, we don't need it anymore now:
-			// We've already explicitly closed the context.
 			if (this.shutdownHook != null) {
 				try {
 					Runtime.getRuntime().removeShutdownHook(this.shutdownHook);
-				} catch (IllegalStateException ex) {
-					// ignore - VM is already shutting down
+				} catch (IllegalStateException ignored) {
+
 				}
 			}
 		}
@@ -387,4 +385,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
 
 	protected abstract void closeBeanFactory();
+
+	@Override
+	public boolean containsBean(String name) {
+		return getBeanFactory().containsBean(name);
+	}
 }

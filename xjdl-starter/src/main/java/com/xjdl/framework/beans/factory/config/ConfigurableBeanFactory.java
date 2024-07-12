@@ -4,8 +4,6 @@ import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.HierarchicalBeanFactory;
 import com.xjdl.framework.core.metrics.ApplicationStartup;
 
-import java.security.AccessControlContext;
-
 /**
  * 为容器配置属性
  */
@@ -26,8 +24,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	void destroySingletons();
 
 	ApplicationStartup getApplicationStartup();
-
-	AccessControlContext getAccessControlContext();
 
 	ClassLoader getBeanClassLoader();
 

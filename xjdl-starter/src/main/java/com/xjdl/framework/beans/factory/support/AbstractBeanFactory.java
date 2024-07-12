@@ -6,12 +6,11 @@ import com.xjdl.framework.beans.factory.DisposableBean;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.ConfigurableBeanFactory;
+import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import com.xjdl.framework.core.metrics.ApplicationStartup;
 import com.xjdl.framework.util.ClassUtils;
 import com.xjdl.framework.util.StringUtils;
 
-import java.security.AccessControlContext;
-import java.security.AccessController;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -21,7 +20,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
-	private SecurityContextProvider securityContextProvider;
 	private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
 	private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 	private BeanFactory parentBeanFactory;
@@ -124,13 +122,20 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 	}
 
 	@Override
-	public AccessControlContext getAccessControlContext() {
-		return (this.securityContextProvider != null ?
-				this.securityContextProvider.getAccessControlContext() :
-				AccessController.getContext());
+	public boolean containsBean(String beanName) {
+		if (containsSingleton(beanName) || containsBeanDefinition(beanName)) {
+			return true;
+		}
+		BeanFactory parentBeanFactory = getParentBeanFactory();
+		return (parentBeanFactory != null && parentBeanFactory.containsBean(beanName));
 	}
 
-	public void setSecurityContextProvider(SecurityContextProvider securityProvider) {
-		this.securityContextProvider = securityProvider;
+	protected boolean hasInstantiationAwareBeanPostProcessors() {
+		for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+			if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

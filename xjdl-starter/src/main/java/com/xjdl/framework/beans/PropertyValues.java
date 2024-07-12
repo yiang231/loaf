@@ -8,4 +8,6 @@ public interface PropertyValues {
     void addPropertyValue(PropertyValue pv);
 
     boolean contains(String propertyName);
+
+    boolean isEmpty();
 }

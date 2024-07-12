@@ -8,6 +8,9 @@ import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import java.lang.reflect.Constructor;
 
 public class SimpleInstantiationStrategy implements InstantiationStrategy {
+	/**
+	 * TODO 后续实现有参构造器的对象创建
+	 */
 	@Override
 	public Object instantiate(BeanDefinition bd, String beanName, BeanFactory owner) throws BeansException {
 		try {

@@ -8,10 +8,6 @@ import com.xjdl.framework.context.ApplicationStartupAware;
 import com.xjdl.framework.context.ConfigurableApplicationContext;
 import com.xjdl.framework.context.ResourceLoaderAware;
 
-import java.security.AccessControlContext;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
 /**
  * 批量处理多个 ApplicationContext 的感知
  */
@@ -29,18 +25,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			return bean;
 		}
 
-		AccessControlContext acc = null;
-		if (System.getSecurityManager() != null) {
-			acc = this.applicationContext.getBeanFactory().getAccessControlContext();
-		}
-		if (acc != null) {
-			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-				invokeAwareInterfaces(bean);
-				return null;
-			}, acc);
-		} else {
-			invokeAwareInterfaces(bean);
-		}
+		invokeAwareInterfaces(bean);
 		return bean;
 	}
 

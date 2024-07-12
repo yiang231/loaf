@@ -2,6 +2,7 @@ package com.xjdl.framework.beans.factory.support;
 
 import com.xjdl.framework.beans.BeansException;
 import com.xjdl.framework.beans.PropertyValue;
+import com.xjdl.framework.beans.PropertyValues;
 import com.xjdl.framework.beans.factory.Aware;
 import com.xjdl.framework.beans.factory.BeanClassLoaderAware;
 import com.xjdl.framework.beans.factory.BeanCreationException;
@@ -13,6 +14,7 @@ import com.xjdl.framework.beans.factory.config.AutowireCapableBeanFactory;
 import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.BeanReference;
+import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import com.xjdl.framework.core.NativeDetector;
 import com.xjdl.framework.util.BeanUtils;
 import com.xjdl.framework.util.ReflectionUtils;
@@ -22,10 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
+
+import static java.util.Locale.ENGLISH;
 
 @Slf4j
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
@@ -47,11 +47,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	@Override
 	protected Object creatBean(String beanName, BeanDefinition beanDefinition) {
-		Object beanInstance = doCreateBean(beanName, beanDefinition);
 		if (log.isTraceEnabled()) {
-			log.trace("Finished creating instance of bean '" + beanName + "'");
+			log.trace("Creating instance of bean '{}'", beanName);
 		}
-		return beanInstance;
+		try {
+			Object beanInstance = doCreateBean(beanName, beanDefinition);
+			if (log.isTraceEnabled()) {
+				log.trace("Finished creating instance of bean '{}'", beanName);
+			}
+			return beanInstance;
+		} catch (BeanCreationException | IllegalStateException ex) {
+			throw ex;
+		} catch (Throwable ex) {
+			throw new BeanCreationException("Unexpected exception during bean '" + beanName + "' creation", ex);
+		}
 	}
 
 	/**
@@ -81,7 +90,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param instanceWrapper 包装对象
 	 */
 	private void populateBean(String name, BeanDefinition beanDefinition, Object instanceWrapper) {
-		applyPropertyValues(name, beanDefinition, instanceWrapper);
+		PropertyValues pvs = (beanDefinition.hasPropertyValues() ? beanDefinition.getPropertyValues() : null);
+		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+		if (hasInstAwareBpps) {
+			for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				if (InstantiationAwareBeanPostProcessor.class.isAssignableFrom(bp.getClass())) {
+					PropertyValues pvsToUse = ((InstantiationAwareBeanPostProcessor) bp).postProcessProperties(pvs, instanceWrapper, name);
+					if (pvsToUse != null) {
+						pvs = pvsToUse;
+					}
+				}
+			}
+		}
+		if (pvs != null) {
+			applyPropertyValues(name, beanDefinition, instanceWrapper, pvs);
+		}
 	}
 
 	/**
@@ -91,20 +114,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean isInitializingBean = (bean instanceof InitializingBean);
 		if (isInitializingBean && mbd != null) {
 			if (log.isTraceEnabled()) {
-				log.trace("Invoking afterPropertiesSet() on bean with name '" + beanName + "'");
+				log.trace("Invoking afterPropertiesSet() on bean with name '{}'", beanName);
 			}
-			if (System.getSecurityManager() != null) {
-				try {
-					AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
-						((InitializingBean) bean).afterPropertiesSet();
-						return null;
-					}, getAccessControlContext());
-				} catch (PrivilegedActionException pae) {
-					throw pae.getException();
-				}
-			} else {
-				((InitializingBean) bean).afterPropertiesSet();
-			}
+			((InitializingBean) bean).afterPropertiesSet();
 		}
 		if (mbd != null) {
 			String initMethodName = mbd.getInitMethodName();
@@ -119,53 +131,41 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		String initMethodName = mbd.getInitMethodName();
 		Method initMethod = BeanUtils.findMethod(bean.getClass(), initMethodName);
 		if (log.isTraceEnabled()) {
-			log.trace("Invoking init method  '" + initMethodName + "' on bean with name '" + beanName + "'");
+			log.trace("Invoking init method '{}' on bean with name '{}'", initMethodName, beanName);
 		}
-		Method methodToInvoke = initMethod;
-		if (System.getSecurityManager() != null) {
-			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-				ReflectionUtils.makeAccessible(methodToInvoke);
-				return null;
-			});
-			try {
-				AccessController.doPrivileged((PrivilegedExceptionAction<Object>)
-						() -> methodToInvoke.invoke(bean), getAccessControlContext());
-			} catch (PrivilegedActionException pae) {
-				InvocationTargetException ex = (InvocationTargetException) pae.getException();
-				throw ex.getTargetException();
-			}
-		} else {
-			try {
-				ReflectionUtils.makeAccessible(methodToInvoke);
-				methodToInvoke.invoke(bean);
-			} catch (InvocationTargetException ex) {
-				throw ex.getTargetException();
-			}
+		try {
+			ReflectionUtils.makeAccessible(initMethod);
+			initMethod.invoke(bean);
+		} catch (InvocationTargetException ex) {
+			throw ex.getTargetException();
 		}
 	}
 
 	/**
 	 * 普通属性的注入
 	 */
-	private void applyPropertyValues(String name, BeanDefinition beanDefinition, Object bean) {
+	private void applyPropertyValues(String name, BeanDefinition beanDefinition, Object bean, PropertyValues pvs) {
 		try {
-			for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
+			for (PropertyValue propertyValue : pvs.getPropertyValues()) {
 				Object value = propertyValue.getValue();
 				if (value instanceof BeanReference) {
 					BeanReference beanReference = (BeanReference) value;
 					value = getBean(beanReference.getBeanName());
 				}
+				String propertyName = propertyValue.getName();
 				try {
-					// setter 注入
-					Method declaredMethod = bean.getClass().getDeclaredMethod(
-							// set + 首字母大写 + 后续字母
-							"set" + propertyValue.getName().substring(0, 1).toUpperCase() +
-									propertyValue.getName().substring(1), value.getClass());
-					declaredMethod.setAccessible(true);
+//					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(propertyName, bean.getClass());
+//					Method writeMethod = propertyDescriptor.getWriteMethod();
+//					writeMethod.invoke(bean, value);
+
+					// setter 注入 set + 首字母大写 + 后续字母
+					String setterName = "set" + propertyName.substring(0, 1).toUpperCase(ENGLISH) + propertyName.substring(1);
+					Method declaredMethod = bean.getClass().getDeclaredMethod(setterName, value.getClass());
+					ReflectionUtils.makeAccessible(declaredMethod);
 					declaredMethod.invoke(bean, value);
 				} catch (NoSuchMethodException e) {
 					// Field 注入
-					Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
+					Field declaredField = bean.getClass().getDeclaredField(propertyName);
 					declaredField.setAccessible(true);
 					declaredField.set(bean, value);
 				}
@@ -188,15 +188,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	protected Object instantiateBean(String beanName, BeanDefinition mbd) {
 		try {
-			Object beanInstance;
-			if (System.getSecurityManager() != null) {
-				beanInstance = AccessController.doPrivileged(
-						(PrivilegedAction<Object>) () -> getInstantiationStrategy().instantiate(mbd, beanName, this),
-						getAccessControlContext());
-			} else {
-				beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, this);
-			}
-			return beanInstance;
+			return getInstantiationStrategy().instantiate(mbd, beanName, this);
 		} catch (Throwable ex) {
 			throw new BeanCreationException("Instantiation of bean named " + beanName + " failed", ex);
 		}
@@ -208,22 +200,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	@Override
 	public Object initializeBean(String beanName, Object bean, BeanDefinition mbd) {
-		if (System.getSecurityManager() != null) {
-			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-				invokeAwareMethods(beanName, bean);
-				return null;
-			}, getAccessControlContext());
-		} else {
-			invokeAwareMethods(beanName, bean);
-		}
-		applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+		invokeAwareMethods(beanName, bean);
+		Object wrappedBean = bean;
+		wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		try {
-			invokeInitMethods(beanName, bean, mbd);
+			invokeInitMethods(beanName, wrappedBean, mbd);
 		} catch (Throwable ex) {
 			throw new BeanCreationException("Invocation of init method failed", ex);
 		}
-		applyBeanPostProcessorsAfterInitialization(bean, beanName);
-		return bean;
+		return applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 	}
 
 	private void invokeAwareMethods(String beanName, Object bean) {

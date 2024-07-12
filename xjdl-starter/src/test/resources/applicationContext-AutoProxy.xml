@@ -9,6 +9,7 @@
     <!--需要代理的对象，实现了 IService#say 方法-->
     <bean class="com.xjdl.app.service.OutputService" id="outputService">
         <property name="name" value="output"/>
+        <property name="helloWorldService" ref="helloWorldService"/>
     </bean>
     <!--自动代理实现类-->
     <bean class="com.xjdl.framework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"

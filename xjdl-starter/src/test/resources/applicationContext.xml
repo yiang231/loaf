@@ -8,6 +8,7 @@
     <bean id="outputService" name="outputService" scope="prototype" lazy-init="true"
           init-method="initMethod" destroy-method="destroyMethod"
           class="com.xjdl.app.service.OutputService">
+        <property name="helloWorldService" ref="helloWorldService"/>
     </bean>
 
     <bean id="helloWorldService" name="helloWorldService" scope="singleton"

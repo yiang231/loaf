@@ -15,6 +15,7 @@ import com.xjdl.framework.beans.factory.config.BeanDefinition;
 import com.xjdl.framework.beans.factory.config.BeanPostProcessor;
 import com.xjdl.framework.beans.factory.config.BeanReference;
 import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import com.xjdl.framework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
 import com.xjdl.framework.core.NativeDetector;
 import com.xjdl.framework.util.BeanUtils;
 import com.xjdl.framework.util.ReflectionUtils;
@@ -68,12 +69,27 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	private Object doCreateBean(String beanName, BeanDefinition beanDefinition) {
 		Object bean = createBeanInstance(beanDefinition, beanName);
+		boolean earlySingletonExposure = beanDefinition.isSingleton();
+		if (earlySingletonExposure) {
+			if (log.isTraceEnabled()) {
+				log.trace("Eagerly caching bean '{}' to allow for resolving potential circular references", beanName);
+			}
+			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, beanDefinition, bean));
+		}
 		Object exposedObject = bean;
 		try {
 			populateBean(beanName, beanDefinition, exposedObject);
 			exposedObject = initializeBean(beanName, exposedObject, beanDefinition);
 		} catch (Exception e) {
 			throw new BeanCreationException("Instantiation of bean named '" + beanName + "' failed", e);
+		}
+		if (earlySingletonExposure) {
+			Object earlySingletonReference = getSingleton(beanName, false);
+			if (earlySingletonReference != null) {
+				if (exposedObject == bean) {
+					exposedObject = earlySingletonReference;
+				}
+			}
 		}
 		try {
 			registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
@@ -252,5 +268,17 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			result = current;
 		}
 		return result;
+	}
+
+	protected Object getEarlyBeanReference(String beanName, BeanDefinition mbd, Object bean) {
+		Object exposedObject = bean;
+		if (hasInstantiationAwareBeanPostProcessors()) {
+			for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
+					exposedObject = ((SmartInstantiationAwareBeanPostProcessor) bp).getEarlyBeanReference(exposedObject, beanName);
+				}
+			}
+		}
+		return exposedObject;
 	}
 }

@@ -13,7 +13,7 @@ import com.xjdl.framework.beans.factory.BeanClassLoaderAware;
 import com.xjdl.framework.beans.factory.BeanFactory;
 import com.xjdl.framework.beans.factory.BeanFactoryAware;
 import com.xjdl.framework.beans.factory.config.ConfigurableBeanFactory;
-import com.xjdl.framework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import com.xjdl.framework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
 import com.xjdl.framework.util.ClassUtils;
 import com.xjdl.framework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +22,14 @@ import org.aopalliance.aop.Advice;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-public abstract class AbstractAutoProxyCreator implements InstantiationAwareBeanPostProcessor, BeanFactoryAware, BeanClassLoaderAware {
+public abstract class AbstractAutoProxyCreator implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware, BeanClassLoaderAware {
     private ClassLoader proxyClassLoader = ClassUtils.getDefaultClassLoader();
     private BeanFactory beanFactory;
-
+    private final Map<Object, Object> earlyProxyReferences = new ConcurrentHashMap<>(16);
     protected BeanFactory getBeanFactory() {
         return this.beanFactory;
     }
@@ -112,6 +114,12 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
     protected abstract Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName) throws BeansException;
 
     @Override
+    public Object getEarlyBeanReference(Object bean, String beanName) {
+        this.earlyProxyReferences.put(beanName, bean);
+        return wrapIfNecessary(bean, beanName);
+    }
+
+    @Override
     public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
         return pvs;
     }
@@ -119,7 +127,9 @@ public abstract class AbstractAutoProxyCreator implements InstantiationAwareBean
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean != null) {
-            return wrapIfNecessary(bean, beanName);
+            if (this.earlyProxyReferences.remove(beanName) != bean) {
+                return wrapIfNecessary(bean, beanName);
+            }
         }
         return null;
     }

@@ -35,6 +35,7 @@ class DefaultAdvisorAutoProxyCreatorTest {
         outputService.say();
         // 测试为代理对象填充属性
         Assertions.assertEquals("output", ((OutputService) outputService).getName());
+        Assertions.assertEquals("Hello World!", ((OutputService) outputService).getHelloWorldService().getText());;
 
         HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
         helloWorldService.getOutputService();

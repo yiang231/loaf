@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 @Setter
 @Getter
 public class OutputService implements InitializingBean, DisposableBean, IService {
+	private HelloWorldService helloWorldService;
 	private String name;
 	public void output(String text) {
 		log.info("OutputService.output {}", text);

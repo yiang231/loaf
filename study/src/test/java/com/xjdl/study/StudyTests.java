@@ -15,7 +15,7 @@ class StudyTests {
 	 */
 	@Test
 	void contextLoads() {
-		ApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("application.xml");
+		ApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 		Person person = (Person) classPathXmlApplicationContext.getBean("person");
 		Assertions.assertNotNull(person);
 	}

@@ -71,6 +71,21 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--若在 Mac OS 系统上执行 test 报错，可禁用 fork 模式，具体原因去问 AI
+                    以下是可用参数
+                    0：禁用fork，主JVM运行测试。
+                    1：默认，一个JVM进程。
+                    大于1的整数：并行fork数。
+                    数值后跟C，如2C，表示每个核心的fork数。
+                    unlimited：理论上无限，但实际受限于资源。-->
+                    <forkCount>1</forkCount>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>

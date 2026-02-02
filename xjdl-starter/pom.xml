@@ -81,7 +81,7 @@
                     大于1的整数：并行fork数。
                     数值后跟C，如2C，表示每个核心的fork数。
                     unlimited：理论上无限，但实际受限于资源。-->
-                    <forkCount>1</forkCount>
+                    <forkCount>0</forkCount>
                 </configuration>
             </plugin>
 

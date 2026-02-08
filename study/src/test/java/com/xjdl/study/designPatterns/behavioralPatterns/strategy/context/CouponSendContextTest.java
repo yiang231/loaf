@@ -13,12 +13,14 @@ class CouponSendContextTest {
     void testCouponSendContext() {
         CouponSendContext context = new CouponSendContext();
 
-        CouponSendService discountService = context.getCouponSendService(CouponTypeEnum.DISCOUNT.getCode());
-        String discountCoupon = discountService.sendCoupon();
+        CouponTypeEnum discount = CouponTypeEnum.DISCOUNT;
+        CouponSendService discountService = context.getCouponSendService(discount.getCode());
+        String discountCoupon = discountService.sendCoupon(discount.getCode());
         log.info("discountCoupon : {}", discountCoupon);
 
-        CouponSendService fullReductionService = context.getCouponSendService(CouponTypeEnum.FULL_REDUCTION.getCode());
-        String fullReductionCoupon = fullReductionService.sendCoupon();
+        CouponTypeEnum fullReduction = CouponTypeEnum.FULL_REDUCTION;
+        CouponSendService fullReductionService = context.getCouponSendService(fullReduction.getCode());
+        String fullReductionCoupon = fullReductionService.sendCoupon(fullReduction.getCode());
         log.info("fullReductionCoupon : {}", fullReductionCoupon);
 
         assertThatIllegalArgumentException().isThrownBy(() -> context.getCouponSendService(9));

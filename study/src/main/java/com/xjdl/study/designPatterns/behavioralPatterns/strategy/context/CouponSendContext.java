@@ -18,7 +18,7 @@ public class CouponSendContext {
         couponSendServiceMap.put(fullReductionService.couponType(), fullReductionService);
     }
 
-    public CouponSendService getCouponSendService(Integer code) {
+    public CouponSendService getCouponSendService(int code) {
         CouponSendService couponSendService = couponSendServiceMap.get(code);
         if (couponSendService == null) {
             throw new IllegalArgumentException("CouponSendService is not supported.");

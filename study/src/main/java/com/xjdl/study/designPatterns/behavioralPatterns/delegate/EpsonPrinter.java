@@ -7,6 +7,5 @@ public class EpsonPrinter implements Printer {
     @Override
     public void print(String msg) {
         log.info("EpsonPrinter {}", msg);
-        System.out.println("EpsonPrinter " + msg);
     }
 }

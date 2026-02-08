@@ -7,6 +7,5 @@ public class CanonPrinter implements Printer {
     @Override
     public void print(String msg) {
         log.info("CanonPrinter {}", msg);
-        System.out.println("CanonPrinter " + msg);
     }
 }

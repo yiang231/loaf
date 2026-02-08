@@ -15,8 +15,8 @@ public class PrinterDelegate implements Printer {
 
     @Override
     public void print(String msg) {
-        System.out.println("prepare to print ===>");
+        log.info("prepare to print ===>");
         printer.print(msg);
-        System.out.println("end to print <===");
+        log.info("end to print <===");
     }
 }

@@ -1,13 +1,12 @@
-package com.xjdl.study.designPatterns.behavioralPatterns.strategy;
+package com.xjdl.study.designPatterns.behavioralPatterns.strategy.context;
 
 import com.xjdl.study.designPatterns.behavioralPatterns.strategy.concreteStrategy.Divide;
 import com.xjdl.study.designPatterns.behavioralPatterns.strategy.concreteStrategy.Subtract;
-import com.xjdl.study.designPatterns.behavioralPatterns.strategy.context.Context;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class UseStrategy {
+class ContextTest {
     @Test
     void test() {
         Context divide = new Context(new Divide());

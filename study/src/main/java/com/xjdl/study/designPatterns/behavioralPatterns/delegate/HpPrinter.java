@@ -7,6 +7,5 @@ public class HpPrinter implements Printer {
     @Override
     public void print(String msg) {
         log.info("HpPrinter {}", msg);
-        System.out.println("HpPrinter " + msg);
     }
 }

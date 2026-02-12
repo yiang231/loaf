@@ -1,6 +1,7 @@
-package com.xjdl.study.designPatterns.behavioralPatterns.observer.subject;
+package com.xjdl.study.designPatterns.behavioralPatterns.observer.observable;
 
 import com.xjdl.study.designPatterns.behavioralPatterns.observer.observer.Observer;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.event.AbstractApplicationEventMulticaster;
@@ -15,12 +16,10 @@ import java.util.List;
  */
 @Slf4j
 public class Subject {
-    private List<Observer> observers = new ArrayList<>();
-    private int state;
+    private final List<Observer> observers = new ArrayList<>();
 
-    public int getState() {
-        return state;
-    }
+    @Getter
+    private int state;
 
     public void setState(int state) {
         this.state = state;
@@ -32,7 +31,11 @@ public class Subject {
     }
 
     public void attach(Observer observer) {
-        observers.add(observer);
-        log.info("{}\thas been add an Observer\t[{}]", observers.getClass().getSimpleName(), observer.getClass().getSimpleName());
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+            log.info("{}\thas been add an Observer\t[{}]", observers.getClass().getSimpleName(), observer.getClass().getSimpleName());
+        } else {
+            log.info("Duplicate Observer.");
+        }
     }
 }

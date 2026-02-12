@@ -1,13 +1,12 @@
 package com.xjdl.study.designPatterns.behavioralPatterns.observer.observer;
 
-import com.xjdl.study.designPatterns.behavioralPatterns.observer.subject.Subject;
+import com.xjdl.study.designPatterns.behavioralPatterns.observer.observable.Subject;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class OctalObserver extends Observer {
     public OctalObserver(Subject subject) {
-        this.subject = subject;
-        this.subject.attach(this);
+        super(subject);
     }
 
     @Override
